@@ -17,6 +17,7 @@
     <string name="error_correo_valido">Introduce un correo valido</string>
     <string name="error_contr_no_valida">Contraseña no valida</string>
     <string name="error_contra_no_igual">Las contraseñas deben coincidir</string>
+    <string name="error_login_usuario_no_existe">No existe un usuario con esos credenciales</string>
 
 
 </resources>
