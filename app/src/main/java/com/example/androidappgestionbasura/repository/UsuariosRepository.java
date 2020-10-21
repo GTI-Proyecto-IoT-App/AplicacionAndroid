@@ -1,6 +1,6 @@
 package com.example.androidappgestionbasura.repository;
 
-import com.example.androidappgestionbasura.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.model.Usuario;
 
 import java.util.HashMap;

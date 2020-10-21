@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">AndroidBasuraApp</string>
 
+<!--    SPLASH-->
+    <string name="splash_subtitle">Hecho por GTI Grupo 2/3</string>
+
     <!--    AUTH ACTIVITY-->
     <string name="registrarse">Registrarse</string>
     <string name="iniciar_sesion">Iniciar Sesión</string>
@@ -11,8 +14,13 @@
     <string name="ayuda_contraseña">8 o mas caracteres, con al menos una mayuscula, una minuscula, un número y un caracter especial </string>
     <string name="hint_introducir_contra_repetir">Repitir la contraseña</string>
 
+    <!--LOADING LAYOUT-->
+    <string name="carga_titulo">Cargando…</string>
 
-<!--    ERRORES-->
+<!--    HOME ACTIVITY-->
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+
+    <!--    ERRORES-->
     <string name="error_campo_vacio">Este campo no puede estar vacío</string>
     <string name="error_correo_valido">Introduce un correo valido</string>
     <string name="error_contr_no_valida">Contraseña no valida</string>

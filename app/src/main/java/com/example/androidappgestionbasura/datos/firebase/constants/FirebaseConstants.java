@@ -1,4 +1,4 @@
-package com.example.androidappgestionbasura.firebase;
+package com.example.androidappgestionbasura.datos.firebase.constants;
 
 /**
  * @author Ruben Pardo Casanova
