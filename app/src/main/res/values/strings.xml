@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">AndroidBasuraApp</string>
+
+    <!--    AUTH ACTIVITY-->
+    <string name="registrarse">Registrarse</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+
+    <string name="hint_introducir_nombre">Nombre de usuario</string>
+    <string name="hint_introducir_email">Correo electrónico</string>
+    <string name="hint_introducir_contra">Contraseña</string>
+    <string name="ayuda_contraseña">8 o mas caracteres, con al menos una mayuscula, una minuscula, un número y un caracter especial </string>
+    <string name="hint_introducir_contra_repetir">Repitir la contraseña</string>
+
+
+<!--    ERRORES-->
+    <string name="error_campo_vacio">Este campo no puede estar vacío</string>
+    <string name="error_correo_valido">Introduce un correo valido</string>
+    <string name="error_contr_no_valida">Contraseña no valida</string>
+    <string name="error_contra_no_igual">Las contraseñas deben coincidir</string>
+    <string name="error_login_usuario_no_existe">No existe un usuario con esos credenciales</string>
+
+
 </resources>
