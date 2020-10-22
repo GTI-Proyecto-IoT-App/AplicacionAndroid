@@ -6,16 +6,132 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".presentacion.AuthActivity"
-    android:background="#fff">
+    android:background="#fff"
+    android:padding="20dp">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@android:"
+        android:id="@+id/logoImagen"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo_usable_rojo"/>
+    <TextView
+        android:id="@+id/texto_bienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido de nuevo"
+        android:textSize="30sp"/>
+    <TextView
+        android:id="@+id/texto_ParaContinuar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inicia Sesion Para continuar"
+        android:textSize="12sp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Usuario"
+            >
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextLoginUsuarioEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="Contraseña"
+            app:passwordToggleEnabled="true"
+            >
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextLoginPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:text="¿Olvidaste la Contraseña?"
+            android:layout_gravity="right"
+            android:elevation="0dp"
+            android:layout_margin="0dp"/>
+
+        <Button
+            android:id="@+id/buttonIniciarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Iniciar Sesión"
+            android:background="#c30000"
+            android:textColor="#fff"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+        <Button
+            android:id="@+id/botonLanzarRegistro"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:text="¿Eres nuevo? Regístrate "
+            android:layout_gravity="center"
+            android:elevation="0dp"
+            android:layout_margin="0dp"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/tvLoginError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <Button
+            android:id="@+id/googleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startGoogleLogin"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+
+
+
+    </LinearLayout>
+
+
 
 
     <Button
-        android:id="@+id/botonLanzarRegistro"
+        android:id="@+id/d"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/registrarse"
@@ -36,7 +152,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <EditText
-            android:id="@+id/editTextLoginUsuarioEmail"
+            android:id="@+id/td"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -44,7 +160,7 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/editTextLoginPass"
+            android:id="@+id/t"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -52,7 +168,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/buttonIniciarSesion"
+            android:id="@+id/bgggg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="logIn"
@@ -61,7 +177,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tvLoginError"
+        android:id="@+id/tvLoginErro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -71,7 +187,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
     <Button
-        android:id="@+id/googleButton"
+        android:id="@+id/googleButto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="startGoogleLogin"
