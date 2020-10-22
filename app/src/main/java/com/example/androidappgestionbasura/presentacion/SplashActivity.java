@@ -2,42 +2,29 @@ package com.example.androidappgestionbasura.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
 
 public class SplashActivity extends AppCompatActivity {
 
 
-    private CasosUsoUsuario casosUsoUsuario;
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d("ONSTART", "SPLASH");
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("ONSTART", "SPLASH MUERE");
-        super.onDestroy();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
-
         super.onCreate(savedInstanceState);
-
-        casosUsoUsuario = new CasosUsoUsuario(this);
-        setVisible(false);
+        setTheme(R.style.AppTheme);
+        //TODO al ser asyn task el metodo pasa por el onStart y muestra una ventana blanca
+        final CasosUsoUsuario casosUsoUsuario = new CasosUsoUsuario(this);
         if(casosUsoUsuario.isUsuarioLogeado()){
             // si ya estaba logeado debemos obtener el usuario
             casosUsoUsuario.getUsuarioSiExisteSinoPedirlo(new CallBack() {
@@ -52,13 +39,15 @@ public class SplashActivity extends AppCompatActivity {
                 }
             });
 
+        }else{
+            Intent intent = new Intent(this,AuthActivity.class);
+            startActivity(intent);
+            finish();
         }
-        else{
-            SystemClock.sleep(4000);
-            // tenemos que ir a la login pero tardamos unos segundos
-            casosUsoUsuario.showAuthActivity();
-        }
-        SystemClock.sleep(4000);
+
+
+
+
     }
 
 
