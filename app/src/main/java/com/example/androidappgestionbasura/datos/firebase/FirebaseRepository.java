@@ -2,11 +2,13 @@ package com.example.androidappgestionbasura.datos.firebase;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.firebase.callback.FirebaseChildCallBack;
 import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
+import com.example.androidappgestionbasura.model.Usuario;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -15,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +53,7 @@ public class FirebaseRepository {
      * Crea un usuario en firebase mediante email y contraseña
      * @param email del usuario
      * @param password del usuario
-     * @param callback devolvera el UID del nuevo usuario si succes, por otra parte el error si falla algo
+     * @param callback devolvera el Usuario con email, uid, isEmailVerirfied si succes, por otra parte el error si falla algo
      */
     public final void createUserWithPassAndEmail(final String email, final String password, final CallBack callback){
         final FirebaseAuth firebaseAuth = FirebaseReferences.getInstancia().getFIREBASE_AUTH();
@@ -61,7 +64,13 @@ public class FirebaseRepository {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            callback.onSuccess(firebaseAuth.getCurrentUser().getUid());
+                            if(!firebaseAuth.getCurrentUser().isEmailVerified()){
+                                firebaseAuth.getCurrentUser().sendEmailVerification();
+                            }
+                            Usuario user = new Usuario(email,
+                                    firebaseAuth.getCurrentUser().getUid(),
+                                    firebaseAuth.getCurrentUser().isEmailVerified());
+                            callback.onSuccess(user);
                         }else{
                             callback.onError(task.getException().getLocalizedMessage());
                         }
@@ -122,6 +131,44 @@ public class FirebaseRepository {
             }
         });
     }
+
+    /**
+     * Renvia el correo de verificacion
+     */
+    public boolean resendVerificationEmail() {
+        try{
+            FirebaseReferences.getInstancia().getFIREBASE_AUTH().getCurrentUser().sendEmailVerification();
+            return true;
+        }catch (NullPointerException error){
+            return false;
+        }
+
+    }
+
+    /** Como se actualiza de forma externa a la app hay que recargar el usuario de firebase
+     * @param callBack return T/F si el usuario esta verificado
+     */
+    public void checkIfUserisVerified(final CallBack callBack) {
+        FirebaseAuth firebaseAuth = FirebaseReferences.getInstancia().getFIREBASE_AUTH();
+        Task<Void> usertask = firebaseAuth.getCurrentUser().reload();
+        usertask.addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    if(FirebaseReferences.getInstancia().getFIREBASE_AUTH().getCurrentUser().isEmailVerified()){
+                        callBack.onSuccess(null);
+                    }else{
+                        callBack.onError(null);
+                    }
+
+                }else{
+                    callBack.onError(task.getException().getLocalizedMessage());
+                }
+            }
+
+        });
+    }
+
 
     /**
      * Insert data on FireStore
@@ -372,4 +419,6 @@ public class FirebaseRepository {
             }
         });
     }
+
+
 }

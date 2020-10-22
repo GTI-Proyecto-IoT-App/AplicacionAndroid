@@ -4,20 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.AuthActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivity;
+import com.example.androidappgestionbasura.presentacion.VerfiyEmailActivity;
 import com.example.androidappgestionbasura.repository.impl.UsuariosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-
-import javax.security.auth.callback.Callback;
 
 public class CasosUsoUsuario {
 
@@ -41,6 +39,9 @@ public class CasosUsoUsuario {
         sharedPreferencesHelper = SharedPreferencesHelper.getInstance();
     }
 
+
+    // =============================================================================
+    // Metodos generales de acceso
     /**
      *
      * Inicia sesion con correo y contraseña, si es correcto
@@ -63,10 +64,7 @@ public class CasosUsoUsuario {
                             @Override
                             public void onSuccess(Object object) {
                                 callBack.onSuccess(null);
-                                // guardamos el usuario en shared y en preferences
-                                guardarUidUsuario((Usuario)object);
-                                // nos movemos a home
-                                showHome(false);
+                                usuarioAccedeCorrectamente((Usuario) object);
                             }
 
                             @Override
@@ -97,19 +95,17 @@ public class CasosUsoUsuario {
                 new CallBack() {
                     // SUCCER LOGIN
                     @Override
-                    public void onSuccess(Object object) {  // object = uid
+                    public void onSuccess(Object object) {  // object = Ususario
                         // si nos registramos con exito creamos en la base de datos un usuario
                         // nuevo
                         // cogemos el uid que se ha creado y el nombre
-                        String uid = object.toString();
-                        final Usuario user = new Usuario(nombre, uid);
+                        final Usuario user = (Usuario) object;
+                        user.setName(nombre);
                         usuariosRepository.createUsuario(user, new CallBack() {
-
                             // SUCCES CREAR USUARIO
                             @Override
                             public void onSuccess(Object object) {
-                                guardarUidUsuario((Usuario) user);
-                                showHome(false);
+                                usuarioAccedeCorrectamente(user);
                             }
 
                             @Override
@@ -128,7 +124,6 @@ public class CasosUsoUsuario {
                     }
                 });
     }
-
     /**
      * Nos logeamos con credenciales del proveedor de google a firebase
      * si la cuenta es nueva se creara el usuario
@@ -140,18 +135,21 @@ public class CasosUsoUsuario {
             @Override
             public void onSuccess(Object object) {
                 Task<AuthResult> task = (Task<AuthResult>)object;
+                // parametros del usuario logeado
                 boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
                 String nombre = task.getResult().getUser().getDisplayName();
+                String email = task.getResult().getUser().getEmail();
                 String uid = task.getResult().getUser().getUid();
-                final Usuario user = new Usuario(nombre, uid);
+                final boolean isEmailVerified = task.getResult().getUser().isEmailVerified();
+                final Usuario user = new Usuario(nombre, uid,email,isEmailVerified);
+
                 if(isNew){
                     // creamos el usuario si se ha logeado por primera vez en la app
                     usuariosRepository.createUsuario(user, new CallBack() {
                         // SUCCES CREAR USUARIO
                         @Override
                         public void onSuccess(Object object) {
-                            guardarUidUsuario((Usuario) user);
-                            showHome(false);
+                            usuarioAccedeCorrectamente(user);
                         }
                         @Override
                         public void onError(Object object) {
@@ -160,8 +158,7 @@ public class CasosUsoUsuario {
                         }
                     });
                 }else{
-                    guardarUidUsuario((Usuario) user);
-                    showHome(false);
+                    usuarioAccedeCorrectamente(user);
                 }
             }
 
@@ -171,7 +168,19 @@ public class CasosUsoUsuario {
             }
         });
     }
-
+    /**
+     * Metodo que decide a que pagina ir (home o verificar)
+     * depende del usuario que accede
+     * @param user current usuario
+     */
+    public void usuarioAccedeCorrectamente(Usuario user){
+        guardarUidUsuario((Usuario) user);
+        if(user.isEmailVerified()){
+            showHome(false);
+        }else{
+            showVerifyActivity();
+        }
+    }
     /**
      * @author Ruben Pardo Casanova
      * Cerramos sesion y volvemos a auth activity
@@ -192,6 +201,43 @@ public class CasosUsoUsuario {
         });
     }
 
+
+    /**
+     * @author Ruben pardo casanova
+     * Llamar al metodo de firebase para renviar el email
+     * @return true o false si se pudo enviar
+     */
+    public boolean resendVerificationEmail() {
+        return firebaseRepository.resendVerificationEmail();
+    }
+
+    /**
+     * Comprueba si esta verficado el email, si lo esta es porque no estaba verificado y lo esta comprobando si lo esta
+     * hay que modificar el campo de la base de datos
+     * @param callBack null si no esta verficado, fail si el update el usuario no existe
+     *                 string con el error si no se pudo actualizar
+     */
+    public void checkIsEmailVerifiedAndVerifyIt(final CallBack callBack) {
+        Log.d("EMAILVERIFIED","ENTRO CASOS USO: ");
+        firebaseRepository.checkIfUserisVerified(new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                Log.d("EMAILVERIFIED","CASOS USO SUCCES");
+                usuario.setEmailVerified(true);
+                usuariosRepository.updateUsuario(usuario.getKey(),usuario.getMap(),callBack);
+            }
+
+            @Override
+            public void onError(Object object) {
+                Log.d("EMAILVERIFIED","CASOS USO ERROR");
+                callBack.onError(null);// no esta verficado
+            }
+        });
+
+    }
+
+    // ============================================================================
+    // Metodos gestion Usuario
 
     /**
      * Pillamos el usuario de firebase
@@ -230,7 +276,6 @@ public class CasosUsoUsuario {
             getUsuarioFirebase(sharedPreferencesHelper.getUID(), new CallBack() {
                 @Override
                 public void onSuccess(Object object) {
-                    guardarUidUsuario((Usuario) object);
                     callBack.onSuccess(object);
                 }
                 @Override
@@ -239,7 +284,6 @@ public class CasosUsoUsuario {
                 }
             });
         }else{
-            Log.d("GETUSER","EXISTE");
             callBack.onSuccess(usuario);
         }
     }
@@ -273,7 +317,8 @@ public class CasosUsoUsuario {
 
 
 
-
+    // ===================================================================
+    // metodos para moverse entre activities
 
     /**
      *
@@ -288,14 +333,16 @@ public class CasosUsoUsuario {
         actividad.startActivity(intentHome);
         actividad.finish();
     }
-
-
     public void showAuthActivity() {
         Intent intentHome = new Intent(actividad, AuthActivity.class);
         actividad.startActivity(intentHome);
         actividad.finish();
     }
-
+    public void showVerifyActivity() {
+        Intent intent = new Intent(actividad, VerfiyEmailActivity.class);
+        actividad.startActivity(intent);
+        actividad.finish();
+    }
 
 
 }

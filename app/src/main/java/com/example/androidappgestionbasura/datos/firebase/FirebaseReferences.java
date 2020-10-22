@@ -29,4 +29,5 @@ public class FirebaseReferences {
     public FirebaseAuth getFIREBASE_AUTH() {
         return FIREBASE_AUTH;
     }
+
 }

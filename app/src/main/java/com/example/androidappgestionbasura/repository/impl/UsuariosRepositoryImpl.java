@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.example.androidappgestionbasura.datos.firebase.constants.Constant.FAIL;
+import static com.example.androidappgestionbasura.datos.firebase.constants.Constant.SUCCESS;
 import static com.example.androidappgestionbasura.datos.firebase.constants.FirebaseConstants.TABLA_USUARIOS;
 
 /**
@@ -54,7 +55,7 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
             fireStoreCreate(documentReference, user, new CallBack() {
                 @Override
                 public void onSuccess(Object object) {
-                    callback.onSuccess(Constant.SUCCESS);
+                    callback.onSuccess(SUCCESS);
                 }
 
                 @Override
@@ -104,11 +105,28 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
 
 
     // =================================
-    // TODO IMPLEMENTAR UDPATE USUARIO Y DELETE USUARIO
+    // TODO IMPLEMENTAR DELETE USUARIO
     // =================================
     // actualizar perfil
     @Override
-    public void updateUsuario(String userId, HashMap map, CallBack callback) {
+    public void updateUsuario(String userKey, HashMap map, final CallBack callback) {
+        if (!Utility.isEmptyOrNull(userKey)) {
+            DocumentReference documentReference = usuariosCollectionReference.document(userKey);
+            fireStoreUpdate(documentReference, map, new CallBack() {
+                @Override
+                public void onSuccess(Object object) {
+                    callback.onSuccess(SUCCESS);
+                }
+
+                @Override
+                public void onError(Object object) {
+                    callback.onError(object);
+                }
+            });
+        } else {
+            callback.onError(FAIL);
+        }
+
     }
 
     // borrar cuenta
@@ -127,7 +145,6 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
         List<Usuario> usuarios = new ArrayList<>();
         QuerySnapshot queryDocumentSnapshots = (QuerySnapshot) object;
         for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-            Log.d("PRUEBA DESDE IMPL", snapshot.getData().toString());
             Usuario employee = snapshot.toObject(Usuario.class);
             usuarios.add(employee);
         }

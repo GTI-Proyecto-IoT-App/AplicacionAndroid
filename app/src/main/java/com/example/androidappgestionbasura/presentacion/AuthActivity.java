@@ -45,19 +45,8 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        casosUsoUsuario = new CasosUsoUsuario(this);
         setContentView(R.layout.activity_auth);
-        btnLanzarRegistro =findViewById(R.id.botonLanzarRegistro);
-        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                lanzarRegistro(null);
-            }
-        });
         setUp(savedInstanceState);
-
-
-
-
 
     }
 
@@ -67,13 +56,15 @@ public class AuthActivity extends AppCompatActivity {
      * @param savedInstanceState estado anterior
      */
     private void setUp(Bundle savedInstanceState) {
-/*
-        etRegisterNombre = findViewById(R.id.editTextRegisterName);
-        etRegisterEmail = findViewById(R.id.editTextRegisterEmail);
-        etRegisterContra = findViewById(R.id.editTextRegisterPass);
-        etRegisterRepetirContra = findViewById(R.id.editTextRegisterRepeatPass);
+        casosUsoUsuario = new CasosUsoUsuario(this);
 
- */
+        btnLanzarRegistro =findViewById(R.id.botonLanzarRegistro);
+        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarRegistro(null);
+            }
+        });
+
 
         etLoginNombreEmail = findViewById(R.id.editTextLoginUsuarioEmail);
         etLoginContra = findViewById(R.id.editTextLoginPass);

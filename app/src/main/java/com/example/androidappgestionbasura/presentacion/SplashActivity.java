@@ -14,6 +14,7 @@ import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
+import com.example.androidappgestionbasura.model.Usuario;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
             casosUsoUsuario.getUsuarioSiExisteSinoPedirlo(new CallBack() {
                 @Override
                 public void onSuccess(Object object) {
-                    casosUsoUsuario.showHome(false);
+                    casosUsoUsuario.usuarioAccedeCorrectamente((Usuario) object);
 
                 }
                 @Override
