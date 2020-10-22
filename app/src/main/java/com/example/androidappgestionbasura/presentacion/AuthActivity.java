@@ -102,38 +102,6 @@ public class AuthActivity extends AppCompatActivity {
     // CALLBACKS
     //===============================================================================
 
-    /**
-     * @author Ruben Pardo
-     *  call back boton de registro
-     *  comprueba si es valido el formulario
-     *
-     */
-    /*
-    public void signUp(View v){
-        hideErrors();// esconder por si estaba mostrado de antes
-       if(isValidFormRegister()){
-           showCarga(true);
-           casosUsoUsuario.signUp(etRegisterEmail.getText().toString(),
-                   etRegisterContra.getText().toString(),
-                   etRegisterNombre.getText().toString(),
-                   new CallBack() {
-
-                       @Override
-                       public void onSuccess(Object object) {
-                           showCarga(false);
-                       }
-
-                       @Override
-                       public void onError(Object object) {
-                            showCarga(false);
-                           showRegisterError(object.toString());
-                       }
-                   });
-       }
-    }
-
-     */
-
     /** @author Ruben Pardo
      * call back boton de registro
      * comprueba si es valido el formulario
@@ -196,17 +164,6 @@ public class AuthActivity extends AppCompatActivity {
     // LOGICA VISUAL
     //===============================================================================
 
-    /**
-     * @author Ruben Pardo Casanova
-     * Muestra el error en caso de fallar el registro
-     */
-    /*
-    public void showRegisterError(String error){
-        TextView tv = findViewById(R.id.tvRegisterError);
-        tv.setVisibility(View.VISIBLE);
-        tv.setText(error);
-    }
-    */
 
     /**
      * @author Ruben Pardo Casanova
@@ -223,96 +180,10 @@ public class AuthActivity extends AppCompatActivity {
      * Esconde los errores de la vista
      */
     private void hideErrors(){
-        //TextView tvR = findViewById(R.id.tvRegisterError);
         TextView tvL = findViewById(R.id.tvLoginError);
-        //tvR.setVisibility(View.GONE);
         tvL.setVisibility(View.GONE);
     }
 
-    /**
-     *
-     * @return T/F -> si el formulario de registro
-     * es valido
-     */
-    /*
-    private boolean isValidFormRegister(){
-
-        boolean isValid = true;
-
-        String nombre = etRegisterNombre.getText().toString().trim();
-        String email = etRegisterEmail.getText().toString().trim();
-        String contra = etRegisterContra.getText().toString();
-        String contraRepeat = etRegisterRepetirContra.getText().toString();
-
-        //-----------------------------------------
-        // nombre no vacio
-        if(nombre.length()==0){
-            etRegisterNombre.setError(getString(R.string.error_campo_vacio));
-            isValid = false;
-        }
-        //-----------------------------------------
-        // email no vacio y email valido
-        if(email.length()==0){
-            etRegisterEmail.setError(getString(R.string.error_campo_vacio));
-            isValid = false;
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            etRegisterEmail.setError(getString(R.string.error_correo_valido));
-            isValid = false;
-        }
-
-        //-----------------------------------------
-        // contraseña
-        if(contra.length()<8){
-            isValid = false;
-            etRegisterContra.setError(getString(R.string.error_contr_no_valida));
-
-        }
-        else{
-            boolean mayuscula = false;
-            boolean minuscula = false;
-            boolean numero = false;
-            boolean caracter_raro = false;
-
-            // comprobar que tiene una mayusucula, minuscula, numero y caracter especial
-            for(int i = 0;i<contra.length();i++) {
-                if(((int) contra.charAt(i)) >= 65 && (int) contra.charAt(i) <= 90)
-                {
-                    mayuscula = true;
-                }
-                else if((int) contra.charAt(i) >= 97 && (int) contra.charAt(i) <= 122)
-                {
-                    minuscula = true;
-                }
-                else if((int)contra.charAt(i) >= 48 && (int)contra.charAt(i) <= 57)
-                {
-                    numero = true;
-                }
-                else
-                {
-                    caracter_raro = true;
-                }
-            }
-
-            if(!mayuscula || !minuscula || !caracter_raro || !numero)
-            {
-                isValid = false;
-                etRegisterContra.setError(getString(R.string.error_contr_no_valida));
-            }
-
-        }
-
-        if(contraRepeat.length()==0){
-            etRegisterRepetirContra.setError(getString(R.string.error_campo_vacio));
-        }
-        else if(!contraRepeat.equals(contra)){
-            isValid = false;
-            etRegisterRepetirContra.setError(getString(R.string.error_contra_no_igual));
-        }
-
-
-        return isValid;
-    }*/
     /**
      * Ningun campo vacío
      * @return T/F si el forumlario del login es valido
@@ -346,10 +217,9 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     * @author Sergi Sirvent
      * METODO PARA LANZAR LA ACTIVIDAD REGISTRO
      * **/
-
     public void lanzarRegistro(View view){
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
@@ -363,14 +233,6 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        /*
-        outState.putString("registro-nombre",etRegisterNombre.getText().toString());
-        outState.putString("registro-correo",etRegisterEmail.getText().toString());
-        outState.putString("registro-contra",etRegisterContra.getText().toString());
-        outState.putString("registro-repetir-contra",etRegisterRepetirContra.getText().toString());
-        */
-
-
 
         outState.putString("login-correo",etLoginNombreEmail.getText().toString());
         outState.putString("login-contra",etLoginContra.getText().toString());
@@ -381,12 +243,7 @@ public class AuthActivity extends AppCompatActivity {
     private void recueprarEstadoSiEsPosible(Bundle savedInstanceState) {
 
         if(savedInstanceState!=null){
-            /*
-            etRegisterNombre.setText(savedInstanceState.getString("registro-nombre",""));
-            etRegisterEmail.setText(savedInstanceState.getString("registro-correo",""));
-            etRegisterContra.setText(savedInstanceState.getString("registro-contra",""));
-            etRegisterRepetirContra.setText(savedInstanceState.getString("registro-repetir-contra",""));
-            */
+
             etLoginContra.setText(savedInstanceState.getString("login-contra",""));
             etLoginNombreEmail.setText(savedInstanceState.getString("login-correo",""));
 

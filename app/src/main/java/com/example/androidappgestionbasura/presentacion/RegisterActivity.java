@@ -112,9 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
     private void hideErrors(){
         TextView tvR = findViewById(R.id.tvRegisterError);
-        //TextView tvL = findViewById(R.id.tvLoginError);
         tvR.setVisibility(View.GONE);
-        //tvL.setVisibility(View.GONE);
     }
 
     /**
@@ -211,9 +209,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
+     * @author Sergi Sirvent
      * METODO PARA VOLVER AL LOGIN
      * **/
-
     public void lanzarLogin(View view){
         Intent i = new Intent(this,AuthActivity.class);
         startActivity(i);
@@ -232,8 +230,6 @@ public class RegisterActivity extends AppCompatActivity {
         outState.putString("registro-correo",etRegisterEmail.getText().toString());
         outState.putString("registro-contra",etRegisterContra.getText().toString());
         outState.putString("registro-repetir-contra",etRegisterRepetirContra.getText().toString());
-
-
 
 
     }
