@@ -173,7 +173,7 @@ public class CasosUsoUsuario {
      * depende del usuario que accede
      * @param user current usuario
      */
-    public void usuarioAccedeCorrectamente(Usuario user){
+    private void usuarioAccedeCorrectamente(Usuario user){
         guardarUidUsuario((Usuario) user);
         if(user.isEmailVerified()){
             showHome(false);
@@ -299,7 +299,7 @@ public class CasosUsoUsuario {
      * @author Ruben Pardo Casanova
      * @param user usuario logeado que se guardará
      */
-    private void guardarUidUsuario(Usuario user) {
+    public void guardarUidUsuario(Usuario user) {
         // lo guardamos para tener acceso al usuario globalmente
         ((AppConf) actividad.getApplicationContext()).setUsuario(user);
         usuario = user;

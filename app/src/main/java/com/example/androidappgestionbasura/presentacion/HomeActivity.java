@@ -17,13 +17,32 @@ import com.example.androidappgestionbasura.model.Usuario;
 public class HomeActivity extends AppCompatActivity {
 
     private CasosUsoUsuario casosUsoUsuario;
+    private LoadingDialogActivity loadingDialogActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         casosUsoUsuario = new CasosUsoUsuario(this);
-        setUp();
+        loadingDialogActivity = new LoadingDialogActivity(this);
+
+        loadingDialogActivity.startLoadingDialog();
+        casosUsoUsuario.getUsuarioSiExisteSinoPedirlo(new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                loadingDialogActivity.dismissDialog();
+                casosUsoUsuario.guardarUidUsuario((Usuario) object);
+                setUp();
+
+            }
+            @Override
+            public void onError(Object object) {
+                casosUsoUsuario.showAuthActivity();
+            }
+        });
+
+
+
     }
 
     private void setUp() {

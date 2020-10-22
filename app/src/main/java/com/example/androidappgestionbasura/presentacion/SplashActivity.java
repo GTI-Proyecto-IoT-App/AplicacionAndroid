@@ -28,17 +28,9 @@ public class SplashActivity extends AppCompatActivity {
         final CasosUsoUsuario casosUsoUsuario = new CasosUsoUsuario(this);
         if(casosUsoUsuario.isUsuarioLogeado()){
             // si ya estaba logeado debemos obtener el usuario
-            casosUsoUsuario.getUsuarioSiExisteSinoPedirlo(new CallBack() {
-                @Override
-                public void onSuccess(Object object) {
-                    casosUsoUsuario.usuarioAccedeCorrectamente((Usuario) object);
-
-                }
-                @Override
-                public void onError(Object object) {
-                    casosUsoUsuario.showHome(true);
-                }
-            });
+           Intent intent = new Intent(this, HomeActivity.class);
+           startActivity(intent);
+           finish();
 
         }else{
             Intent intent = new Intent(this,AuthActivity.class);
