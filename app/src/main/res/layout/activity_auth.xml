@@ -1,67 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentacion.AuthActivity">
-<!--
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    android:orientation="vertical"
+    tools:context=".presentacion.AuthActivity"
+    android:background="#fff">
 
-        <EditText
-            android:id="@+id/editTextRegisterName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_nombre"
-            android:inputType="textPersonName" />
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@android:"
 
-        <EditText
-            android:id="@+id/editTextRegisterEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/editTextRegisterPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_contra"
-            android:inputType="textPassword" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ayuda_contraseña" />
-
-        <EditText
-            android:id="@+id/editTextRegisterRepeatPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_contra_repetir"
-            android:inputType="textPassword" />
-
-        <Button
-            android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="signUp"
-            android:text="@string/registrarse" />
-    </LinearLayout>
--->
 
     <Button
         android:id="@+id/botonLanzarRegistro"
@@ -139,4 +90,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
