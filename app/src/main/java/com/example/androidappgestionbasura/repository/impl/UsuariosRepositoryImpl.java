@@ -1,11 +1,11 @@
 package com.example.androidappgestionbasura.repository.impl;
 
-import android.app.Activity;
 import android.util.Log;
 
-import com.example.androidappgestionbasura.callback.CallBack;
-import com.example.androidappgestionbasura.constants.Constant;
-import com.example.androidappgestionbasura.firebase.FirebaseRepository;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
+import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
+import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.repository.UsuariosRepository;
 import com.example.androidappgestionbasura.utility.Utility;
@@ -19,11 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.security.auth.callback.Callback;
-
-import static com.example.androidappgestionbasura.constants.Constant.FAIL;
-import static com.example.androidappgestionbasura.firebase.FirebaseConstants.TABLA_USUARIOS;
-import static com.example.androidappgestionbasura.firebase.FirebaseDatabaseReference.DATABASE;
+import static com.example.androidappgestionbasura.datos.firebase.constants.Constant.FAIL;
+import static com.example.androidappgestionbasura.datos.firebase.constants.FirebaseConstants.TABLA_USUARIOS;
 
 /**
  * @author Ruben Pardo Casanova
@@ -35,14 +32,12 @@ import static com.example.androidappgestionbasura.firebase.FirebaseDatabaseRefer
  */
 public class UsuariosRepositoryImpl extends FirebaseRepository implements UsuariosRepository {
 
-    private Activity activity;
     private CollectionReference usuariosCollectionReference;
 
     // constructor
     // Recogemos de la instancia de la base de datos la collecion de usuarios
-    public UsuariosRepositoryImpl(Activity activity){
-        this.activity = activity;
-        usuariosCollectionReference = DATABASE.collection(TABLA_USUARIOS);
+    public UsuariosRepositoryImpl(){
+        usuariosCollectionReference = FirebaseReferences.getInstancia().getDATABASE().collection(TABLA_USUARIOS);
     }
 
 
@@ -84,16 +79,12 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
             readQueryDocuments(documentReference, new CallBack() {
                 @Override
                 public void onSuccess(Object object) {
-
-                    Log.d("PRUEBA DESDE IMPL", "ENTRO");
                     if (object != null) {
                         // creamos un usuario y lo enviamos por el callbacl
                         Usuario usuario = getDataFromQuerySnapshot(object);
-                        Log.d("PRUEBA DESDE IMPL", usuario.getName());
                         callback.onSuccess(usuario);
 
                     } else{
-                        Log.d("PRUEBA DESDE IMPL", "NO EXISTE");
                         // si no existe devolvemos null
                         callback.onSuccess(null);
                     }
@@ -101,7 +92,6 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
 
                 @Override
                 public void onError(Object object) {
-                    Log.d("PRUEBA DESDE IMPL", "ERROR");
                     callback.onError(object);
                 }
             });

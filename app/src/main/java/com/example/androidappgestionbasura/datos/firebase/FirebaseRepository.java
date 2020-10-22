@@ -1,12 +1,24 @@
-package com.example.androidappgestionbasura.firebase;
+package com.example.androidappgestionbasura.datos.firebase;
 
-import com.example.androidappgestionbasura.callback.CallBack;
-import com.example.androidappgestionbasura.callback.FirebaseChildCallBack;
-import com.example.androidappgestionbasura.constants.Constant;
+import android.app.Activity;
+import android.content.Context;
+
+import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.callback.FirebaseChildCallBack;
+import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -21,6 +33,8 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Map;
 
+import javax.security.auth.callback.Callback;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -31,6 +45,83 @@ import androidx.annotation.Nullable;
  * de administrar y flexible para cambios futuros.
  */
 public class FirebaseRepository {
+
+    /**
+     * Crea un usuario en firebase mediante email y contraseña
+     * @param email del usuario
+     * @param password del usuario
+     * @param callback devolvera el UID del nuevo usuario si succes, por otra parte el error si falla algo
+     */
+    public final void createUserWithPassAndEmail(final String email, final String password, final CallBack callback){
+        final FirebaseAuth firebaseAuth = FirebaseReferences.getInstancia().getFIREBASE_AUTH();
+        firebaseAuth
+                .createUserWithEmailAndPassword(email,
+                        password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            callback.onSuccess(firebaseAuth.getCurrentUser().getUid());
+                        }else{
+                            callback.onError(task.getException().getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Inicia sesion con email y contraseña
+     * @param email del usuario
+     * @param password del usuario
+     * @param callback devolvemos el uid en succes y el error en onError
+     */
+    public final void loginUserWithPassAndEmail(final String email, final String password, final CallBack callback){
+        final FirebaseAuth firebaseAuth = FirebaseReferences.getInstancia().getFIREBASE_AUTH();
+        firebaseAuth
+                .signInWithEmailAndPassword(email,
+                        password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            callback.onSuccess(firebaseAuth.getCurrentUser().getUid());
+                        }else{
+                            callback.onError(task.getException().getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Cierra la sesion del usuario activo
+     * @param callBack onSucces o onError
+     */
+    public final void logOutUser(CallBack callBack) {
+        final FirebaseAuth firebaseAuth = FirebaseReferences.getInstancia().getFIREBASE_AUTH();
+        firebaseAuth.signOut();
+        callBack.onSuccess(null);
+    }
+
+    /**
+     *
+     * @param account cuenta de google seleccionada
+     * @param callback return succes o error
+     */
+    public void loginWithCredential(GoogleSignInAccount account, final CallBack callback) {
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
+        FirebaseAuth firebaseAuth = FirebaseReferences.getInstancia().getFIREBASE_AUTH();
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    callback.onSuccess(task);
+                }else{
+                    callback.onError(task.getException().getLocalizedMessage());
+                }
+            }
+        });
+    }
 
     /**
      * Insert data on FireStore

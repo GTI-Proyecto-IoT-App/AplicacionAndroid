@@ -1,4 +1,4 @@
-package com.example.androidappgestionbasura.constants;
+package com.example.androidappgestionbasura.datos.firebase.constants;
 
 public class Constant {
 
