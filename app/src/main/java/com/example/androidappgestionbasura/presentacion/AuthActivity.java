@@ -41,10 +41,13 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
         casosUsoUsuario = new CasosUsoUsuario(this);
-
+        setContentView(R.layout.activity_auth);
         setUp(savedInstanceState);
+
+
+
+
 
     }
 
