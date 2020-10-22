@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,6 +37,9 @@ public class AuthActivity extends AppCompatActivity {
 
     private static final int CODE_ACTIVITY_RESULT_GOOGLE = 1234;
 
+    private Button btnLanzarRegistro;
+
+
 
 
     @Override
@@ -43,6 +47,12 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         casosUsoUsuario = new CasosUsoUsuario(this);
         setContentView(R.layout.activity_auth);
+        btnLanzarRegistro =findViewById(R.id.botonLanzarRegistro);
+        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarRegistro(null);
+            }
+        });
         setUp(savedInstanceState);
 
 
@@ -57,11 +67,13 @@ public class AuthActivity extends AppCompatActivity {
      * @param savedInstanceState estado anterior
      */
     private void setUp(Bundle savedInstanceState) {
-
+/*
         etRegisterNombre = findViewById(R.id.editTextRegisterName);
         etRegisterEmail = findViewById(R.id.editTextRegisterEmail);
         etRegisterContra = findViewById(R.id.editTextRegisterPass);
         etRegisterRepetirContra = findViewById(R.id.editTextRegisterRepeatPass);
+
+ */
 
         etLoginNombreEmail = findViewById(R.id.editTextLoginUsuarioEmail);
         etLoginContra = findViewById(R.id.editTextLoginPass);
@@ -96,6 +108,7 @@ public class AuthActivity extends AppCompatActivity {
      *  comprueba si es valido el formulario
      *
      */
+    /*
     public void signUp(View v){
         hideErrors();// esconder por si estaba mostrado de antes
        if(isValidFormRegister()){
@@ -118,6 +131,8 @@ public class AuthActivity extends AppCompatActivity {
                    });
        }
     }
+
+     */
 
     /** @author Ruben Pardo
      * call back boton de registro
@@ -185,11 +200,14 @@ public class AuthActivity extends AppCompatActivity {
      * @author Ruben Pardo Casanova
      * Muestra el error en caso de fallar el registro
      */
+    /*
     public void showRegisterError(String error){
         TextView tv = findViewById(R.id.tvRegisterError);
         tv.setVisibility(View.VISIBLE);
         tv.setText(error);
     }
+    */
+
     /**
      * @author Ruben Pardo Casanova
      * Muestra el error en caso de fallar el inicio de sesion
@@ -205,9 +223,9 @@ public class AuthActivity extends AppCompatActivity {
      * Esconde los errores de la vista
      */
     private void hideErrors(){
-        TextView tvR = findViewById(R.id.tvRegisterError);
+        //TextView tvR = findViewById(R.id.tvRegisterError);
         TextView tvL = findViewById(R.id.tvLoginError);
-        tvR.setVisibility(View.GONE);
+        //tvR.setVisibility(View.GONE);
         tvL.setVisibility(View.GONE);
     }
 
@@ -216,6 +234,7 @@ public class AuthActivity extends AppCompatActivity {
      * @return T/F -> si el formulario de registro
      * es valido
      */
+    /*
     private boolean isValidFormRegister(){
 
         boolean isValid = true;
@@ -293,7 +312,7 @@ public class AuthActivity extends AppCompatActivity {
 
 
         return isValid;
-    }
+    }*/
     /**
      * Ningun campo vacío
      * @return T/F si el forumlario del login es valido
@@ -326,6 +345,16 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * METODO PARA LANZAR LA ACTIVIDAD REGISTRO
+     * **/
+
+    public void lanzarRegistro(View view){
+        Intent i = new Intent(this, RegisterActivity.class);
+        startActivity(i);
+    }
+
     //================================================================================
     // MANEJAR CICLO DE VIDA
     //================================================================================
@@ -334,11 +363,13 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-
+        /*
         outState.putString("registro-nombre",etRegisterNombre.getText().toString());
         outState.putString("registro-correo",etRegisterEmail.getText().toString());
         outState.putString("registro-contra",etRegisterContra.getText().toString());
         outState.putString("registro-repetir-contra",etRegisterRepetirContra.getText().toString());
+        */
+
 
 
         outState.putString("login-correo",etLoginNombreEmail.getText().toString());
@@ -350,11 +381,12 @@ public class AuthActivity extends AppCompatActivity {
     private void recueprarEstadoSiEsPosible(Bundle savedInstanceState) {
 
         if(savedInstanceState!=null){
+            /*
             etRegisterNombre.setText(savedInstanceState.getString("registro-nombre",""));
             etRegisterEmail.setText(savedInstanceState.getString("registro-correo",""));
             etRegisterContra.setText(savedInstanceState.getString("registro-contra",""));
             etRegisterRepetirContra.setText(savedInstanceState.getString("registro-repetir-contra",""));
-
+            */
             etLoginContra.setText(savedInstanceState.getString("login-contra",""));
             etLoginNombreEmail.setText(savedInstanceState.getString("login-correo",""));
 
