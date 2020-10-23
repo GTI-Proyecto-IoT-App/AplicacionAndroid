@@ -10,12 +10,14 @@ import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHe
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.AuthActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivity;
+import com.example.androidappgestionbasura.presentacion.SplashActivity;
 import com.example.androidappgestionbasura.presentacion.VerfiyEmailActivity;
 import com.example.androidappgestionbasura.repository.impl.UsuariosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.firestore.auth.User;
 
 public class CasosUsoUsuario {
 
@@ -137,13 +139,14 @@ public class CasosUsoUsuario {
                 Task<AuthResult> task = (Task<AuthResult>)object;
                 // parametros del usuario logeado
                 boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
-                String nombre = task.getResult().getUser().getDisplayName();
-                String email = task.getResult().getUser().getEmail();
-                String uid = task.getResult().getUser().getUid();
-                final boolean isEmailVerified = task.getResult().getUser().isEmailVerified();
-                final Usuario user = new Usuario(nombre, uid,email,isEmailVerified);
 
                 if(isNew){
+                    String nombre = task.getResult().getUser().getDisplayName();
+                    String email = task.getResult().getUser().getEmail();
+                    String uid = task.getResult().getUser().getUid();
+                    final boolean isEmailVerified = task.getResult().getUser().isEmailVerified();
+                    final Usuario user = new Usuario(nombre, uid,email,isEmailVerified);
+
                     // creamos el usuario si se ha logeado por primera vez en la app
                     usuariosRepository.createUsuario(user, new CallBack() {
                         // SUCCES CREAR USUARIO
@@ -158,7 +161,18 @@ public class CasosUsoUsuario {
                         }
                     });
                 }else{
-                    usuarioAccedeCorrectamente(user);
+                    String uid = task.getResult().getUser().getUid();
+                    usuariosRepository.readUsuarioByUID(uid, new CallBack() {
+                        @Override
+                        public void onSuccess(Object object) {// object = user
+                            usuarioAccedeCorrectamente((Usuario) object);
+                        }
+
+                        @Override
+                        public void onError(Object object) {
+                            callback.onError(object);
+                        }
+                    });
                 }
             }
 
@@ -245,20 +259,21 @@ public class CasosUsoUsuario {
      * return usuario:Usuario | error:String
      */
     private void getUsuarioFirebase(String uid, final CallBack callBack){
-        usuariosRepository.readUsuarioByKey(uid, new CallBack() {
+        usuariosRepository.readUsuarioByUID(uid, new CallBack() {
             @Override
             public void onSuccess(Object object) {//object = Usuario
                 if(object!=null){
                     callBack.onSuccess(object);
                 }else{
                     // TODO PONER MEJOR TEXTO DE ERROR
-                    callBack.onError("Error inesperado");
+                    callBack.onError(null);// devolvemos null si no existe
                 }
             }
 
             @Override
             public void onError(Object object) {
                 // TODO PONER MEJOR TEXTO DE ERROR
+                // aqui lo mas probale es que sea un error de conexion
                 callBack.onError(object.toString());
             }
         });
@@ -332,6 +347,7 @@ public class CasosUsoUsuario {
         intentHome.putExtra("error",error);
         actividad.startActivity(intentHome);
         actividad.finish();
+
     }
     public void showAuthActivity() {
         Intent intentHome = new Intent(actividad, AuthActivity.class);

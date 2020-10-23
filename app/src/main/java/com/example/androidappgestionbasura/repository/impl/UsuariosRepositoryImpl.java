@@ -72,7 +72,7 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
 
     // Se usa al logearse
     @Override
-    public void readUsuarioByKey(String userId, final CallBack callback) {
+    public void readUsuarioByUID(String userId, final CallBack callback) {
         if(!Utility.isEmptyOrNull(userId)){
             // cogemos el usuario por id
             Query documentReference = usuariosCollectionReference.whereEqualTo("uid",userId);

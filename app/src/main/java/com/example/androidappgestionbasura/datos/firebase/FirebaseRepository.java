@@ -114,7 +114,7 @@ public class FirebaseRepository {
     /**
      *
      * @param account cuenta de google seleccionada
-     * @param callback return succes o error
+     * @param callback return succes:Task o error:String
      */
     public void loginWithCredential(GoogleSignInAccount account, final CallBack callback) {
 
@@ -167,6 +167,10 @@ public class FirebaseRepository {
             }
 
         });
+    }
+
+    public void sendEmailForgotPassword(final CallBack callBack){
+
     }
 
 

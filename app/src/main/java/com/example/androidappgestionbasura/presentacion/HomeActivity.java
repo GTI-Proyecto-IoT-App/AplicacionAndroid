@@ -26,20 +26,8 @@ public class HomeActivity extends AppCompatActivity {
         casosUsoUsuario = new CasosUsoUsuario(this);
         loadingDialogActivity = new LoadingDialogActivity(this);
 
-        loadingDialogActivity.startLoadingDialog();
-        casosUsoUsuario.getUsuarioSiExisteSinoPedirlo(new CallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                loadingDialogActivity.dismissDialog();
-                casosUsoUsuario.guardarUidUsuario((Usuario) object);
-                setUp();
+        setUp();
 
-            }
-            @Override
-            public void onError(Object object) {
-                casosUsoUsuario.showAuthActivity();
-            }
-        });
 
 
 
@@ -54,7 +42,9 @@ public class HomeActivity extends AppCompatActivity {
             // ya tenemos el usuario
             Usuario usuario = casosUsoUsuario.getUsuario();
             TextView textView = findViewById(R.id.tvHomePrueba);
-            textView.setText(usuario.getName());
+
+            String strWelcome = getString(R.string.bienvenido) + ", "+ usuario.getName();
+            textView.setText(strWelcome);
 
         }
     }
