@@ -1,4 +1,4 @@
-package com.example.androidbasuraapp;
+package com.example.androidappgestionbasura;
 
 import org.junit.Test;
 

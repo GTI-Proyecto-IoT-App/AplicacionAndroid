@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.androidbasuraapp">
+    package="com.example.androidappgestionbasura">
 
     <application
+        android:name=".utility.AppConf"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".presentacion.VerfiyEmailActivity" />
+        <activity
+            android:name=".presentacion.SplashActivity"
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".presentacion.FirstLoadingActivity"
+            android:theme="@style/SplashScreen"/>
+
+        <activity android:name=".presentacion.HomeActivity" />
+        <activity android:name=".presentacion.AuthActivity" />
+        <activity android:name=".presentacion.RegisterActivity" />
     </application>
 
 </manifest>
