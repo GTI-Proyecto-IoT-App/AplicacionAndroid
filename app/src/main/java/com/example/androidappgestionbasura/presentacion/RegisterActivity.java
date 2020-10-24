@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -103,7 +104,14 @@ public class RegisterActivity extends AppCompatActivity {
     public void showRegisterError(String error){
         TextView tv = findViewById(R.id.tvRegisterError);
         tv.setVisibility(View.VISIBLE);
-        tv.setText(error);
+        if(error.contains(Constant.CONNECTION_ERROR)) {
+            tv.setText(getString(R.string.error_de_conexion));
+        }else if(error.contains("The email address is already in use by another account")){
+            tv.setText(getString(R.string.error_email_already_in_use));
+        }else {
+            tv.setText(R.string.error_inesperado);
+        }
+        //TODO YA EXISTE ES CORREO ELECTRONICO
     }
 
     /**

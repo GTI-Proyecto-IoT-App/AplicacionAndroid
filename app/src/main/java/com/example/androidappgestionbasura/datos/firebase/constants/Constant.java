@@ -7,6 +7,8 @@ public class Constant {
     public static final String ADD = "ADD";
     public static final String UPDATE = "UPDATE";
     public static final String DELETE = "DELETE";
-    public static final String EMPLOYEE_MODEL = "EMPLOYEE_MODEL";
+
+
+    public static final String CONNECTION_ERROR = "ERRORENLACONEXION";
 
 }

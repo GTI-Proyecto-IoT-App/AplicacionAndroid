@@ -1,23 +1,26 @@
 package com.example.androidappgestionbasura.casos_uso;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.AuthActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivity;
-import com.example.androidappgestionbasura.presentacion.SplashActivity;
 import com.example.androidappgestionbasura.presentacion.VerfiyEmailActivity;
 import com.example.androidappgestionbasura.repository.impl.UsuariosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
+import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.firestore.auth.User;
 
 public class CasosUsoUsuario {
 
@@ -57,32 +60,36 @@ public class CasosUsoUsuario {
     public void login(String email, String password, final CallBack callBack){
         // crear usuario con email y contraseña y añadir un on complete listener
         // para actuar cunado se cree el usuario en la BDD
-        firebaseRepository.loginUserWithPassAndEmail(email, password,
-                new CallBack() {
-                    @Override
-                    public void onSuccess(Object object) {// object = uid
-                        String userUid = object.toString();
-                        getUsuarioFirebase(userUid, new CallBack() {
-                            @Override
-                            public void onSuccess(Object object) {
-                                callBack.onSuccess(null);
-                                usuarioAccedeCorrectamente((Usuario) object);
-                            }
+        if(Utility.isConnected(actividad)){
+            firebaseRepository.loginUserWithPassAndEmail(email, password,
+                    new CallBack() {
+                        @Override
+                        public void onSuccess(Object object) {// object = uid
+                            String userUid = object.toString();
+                            getUsuarioFirebase(userUid, new CallBack() {
+                                @Override
+                                public void onSuccess(Object object) {
+                                    callBack.onSuccess(null);
+                                    usuarioAccedeCorrectamente((Usuario) object);
+                                }
 
-                            @Override
-                            public void onError(Object object) {
-                                // TODO PONER MEJOR TEXTO DE ERROR
-                                callBack.onError(object.toString());
+                                @Override
+                                public void onError(Object object) {
+                                    // TODO PONER MEJOR TEXTO DE ERROR
+                                    callBack.onError(object.toString());
 
-                            }
-                        });
-                    }
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void onError(Object object) {
-                        callBack.onError(object.toString());
-                    }
-                });
+                        @Override
+                        public void onError(Object object) {
+                            callBack.onError(object.toString());
+                        }
+                    });
+        }else{
+            callBack.onError(Constant.CONNECTION_ERROR);
+        }
     }
     /**
      * @author Ruben Pardo
@@ -133,54 +140,58 @@ public class CasosUsoUsuario {
      * @param callback return String Error
      */
     public void loginGoogle(GoogleSignInAccount googleSignInAccount, final CallBack callback) {
-        firebaseRepository.loginWithCredential(googleSignInAccount, new CallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                Task<AuthResult> task = (Task<AuthResult>)object;
-                // parametros del usuario logeado
-                boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
+        if(Utility.isConnected(actividad)){
+            firebaseRepository.loginWithCredential(googleSignInAccount, new CallBack() {
+                @Override
+                public void onSuccess(Object object) {
+                    Task<AuthResult> task = (Task<AuthResult>)object;
+                    // parametros del usuario logeado
+                    boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
 
-                if(isNew){
-                    String nombre = task.getResult().getUser().getDisplayName();
-                    String email = task.getResult().getUser().getEmail();
-                    String uid = task.getResult().getUser().getUid();
-                    final boolean isEmailVerified = task.getResult().getUser().isEmailVerified();
-                    final Usuario user = new Usuario(nombre, uid,email,isEmailVerified);
+                    if(isNew){
+                        String nombre = task.getResult().getUser().getDisplayName();
+                        String email = task.getResult().getUser().getEmail();
+                        String uid = task.getResult().getUser().getUid();
+                        final boolean isEmailVerified = task.getResult().getUser().isEmailVerified();
+                        final Usuario user = new Usuario(nombre, uid,email,isEmailVerified);
 
-                    // creamos el usuario si se ha logeado por primera vez en la app
-                    usuariosRepository.createUsuario(user, new CallBack() {
-                        // SUCCES CREAR USUARIO
-                        @Override
-                        public void onSuccess(Object object) {
-                            usuarioAccedeCorrectamente(user);
-                        }
-                        @Override
-                        public void onError(Object object) {
-                            // TODO cambiar a mejor texto de error
-                            callback.onError(object);
-                        }
-                    });
-                }else{
-                    String uid = task.getResult().getUser().getUid();
-                    usuariosRepository.readUsuarioByUID(uid, new CallBack() {
-                        @Override
-                        public void onSuccess(Object object) {// object = user
-                            usuarioAccedeCorrectamente((Usuario) object);
-                        }
+                        // creamos el usuario si se ha logeado por primera vez en la app
+                        usuariosRepository.createUsuario(user, new CallBack() {
+                            // SUCCES CREAR USUARIO
+                            @Override
+                            public void onSuccess(Object object) {
+                                usuarioAccedeCorrectamente(user);
+                            }
+                            @Override
+                            public void onError(Object object) {
+                                // TODO cambiar a mejor texto de error
+                                callback.onError(object);
+                            }
+                        });
+                    }else{
+                        String uid = task.getResult().getUser().getUid();
+                        usuariosRepository.readUsuarioByUID(uid, new CallBack() {
+                            @Override
+                            public void onSuccess(Object object) {// object = user
+                                usuarioAccedeCorrectamente((Usuario) object);
+                            }
 
-                        @Override
-                        public void onError(Object object) {
-                            callback.onError(object);
-                        }
-                    });
+                            @Override
+                            public void onError(Object object) {
+                                callback.onError(object);
+                            }
+                        });
+                    }
                 }
-            }
 
-            @Override
-            public void onError(Object object) {
-                callback.onError(object);
-            }
-        });
+                @Override
+                public void onError(Object object) {
+                    callback.onError(object);
+                }
+            });
+        }else{
+            callback.onError(Constant.CONNECTION_ERROR);
+        }
     }
     /**
      * Metodo que decide a que pagina ir (home o verificar)
@@ -222,7 +233,11 @@ public class CasosUsoUsuario {
      * @return true o false si se pudo enviar
      */
     public boolean resendVerificationEmail() {
-        return firebaseRepository.resendVerificationEmail();
+        if(Utility.isConnected(actividad)){
+           return firebaseRepository.resendVerificationEmail();
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -232,21 +247,26 @@ public class CasosUsoUsuario {
      *                 string con el error si no se pudo actualizar
      */
     public void checkIsEmailVerifiedAndVerifyIt(final CallBack callBack) {
-        Log.d("EMAILVERIFIED","ENTRO CASOS USO: ");
-        firebaseRepository.checkIfUserisVerified(new CallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                Log.d("EMAILVERIFIED","CASOS USO SUCCES");
-                usuario.setEmailVerified(true);
-                usuariosRepository.updateUsuario(usuario.getKey(),usuario.getMap(),callBack);
-            }
+        // comprobar conexion
+        if(Utility.isConnected(actividad)){
+            firebaseRepository.checkIfUserisVerified(new CallBack() {
+                @Override
+                public void onSuccess(Object object) {
 
-            @Override
-            public void onError(Object object) {
-                Log.d("EMAILVERIFIED","CASOS USO ERROR");
-                callBack.onError(null);// no esta verficado
-            }
-        });
+                    usuario.setEmailVerified(true);
+                    usuariosRepository.updateUsuario(usuario.getKey(),usuario.getMap(),callBack);
+                }
+
+                @Override
+                public void onError(Object object) {
+
+                    callBack.onError(null);// no esta verficado
+                }
+            });
+        }else{
+            callBack.onError(Constant.CONNECTION_ERROR);
+        }
+
 
     }
 
