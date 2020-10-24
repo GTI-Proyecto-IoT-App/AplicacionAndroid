@@ -18,6 +18,8 @@ import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
+import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,10 +39,6 @@ public class AuthActivity extends AppCompatActivity {
 
     private static final int CODE_ACTIVITY_RESULT_GOOGLE = 1234;
 
-    private Button btnLanzarRegistro;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +56,7 @@ public class AuthActivity extends AppCompatActivity {
     private void setUp(Bundle savedInstanceState) {
         casosUsoUsuario = new CasosUsoUsuario(this);
 
-        btnLanzarRegistro =findViewById(R.id.botonLanzarRegistro);
+        Button btnLanzarRegistro = findViewById(R.id.botonLanzarRegistro);
         btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 lanzarRegistro(null);
@@ -124,13 +122,19 @@ public class AuthActivity extends AppCompatActivity {
      * es on activity result de tipo GoogleAcount
      */
     public void startGoogleLogin(View v){
-        GoogleSignInOptions googleCong = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this,googleCong);
-        googleSignInClient.signOut();
-       startActivityForResult(googleSignInClient.getSignInIntent(),CODE_ACTIVITY_RESULT_GOOGLE);
+        hideErrors();// esconder por si estaba mostrado de antes
+        if(Utility.isConnected(this)){
+            GoogleSignInOptions googleCong = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this,googleCong);
+            googleSignInClient.signOut();
+            startActivityForResult(googleSignInClient.getSignInIntent(),CODE_ACTIVITY_RESULT_GOOGLE);
+        }
+        else{
+            showLoginError(Constant.CONNECTION_ERROR);
+        }
     }
 
     /**
@@ -161,9 +165,17 @@ public class AuthActivity extends AppCompatActivity {
      * Muestra el error en caso de fallar el inicio de sesion
      */
     public void showLoginError(String error){
-        TextView tv = findViewById(R.id.tvRegisterError);
+        TextView tv = findViewById(R.id.tvLoginError);
         tv.setVisibility(View.VISIBLE);
-        tv.setText(error);
+        if(error.contains(Constant.CONNECTION_ERROR)){
+            tv.setText(getString(R.string.error_de_conexion));
+        }else if(error.contains("There is no user record corresponding")){
+            tv.setText(R.string.error_login_usuario_no_existe);
+        }else if(error.contains("The password is invalid")){
+            tv.setText(R.string.error_login_usuario_no_existe);
+        }else{
+            tv.setText(R.string.error_inesperado);
+        }
     }
 
     /**
@@ -188,7 +200,11 @@ public class AuthActivity extends AppCompatActivity {
         if(email.length()==0){
             isValid = false;
             etLoginNombreEmail.setError(getString(R.string.error_campo_vacio));
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            etLoginNombreEmail.setError(getString(R.string.error_correo_valido));
+            isValid = false;
         }
+
         if(contra.length()==0){
             etLoginContra.setError(getString(R.string.error_campo_vacio));
         }
