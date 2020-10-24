@@ -1,11 +1,7 @@
 package com.example.androidappgestionbasura.casos_uso;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
@@ -13,7 +9,7 @@ import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.AuthActivity;
-import com.example.androidappgestionbasura.presentacion.HomeActivity;
+import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.HomeActivity;
 import com.example.androidappgestionbasura.presentacion.VerfiyEmailActivity;
 import com.example.androidappgestionbasura.repository.impl.UsuariosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
