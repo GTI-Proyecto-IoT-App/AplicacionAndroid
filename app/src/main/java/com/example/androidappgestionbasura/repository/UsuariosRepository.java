@@ -17,6 +17,6 @@ public interface UsuariosRepository {
     void createUsuario(Usuario user, CallBack callback);
     void updateUsuario(String userId, HashMap map, CallBack callback);
     void deleteUsuario(String userId, CallBack callback);
-    void readUsuarioByKey(String userId, CallBack callback);
+    void readUsuarioByUID(String userId, CallBack callback);
 
 }

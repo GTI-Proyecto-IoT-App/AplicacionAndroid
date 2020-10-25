@@ -17,13 +17,20 @@ import com.example.androidappgestionbasura.model.Usuario;
 public class HomeActivity extends AppCompatActivity {
 
     private CasosUsoUsuario casosUsoUsuario;
+    private LoadingDialogActivity loadingDialogActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         casosUsoUsuario = new CasosUsoUsuario(this);
+        loadingDialogActivity = new LoadingDialogActivity(this);
+
         setUp();
+
+
+
+
     }
 
     private void setUp() {
@@ -35,7 +42,9 @@ public class HomeActivity extends AppCompatActivity {
             // ya tenemos el usuario
             Usuario usuario = casosUsoUsuario.getUsuario();
             TextView textView = findViewById(R.id.tvHomePrueba);
-            textView.setText(usuario.getName());
+
+            String strWelcome = getString(R.string.bienvenido) + ", "+ usuario.getName();
+            textView.setText(strWelcome);
 
         }
     }

@@ -10,6 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".presentacion.VerfiyEmailActivity" />
         <activity
             android:name=".presentacion.SplashActivity"
             android:theme="@style/SplashScreen">
@@ -19,9 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".presentacion.FirstLoadingActivity"
+            android:theme="@style/SplashScreen"/>
+
         <activity android:name=".presentacion.HomeActivity" />
-        <activity android:name=".presentacion.AuthActivity"/>
-        <activity android:name=".presentacion.RegisterActivity"/>
+        <activity android:name=".presentacion.AuthActivity" />
+        <activity android:name=".presentacion.RegisterActivity" />
     </application>
 
 </manifest>
