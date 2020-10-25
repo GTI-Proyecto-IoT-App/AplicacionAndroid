@@ -11,6 +11,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidappgestionbasura.R;
@@ -28,16 +29,20 @@ import com.google.android.gms.tasks.Task;
 public class AuthActivity extends AppCompatActivity {
 
     // controladors registro
+
     private EditText etRegisterNombre,etRegisterEmail,etRegisterContra,etRegisterRepetirContra;
+
     // controladores login
     private EditText etLoginNombreEmail, etLoginContra;
+    private ImageView btnLanzarRatailer;
+    private Button btnLanzarRegistro;
 
     private LoadingDialogActivity loadingDialogActivity;
     private CasosUsoUsuario casosUsoUsuario;
 
     private static final int CODE_ACTIVITY_RESULT_GOOGLE = 1234;
 
-    private Button btnLanzarRegistro;
+
 
 
 
@@ -58,12 +63,20 @@ public class AuthActivity extends AppCompatActivity {
     private void setUp(Bundle savedInstanceState) {
         casosUsoUsuario = new CasosUsoUsuario(this);
 
-        btnLanzarRegistro =findViewById(R.id.botonLanzarRegistro);
-        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
+        btnLanzarRatailer = findViewById(R.id.botonRetrocederLogin);
+        btnLanzarRatailer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                lanzarRegistro(null);
+                lanzarActividadRatailer(null);
             }
         });
+
+        btnLanzarRegistro = findViewById(R.id.botonLanzarRegistro);
+        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarActividadRegistro(null);
+            }
+        });
+
 
 
         etLoginNombreEmail = findViewById(R.id.editTextLoginUsuarioEmail);
@@ -209,9 +222,18 @@ public class AuthActivity extends AppCompatActivity {
 
     /**
      * @author Sergi Sirvent
+     * METODO PARA LANZAR LA ACTIVIDAD RATAILER
+     **/
+    public void lanzarActividadRatailer(View view) {
+        Intent i = new Intent(this, RatailerStartUpScreenActivity.class);
+        startActivity(i);
+    }
+
+    /**
+     * @author Sergi Sirvent
      * METODO PARA LANZAR LA ACTIVIDAD REGISTRO
-     * **/
-    public void lanzarRegistro(View view){
+     **/
+    public void lanzarActividadRegistro(View view) {
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
     }
