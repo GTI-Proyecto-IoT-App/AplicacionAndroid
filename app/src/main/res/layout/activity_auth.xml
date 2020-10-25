@@ -83,7 +83,7 @@
             android:id="@+id/buttonIniciarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
+            android:text="@string/iniciar_sesion"
             android:background="#c30000"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
