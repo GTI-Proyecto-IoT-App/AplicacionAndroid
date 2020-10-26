@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:transitionName="transicion_login"
                 android:background="#c30000"
                 android:text="Iniciar Sesion"
                 android:textColor="#fff" />
@@ -61,6 +62,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="#c30000"
+                android:transitionName="transicion_register"
                 android:text="Registrarse"
                 android:textColor="#fff" />
 

@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#c30000"
-    android:padding="30sp"
-    tools:context=".presentacion.AuthActivity">
+    android:padding="20sp"
+    tools:context=".presentacion.AuthActivity"
+    android:transitionName="transicion_login">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,6 +106,7 @@
                 android:text="Recuerdame"
                 android:buttonTint="#fff"
                 android:textColor="#fff"
+                android:fontFamily="@font/muli_light_italic"
                 android:layout_centerVertical="true"/>
 
             <Button
@@ -112,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:text="Olvide contraseña"
                 android:background="#00000000"
+                android:fontFamily="@font/muli_light_italic"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:textColor="#fff"/>
@@ -127,7 +130,8 @@
             android:layout_marginTop="20dp"
             android:background="#fff"
             android:text="Iniciar Sesion"
-            android:textColor="#c30000" />
+            android:textColor="#c30000"
+            />
 
 
         <Button
@@ -138,6 +142,7 @@
             android:layout_marginTop="20dp"
             android:background="#00000000"
             android:text="Crear una cuenta"
+            android:fontFamily="@font/muli_light_italic"
             android:textColor="#fff" />
 
         <TextView

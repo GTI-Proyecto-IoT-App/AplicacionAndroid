@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Patterns;
@@ -63,6 +64,7 @@ public class AuthActivity extends AppCompatActivity {
     private void setUp(Bundle savedInstanceState) {
         casosUsoUsuario = new CasosUsoUsuario(this);
 
+        //codigo para volver al ratailer
         btnLanzarRatailer = findViewById(R.id.botonRetrocederLogin);
         btnLanzarRatailer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -70,12 +72,17 @@ public class AuthActivity extends AppCompatActivity {
             }
         });
 
+        //codigo para volver al registro
         btnLanzarRegistro = findViewById(R.id.botonLanzarRegistro);
         btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 lanzarActividadRegistro(null);
             }
         });
+
+        //subrayado del boton de volver al registro
+        btnLanzarRegistro = (Button) this.findViewById(R.id.botonLanzarRegistro);
+        btnLanzarRegistro.setPaintFlags(btnLanzarRegistro.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
 
