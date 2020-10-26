@@ -15,15 +15,17 @@
         <activity
             android:name=".presentacion.SplashActivity"
             android:theme="@style/SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity android:name=".presentacion.DispositivoDetallesActivity"/>
+        <activity android:name=".presentacion.MisDispositivos">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
 
-        <activity android:name=".presentacion.FirstLoadingActivity"
-            android:theme="@style/SplashScreen"/>
 
         <activity android:name=".presentacion.HomeActivity" />
         <activity android:name=".presentacion.AuthActivity" />
