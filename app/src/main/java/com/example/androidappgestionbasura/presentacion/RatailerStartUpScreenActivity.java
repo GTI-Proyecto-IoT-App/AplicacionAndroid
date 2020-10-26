@@ -14,11 +14,6 @@ import com.example.androidappgestionbasura.R;
 
 public class RatailerStartUpScreenActivity extends AppCompatActivity {
 
-    //declaramos los botones para lanzar las actividades
-    private Button btnLanzarLogin;
-    private Button btnLanzarRegistro;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +22,15 @@ public class RatailerStartUpScreenActivity extends AppCompatActivity {
 
         //les añadimos listeners a los botones
 
-        btnLanzarLogin = findViewById(R.id.iniciarSesionButton);
+        //declaramos los botones para lanzar las actividades
+        Button btnLanzarLogin = findViewById(R.id.iniciarSesionButton);
         btnLanzarLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 lanzarActividadLogin(null);
             }
         });
 
-        btnLanzarRegistro = findViewById(R.id.registrarseButton);
+        Button btnLanzarRegistro = findViewById(R.id.registrarseButton);
         btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 lanzarActividadRegistro(null);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c30000"
+    android:background="@color/colorPrimary"
     android:padding="20sp"
     tools:context=".presentacion.AuthActivity"
     android:transitionName="transicion_login">
@@ -20,16 +20,16 @@
             android:layout_height="34dp"
             android:padding="5dp"
             android:src="@drawable/flecha_izquierda"
-            app:tint="#fff" />
+            app:tint="@color/blanco" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
             android:fontFamily="@font/muli_black"
-            android:text="Iniciar Sesión"
+            android:text="@string/iniciar_sesion"
             android:textAllCaps="true"
-            android:textColor="#fff"
+            android:textColor="@color/blanco"
             android:textSize="30sp" />
 
         <LinearLayout
@@ -41,16 +41,13 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/LoginTextInputLayoutStyle"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:hint="Correo usuario"
-                app:boxStrokeColor="#fff"
+                android:hint="@string/hint_introducir_email"
                 app:boxStrokeWidthFocused="2dp"
                 app:endIconMode="clear_text"
-                app:endIconTint="#fff"
-                app:hintTextColor="#fff"
                 app:startIconDrawable="@drawable/usuario"
-                app:startIconTint="#fff">
+                app:hintTextColor="@color/blanco">
+
 
                 <com.google.android.material.textfield.TextInputEditText
 
@@ -59,8 +56,9 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/muli_light_italic"
                     android:inputType="text"
-                    android:textColor="#fff"
-                    android:textColorHint="#fff" />
+                    android:textColor="@color/blanco"
+                    android:textColorHint="@color/blanco"
+                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,16 +66,13 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/LoginTextInputLayoutStyle"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
-                app:boxStrokeColor="#fff"
+                android:hint="@string/hint_introducir_contra"
                 app:boxStrokeWidthFocused="2dp"
                 app:endIconMode="password_toggle"
-                app:endIconTint="#fff"
-                app:hintTextColor="#fff"
                 app:startIconDrawable="@drawable/llave"
-                app:startIconTint="#fff">
+                app:hintTextColor="@color/blanco"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextLoginPass"
@@ -86,78 +81,62 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/muli_light_italic"
                     android:inputType="textPassword"
-                    android:textColor="#fff"
-                    android:textColorHint="#fff" />
+                    android:textColor="@color/blanco"
+                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-                android:text="Recuerdame"
-                android:buttonTint="#fff"
-                android:textColor="#fff"
-                android:fontFamily="@font/muli_light_italic"
-                android:layout_centerVertical="true"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Olvide contraseña"
-                android:background="#00000000"
-                android:fontFamily="@font/muli_light_italic"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:textColor="#fff"/>
-
-
-
-        </RelativeLayout>
 
         <Button
+            style="@style/botonImportante"
             android:id="@+id/buttonIniciarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#fff"
-            android:text="Iniciar Sesion"
-            android:textColor="#c30000"
+            android:text="@string/iniciar_sesion"
+
             />
 
 
         <Button
             android:id="@+id/botonLanzarRegistro"
+            style="@style/botonTransparente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="#00000000"
-            android:text="Crear una cuenta"
-            android:fontFamily="@font/muli_light_italic"
-            android:textColor="#fff" />
+            android:text="@string/botonLanzarRegistrar" />
 
         <TextView
             android:id="@+id/tvLoginError"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="@color/errorSobreRojo"/>
+
+
 
         <Button
-            android:id="@+id/googleButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="startGoogleLogin"
-            android:text="Button" />
+            android:layout_marginTop="10dp"
+            android:padding="8dp"
+            android:background="@color/blanco"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:drawableStart="@drawable/google"
+            android:text="@string/googleInicioSesion"
+            android:textColor="@color/negro"
+            android:textAllCaps="false"/>
+
+
+
 
     </LinearLayout>
 

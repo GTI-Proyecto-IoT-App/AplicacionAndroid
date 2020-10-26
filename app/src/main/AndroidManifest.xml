@@ -21,13 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".presentacion.FirstLoadingActivity"
-            android:theme="@style/SplashScreen" />
-        <activity android:name=".presentacion.HomeActivity" />
+
+        <activity android:name=".presentacion.HomeActivity"/>
         <activity android:name=".presentacion.AuthActivity" />
-        <activity android:name=".presentacion.RegisterActivity" />
-        <activity android:name=".presentacion.RatailerStartUpScreenActivity" />
+        <activity android:name=".presentacion.RegisterActivity"  />
+        <activity android:name=".presentacion.RatailerStartUpScreenActivity"  />
 
         <meta-data
             android:name="preloaded_fonts"

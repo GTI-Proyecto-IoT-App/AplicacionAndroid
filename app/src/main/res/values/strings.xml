@@ -11,8 +11,14 @@
     <string name="hint_introducir_nombre">Nombre de usuario</string>
     <string name="hint_introducir_email">Correo electrónico</string>
     <string name="hint_introducir_contra">Contraseña</string>
+    <string name="hint_introducir_contra_repetir">Repetir la contraseña</string>
+
+    <string name="botonLanzarRegistrar">Crear una cuenta</string>
+    <string name="botonLanzarLogin">Ya tengo una cuenta</string>
+    <string name="googleInicioSesion">Inicia Sesión con Google</string>
+
     <string name="ayuda_contraseña">8 o mas caracteres, con al menos una mayuscula, una minuscula, un número y un caracter especial </string>
-    <string name="hint_introducir_contra_repetir">Repitir la contraseña</string>
+
 
     <!--LOADING LAYOUT-->
     <string name="carga_titulo">Cargando…</string>

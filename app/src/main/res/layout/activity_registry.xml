@@ -1,180 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c30000"
-    android:padding="20sp"
-    android:transitionName="transicion_register">
+    android:background="@color/colorPrimary"
+    android:padding="10sp"
+    android:transitionName="transicion_register"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10sp">
 
         <TextView
             android:id="@+id/tvRegisterError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:textColor="@color/errorSobreRojo"/>
 
-    <ImageView
-        android:id="@+id/botonRetrocederLogin"
-        android:layout_width="45dp"
-        android:layout_height="34dp"
-        android:padding="5dp"
-        android:src="@drawable/flecha_izquierda"
-        app:tint="#fff" />
+        <ImageView
+            android:id="@+id/botonRetrocederLogin"
+            android:layout_width="45dp"
+            android:layout_height="34dp"
+            android:padding="5dp"
+            android:src="@drawable/flecha_izquierda"
+            app:tint="@color/blanco" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:fontFamily="@font/muli_black"
-        android:text="Registrarse "
-        android:textAllCaps="true"
-        android:textColor="#fff"
-        android:textSize="30sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:orientation="vertical">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/LoginTextInputLayoutStyle"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Nombre Usuario"
-            app:boxStrokeColor="#fff"
-            app:boxStrokeWidthFocused="2dp"
-            app:endIconMode="clear_text"
-            app:endIconTint="#fff"
-            app:hintTextColor="#fff"
-            app:startIconDrawable="@drawable/usuario"
-            app:startIconTint="#fff">
-
-            <com.google.android.material.textfield.TextInputEditText
-
-                android:id="@+id/editTextRegisterName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/muli_light_italic"
-                android:inputType="text"
-                android:textColor="#fff"
-                android:textColorHint="#fff" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/LoginTextInputLayoutStyle"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Correo Electrónico"
-            app:boxStrokeColor="#fff"
-            app:boxStrokeWidthFocused="2dp"
-            app:endIconMode="clear_text"
-            app:endIconTint="#fff"
-            app:hintTextColor="#fff"
-            app:startIconDrawable="@drawable/sobre"
-            app:startIconTint="#fff">
-
-            <com.google.android.material.textfield.TextInputEditText
-
-                android:id="@+id/editTextRegisterEmail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/muli_light_italic"
-                android:inputType="text"
-                android:textColor="#fff"
-                android:textColorHint="#fff" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/LoginTextInputLayoutStyle"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            app:boxStrokeColor="#fff"
-            app:boxStrokeWidthFocused="2dp"
-            app:endIconMode="password_toggle"
-            app:endIconTint="#fff"
-            app:hintTextColor="#fff"
-            app:startIconDrawable="@drawable/llave"
-            app:startIconTint="#fff">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextRegisterPass"
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/muli_light_italic"
-                android:inputType="textPassword"
-                android:textColor="#fff"
-                android:textColorHint="#fff" />
-
-        </com.google.android.material.textfield.TextInputLayout>
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/muli_black"
+            android:text="Registrarse "
+            android:textAllCaps="true"
+            android:textColor="@color/blanco"
+            android:textSize="30sp" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ayuda_contraseña"
-            android:layout_marginTop="5dp"
-            android:textColor="#fff"
-            android:fontFamily="@font/muli_light_italic">
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
 
-        </TextView>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/LoginTextInputLayoutStyle"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:hint="Repetir la contraseña"
-            app:boxStrokeColor="#fff"
-            app:boxStrokeWidthFocused="2dp"
-            app:endIconMode="password_toggle"
-            app:endIconTint="#fff"
-            app:hintTextColor="#fff"
-            app:startIconDrawable="@drawable/repetir"
-            app:startIconTint="#fff">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextRegisterRepeatPass"
-
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/LoginTextInputLayoutStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_introducir_nombre"
+
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+
+                app:startIconDrawable="@drawable/usuario"
+                app:hintTextColor="@color/blanco">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:id="@+id/editTextRegisterName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/muli_light_italic"
+                    android:inputType="text"
+                    android:textColor="@color/blanco" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/LoginTextInputLayoutStyle"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_introducir_email"
+
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+
+                app:startIconDrawable="@drawable/sobre"
+                app:hintTextColor="@color/blanco">
+
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:id="@+id/editTextRegisterEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/muli_light_italic"
+                    android:inputType="text"
+                    android:textColor="@color/blanco" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/LoginTextInputLayoutStyle"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_introducir_contra"
+
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
+
+                app:startIconDrawable="@drawable/llave"
+                app:hintTextColor="@color/blanco">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextRegisterPass"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/muli_light_italic"
+                    android:inputType="textPassword"
+                    android:textColor="@color/blanco" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/muli_light_italic"
-                android:inputType="textPassword"
-                android:textColor="#fff"
-                android:textColorHint="#fff" />
+                android:text="@string/ayuda_contraseña"
+                android:textColor="@color/blanco">
 
-        </com.google.android.material.textfield.TextInputLayout>
+            </TextView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/LoginTextInputLayoutStyle"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_introducir_contra_repetir"
+
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
 
 
-    </LinearLayout>
+                app:startIconDrawable="@drawable/repetir"
+                app:hintTextColor="@color/blanco">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextRegisterRepeatPass"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/muli_light_italic"
+                    android:inputType="textPassword"
+                    android:textColor="@color/blanco" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonRegister"
+            style="@style/botonImportante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="#fff"
-            android:text="Registrarse"
-            android:textColor="#c30000"
+            android:text="@string/registrarse"
+
+
             />
 
         <Button
+            android:id="@+id/btnVolverLogin"
+            style="@style/botonTransparente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnVolverLogin"
-            android:text="Ya tengo una cuenta"
-            android:textColor="#fff"
-            android:background="#00000000"
-            android:textAllCaps="false"
-            android:fontFamily="@font/muli_light_italic"/>
+            android:text="@string/botonLanzarLogin" />
 
     </LinearLayout>
 

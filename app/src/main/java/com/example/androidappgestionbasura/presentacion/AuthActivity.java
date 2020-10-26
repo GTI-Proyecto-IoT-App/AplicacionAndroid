@@ -29,9 +29,6 @@ import com.google.android.gms.tasks.Task;
 
 public class AuthActivity extends AppCompatActivity {
 
-    // controladors registro
-
-    private EditText etRegisterNombre,etRegisterEmail,etRegisterContra,etRegisterRepetirContra;
 
     // controladores login
     private EditText etLoginNombreEmail, etLoginContra;
