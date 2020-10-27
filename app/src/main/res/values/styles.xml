@@ -33,6 +33,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <!-- below one -->
         <item name="android:windowBackground">@drawable/splashscreen</item>
+
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">

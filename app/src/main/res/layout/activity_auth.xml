@@ -47,7 +47,7 @@
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/usuario"
                 app:hintTextColor="@color/blanco"
-
+                
                 >
 
 
