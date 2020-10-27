@@ -10,6 +10,7 @@ import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHe
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.AuthActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.HomeActivity;
+import com.example.androidappgestionbasura.presentacion.RatailerStartUpScreenActivity;
 import com.example.androidappgestionbasura.presentacion.VerfiyEmailActivity;
 import com.example.androidappgestionbasura.repository.impl.UsuariosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
