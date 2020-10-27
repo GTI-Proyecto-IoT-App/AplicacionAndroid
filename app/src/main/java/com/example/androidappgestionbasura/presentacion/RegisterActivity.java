@@ -1,12 +1,17 @@
 package com.example.androidappgestionbasura.presentacion;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,22 +29,26 @@ public class RegisterActivity extends AppCompatActivity {
 
     private LoadingDialogActivity loadingDialogActivity;
     private CasosUsoUsuario casosUsoUsuario;
-    private Button btnVolverLogin;
+    private ImageView btnVolverRatailer;
+    private Button btnVolverLogin , btnRegistro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
+
+        //full window para la acividad
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+        //la orientacion siempre será vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         casosUsoUsuario = new CasosUsoUsuario(this);
 
-        //codigo para el boton de volver al login
-        btnVolverLogin = findViewById(R.id.botonReturnLogin);
-        btnVolverLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lanzarLogin(null);
-            }
-        });
+
 
         setUp(savedInstanceState);
 
@@ -55,6 +64,32 @@ public class RegisterActivity extends AppCompatActivity {
         etRegisterEmail = findViewById(R.id.editTextRegisterEmail);
         etRegisterContra = findViewById(R.id.editTextRegisterPass);
         etRegisterRepetirContra = findViewById(R.id.editTextRegisterRepeatPass);
+
+
+
+        //codigo para el boton de volver al login
+
+        btnVolverLogin = findViewById(R.id.btnVolverLogin);
+        btnVolverLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lanzarLogin(null);
+            }
+        });
+
+        //subrayado del boton de volver al login
+        btnVolverLogin = (Button) this.findViewById(R.id.btnVolverLogin);
+        btnVolverLogin.setPaintFlags(btnVolverLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+
+        //codigo para el boton de volver al ratailer
+        btnVolverRatailer = findViewById(R.id.botonRetrocederLogin);
+        btnVolverRatailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lanzarRatailer(null);
+            }
+        });
 
 
 
@@ -214,6 +249,15 @@ public class RegisterActivity extends AppCompatActivity {
             // quitar el progress dialog
             loadingDialogActivity.dismissDialog();
         }
+    }
+
+    /**
+     * @author Sergi Sirvent
+     * METODO PARA VOLVER AL RATAILER
+     * **/
+    public void lanzarRatailer(View view){
+        Intent i = new Intent(this,RatailerStartUpScreenActivity.class);
+        startActivity(i);
     }
 
     /**

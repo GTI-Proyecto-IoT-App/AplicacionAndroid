@@ -2,8 +2,12 @@ package com.example.androidappgestionbasura.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
+import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,6 +35,16 @@ public class VerfiyEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verfiy_email);
 
+        //full window para la acividad
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
+        //la orientacion siempre será vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         tvInfo = findViewById(R.id.tvVerificarError);
         casosUsoUsuario = new CasosUsoUsuario(this);
         loadingDialogActivity = new LoadingDialogActivity(this);
@@ -39,6 +53,10 @@ public class VerfiyEmailActivity extends AppCompatActivity {
         Button btnSendEmail = findViewById(R.id.btnSendEmailVerification);
         Button btnCheckEmail = findViewById(R.id.btnCheckEmailVerified);
         Button btnVolverLogin = findViewById(R.id.btnVolverLogin);
+
+        //subrayado del boton de volver al inicio
+
+        btnVolverLogin.setPaintFlags(btnVolverLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // send email verificacion
         btnSendEmail.setOnClickListener(new View.OnClickListener() {
