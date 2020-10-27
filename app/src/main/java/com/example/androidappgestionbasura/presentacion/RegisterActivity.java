@@ -26,13 +26,31 @@ public class RegisterActivity extends AppCompatActivity {
     private LoadingDialogActivity loadingDialogActivity;
     private CasosUsoUsuario casosUsoUsuario;
     private ImageView btnVolverRatailer;
-    private Button btnVolverLogin;
+    private Button btnVolverLogin , btnRegistro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
         casosUsoUsuario = new CasosUsoUsuario(this);
+
+
+
+        setUp(savedInstanceState);
+
+    }
+    /**
+     * @author Ruben Pardo Casanova
+     * inicializa la logica de auth acitivity
+     * @param savedInstanceState estado anterior
+     */
+    private void setUp(Bundle savedInstanceState) {
+
+        etRegisterNombre = findViewById(R.id.editTextRegisterName);
+        etRegisterEmail = findViewById(R.id.editTextRegisterEmail);
+        etRegisterContra = findViewById(R.id.editTextRegisterPass);
+        etRegisterRepetirContra = findViewById(R.id.editTextRegisterRepeatPass);
+
 
 
         //codigo para el boton de volver al login
@@ -58,21 +76,6 @@ public class RegisterActivity extends AppCompatActivity {
                 lanzarRatailer(null);
             }
         });
-
-        setUp(savedInstanceState);
-
-    }
-    /**
-     * @author Ruben Pardo Casanova
-     * inicializa la logica de auth acitivity
-     * @param savedInstanceState estado anterior
-     */
-    private void setUp(Bundle savedInstanceState) {
-
-        etRegisterNombre = findViewById(R.id.editTextRegisterName);
-        etRegisterEmail = findViewById(R.id.editTextRegisterEmail);
-        etRegisterContra = findViewById(R.id.editTextRegisterPass);
-        etRegisterRepetirContra = findViewById(R.id.editTextRegisterRepeatPass);
 
 
 

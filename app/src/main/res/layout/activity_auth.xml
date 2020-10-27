@@ -90,16 +90,25 @@
         </LinearLayout>
 
 
-
-        <Button
-            style="@style/botonImportante"
-            android:id="@+id/buttonIniciarSesion"
+        <TextView
+            android:id="@+id/tvLoginError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/iniciar_sesion"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/muli_bold"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/blanco"
+            android:visibility="gone" />
 
-            />
+        <Button
+            android:id="@+id/buttonIniciarSesion"
+            style="@style/botonImportante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="logIn"
 
+            android:text="@string/iniciar_sesion" />
 
         <Button
             android:id="@+id/botonLanzarRegistro"
@@ -108,15 +117,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/botonLanzarRegistrar" />
-
-        <TextView
-            android:id="@+id/tvLoginError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:visibility="gone"
-            android:textColor="@color/errorSobreRojo"/>
-
 
 
         <Button

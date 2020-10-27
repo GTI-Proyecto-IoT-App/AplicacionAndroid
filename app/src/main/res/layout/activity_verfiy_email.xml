@@ -4,46 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
+    android:background="@color/colorPrimary"
     tools:context=".presentacion.VerfiyEmailActivity">
 
-    <Button
-        android:id="@+id/btnSendEmailVerification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Volver a enviar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCheckEmailVerified" />
-
     <TextView
-        android:id="@+id/tvVerificarError"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Verficica"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:fontFamily="@font/muli_black"
+        android:text="@string/yaQuedaMenos"
+        android:textAllCaps="true"
+        android:textColor="@color/blanco"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnCheckEmailVerified"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Comprobar"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btnVolverLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvVerificarError" />
+        app:layout_constraintTop_toBottomOf="@+id/tvVerificarError"
+        app:layout_constraintVertical_bias="0.478">
+
+        <Button
+            android:id="@+id/btnCheckEmailVerified"
+            style="@style/botonImportante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="40dp"
+            android:text="Comprobar" />
+
+        <Button
+            android:id="@+id/btnSendEmailVerification"
+            style="@style/botonImportante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="40dp"
+            android:background="@color/blanco"
+            android:padding="10dp"
+            android:text="Volver a enviar"
+            android:textColor="@color/fondoBotonImportante" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvVerificarError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/muli_light_italic"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textColor="@color/blanco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <Button
         android:id="@+id/btnVolverLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Volver al Login"
+        style="@style/botonTransparente"
+        android:layout_width="99dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="64dp"
+        android:text="Volver al Inicio"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnSendEmailVerification" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="239dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/muli_light_italic"
+        android:gravity="center"
+        android:text="@string/explicacion"
+        android:textColor="@color/blanco"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

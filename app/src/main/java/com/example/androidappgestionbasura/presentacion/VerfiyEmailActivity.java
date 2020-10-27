@@ -2,6 +2,7 @@ package com.example.androidappgestionbasura.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,10 @@ public class VerfiyEmailActivity extends AppCompatActivity {
         Button btnSendEmail = findViewById(R.id.btnSendEmailVerification);
         Button btnCheckEmail = findViewById(R.id.btnCheckEmailVerified);
         Button btnVolverLogin = findViewById(R.id.btnVolverLogin);
+
+        //subrayado del boton de volver al inicio
+
+        btnVolverLogin.setPaintFlags(btnVolverLogin.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // send email verificacion
         btnSendEmail.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +87,7 @@ public class VerfiyEmailActivity extends AppCompatActivity {
                             }
 
                         }else{
-                            tvInfo.setText("El email: "+casosUsoUsuario.getUsuario().getEmail() +" no esta verificado, comprueba tu correo. Si no te llegó pulsa en");
+                            tvInfo.setText("El email: "+casosUsoUsuario.getUsuario().getEmail() +" no esta verificado, comprueba tu correo. Si no te llegó pulsa en Volver a Enviar");
                         }
                     }
                 });

@@ -15,13 +15,6 @@
         android:layout_marginRight="10sp"
         android:layout_marginLeft="10sp">
 
-        <TextView
-            android:id="@+id/tvRegisterError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:textColor="@color/errorSobreRojo"/>
-
         <ImageView
             android:id="@+id/botonRetrocederLogin"
             android:layout_width="45dp"
@@ -156,15 +149,22 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvRegisterError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/errorSobreRojo"
+            android:visibility="visible" />
+
         <Button
             android:id="@+id/buttonRegister"
             style="@style/botonImportante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registrarse"
+            android:onClick="signUp"
 
 
-            />
+            android:text="@string/registrarse" />
 
         <Button
             android:id="@+id/btnVolverLogin"

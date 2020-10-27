@@ -19,6 +19,11 @@
 
     <string name="ayuda_contraseña">8 o mas caracteres, con al menos una mayuscula, una minuscula, un número y un caracter especial </string>
 
+    <!--VERIFY LAYOUT-->
+
+    <string name="yaQuedaMenos">Ya queda menos...</string>
+    <string name="explicacion">Debes verificar  tu cuenta a través del email que te  hemos enviado</string>
+
 
     <!--LOADING LAYOUT-->
     <string name="carga_titulo">Cargando…</string>

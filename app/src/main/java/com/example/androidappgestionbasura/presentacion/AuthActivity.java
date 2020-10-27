@@ -178,7 +178,7 @@ public class AuthActivity extends AppCompatActivity {
      * Muestra el error en caso de fallar el inicio de sesion
      */
     public void showLoginError(String error){
-        TextView tv = findViewById(R.id.tvRegisterError);
+        TextView tv = findViewById(R.id.tvLoginError);
         tv.setVisibility(View.VISIBLE);
         tv.setText(error);
     }
