@@ -1,6 +1,7 @@
 package com.example.androidappgestionbasura.presentacion;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -32,6 +33,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registry);
+
+        //la orientacion siempre será vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         casosUsoUsuario = new CasosUsoUsuario(this);
 
 
