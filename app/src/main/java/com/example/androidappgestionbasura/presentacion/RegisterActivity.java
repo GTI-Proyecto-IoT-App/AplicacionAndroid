@@ -3,6 +3,7 @@ package com.example.androidappgestionbasura.presentacion;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Patterns;
@@ -36,8 +37,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registry);
 
         //full window para la acividad
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         //la orientacion siempre será vertical
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

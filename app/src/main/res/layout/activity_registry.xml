@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:padding="32dp"
+    android:padding="16dp"
     android:transitionName="transicion_register"
     >
 
@@ -17,162 +17,168 @@
             android:id="@+id/botonRetrocederLogin"
             android:layout_width="45dp"
             android:layout_height="34dp"
+            android:layout_marginTop="32dp"
             android:padding="5dp"
             android:src="@drawable/flecha_izquierda"
             app:tint="@color/blanco" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/muli_black"
-            android:text="Registrarse "
-            android:textAllCaps="true"
-            android:textColor="@color/blanco"
-            android:textSize="30sp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:padding="16dp"
             android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/LoginTextInputLayoutStyle"
-                android:layout_width="match_parent"
-
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_introducir_nombre"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/muli_black"
+                android:text="Registrarse "
+                android:textAllCaps="true"
+                android:textColor="@color/blanco"
+                android:textSize="30sp" />
 
-                app:boxStrokeWidthFocused="2dp"
-                app:endIconMode="clear_text"
-
-                app:startIconDrawable="@drawable/usuario"
-                app:hintTextColor="@color/blanco">
-
-                <com.google.android.material.textfield.TextInputEditText
-
-                    android:id="@+id/editTextRegisterName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/muli_light_italic"
-                    android:inputType="text"
-                    android:textColor="@color/blanco" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/LoginTextInputLayoutStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_introducir_email"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical">
 
-                app:boxStrokeWidthFocused="2dp"
-                app:endIconMode="clear_text"
-
-                app:startIconDrawable="@drawable/sobre"
-                app:hintTextColor="@color/blanco">
-
-                <com.google.android.material.textfield.TextInputEditText
-
-                    android:id="@+id/editTextRegisterEmail"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:fontFamily="@font/muli_light_italic"
-                    android:inputType="text"
-                    android:textColor="@color/blanco" />
+                    android:text="@string/ayuda_contraseña"
+                    android:textColor="@color/blanco">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </TextView>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/LoginTextInputLayoutStyle"
-                android:layout_width="match_parent"
-
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_introducir_contra"
-
-                app:boxStrokeWidthFocused="2dp"
-                app:endIconMode="password_toggle"
-
-                app:startIconDrawable="@drawable/llave"
-                app:hintTextColor="@color/blanco">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextRegisterPass"
-
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/muli_light_italic"
-                    android:inputType="textPassword"
-                    android:textColor="@color/blanco" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_email"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="clear_text"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/sobre">
+
+                    <com.google.android.material.textfield.TextInputEditText
+
+                        android:id="@+id/editTextRegisterEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="text"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_contra"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="password_toggle"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/llave">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextRegisterPass"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="textPassword"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_nombre"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="clear_text"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/usuario">
+
+                    <com.google.android.material.textfield.TextInputEditText
+
+                        android:id="@+id/editTextRegisterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="text"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_contra_repetir"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="password_toggle"
+
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/repetir">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextRegisterRepeatPass"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="textPassword"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/tvRegisterError"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/muli_light_italic"
-                android:text="@string/ayuda_contraseña"
-                android:textColor="@color/blanco">
+                android:textColor="@color/errorSobreRojo"
+                android:visibility="visible" />
 
-            </TextView>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/LoginTextInputLayoutStyle"
+            <Button
+                android:id="@+id/btnVolverLogin"
+                style="@style/botonTransparente"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_introducir_contra_repetir"
+                android:text="@string/botonLanzarLogin" />
 
-                app:boxStrokeWidthFocused="2dp"
-                app:endIconMode="password_toggle"
+            <Button
+                android:id="@+id/buttonRegister"
+                style="@style/botonImportante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="signUp"
 
 
-                app:startIconDrawable="@drawable/repetir"
-                app:hintTextColor="@color/blanco">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextRegisterRepeatPass"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/muli_light_italic"
-                    android:inputType="textPassword"
-                    android:textColor="@color/blanco" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:text="@string/registrarse" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvRegisterError"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/errorSobreRojo"
-            android:visibility="visible" />
-
-        <Button
-            android:id="@+id/buttonRegister"
-            style="@style/botonImportante"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="signUp"
-
-
-            android:text="@string/registrarse" />
-
-        <Button
-            android:id="@+id/btnVolverLogin"
-            style="@style/botonTransparente"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/botonLanzarLogin" />
-
     </LinearLayout>
-
-
 </ScrollView>
 
