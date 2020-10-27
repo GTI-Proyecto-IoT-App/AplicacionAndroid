@@ -38,6 +38,8 @@
     <string name="error_contra_no_igual">Las contraseñas deben coincidir</string>
     <string name="error_login_usuario_no_existe">No existe un usuario con esos credenciales</string>
     <string name="bienvenido">Bienvenido</string>
+    <string name="slogan_app">Analiza tu vivienda</string>
+    <string name="subtitle_retailer_start_up">Inicia sesión o Regístrate para continuar</string>
 
 
 </resources>
