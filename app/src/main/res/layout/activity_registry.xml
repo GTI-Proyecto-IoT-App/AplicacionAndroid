@@ -44,15 +44,29 @@
                 android:layout_marginTop="25dp"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/muli_light_italic"
-                    android:text="@string/ayuda_contraseña"
-                    android:textColor="@color/blanco">
 
-                </TextView>
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_nombre"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="clear_text"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/usuario">
+
+                    <com.google.android.material.textfield.TextInputEditText
+
+                        android:id="@+id/editTextRegisterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="text"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/LoginTextInputLayoutStyle"
@@ -102,29 +116,15 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/LoginTextInputLayoutStyle"
+                <TextView
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_introducir_nombre"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/muli_light_italic"
+                    android:text="@string/ayuda_contraseña"
+                    android:textColor="@color/blanco">
 
-                    app:boxStrokeWidthFocused="2dp"
-                    app:endIconMode="clear_text"
-
-                    app:hintTextColor="@color/blanco"
-                    app:startIconDrawable="@drawable/usuario">
-
-                    <com.google.android.material.textfield.TextInputEditText
-
-                        android:id="@+id/editTextRegisterName"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/muli_light_italic"
-                        android:inputType="text"
-                        android:textColor="@color/blanco" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                </TextView>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/LoginTextInputLayoutStyle"
