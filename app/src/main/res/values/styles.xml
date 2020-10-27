@@ -19,6 +19,8 @@
         <item name="colorControlActivated">@color/blanco </item>
         <item name="colorOnSurface">@color/blanco</item>
         <item name="boxStrokeWidth">2dp</item>
+        
+
 
 
 
@@ -31,6 +33,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <!-- below one -->
         <item name="android:windowBackground">@drawable/splashscreen</item>
+
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">

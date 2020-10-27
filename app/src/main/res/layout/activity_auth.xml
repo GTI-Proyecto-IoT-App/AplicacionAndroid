@@ -46,7 +46,9 @@
                 app:boxStrokeWidthFocused="2dp"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/usuario"
-                app:hintTextColor="@color/blanco">
+                app:hintTextColor="@color/blanco"
+                
+                >
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +60,7 @@
                     android:inputType="text"
                     android:textColor="@color/blanco"
                     android:textColorHint="@color/blanco"
+
                      />
 
             </com.google.android.material.textfield.TextInputLayout>
