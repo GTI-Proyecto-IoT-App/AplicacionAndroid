@@ -2,6 +2,7 @@ package com.example.androidappgestionbasura.presentacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,9 @@ public class VerfiyEmailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verfiy_email);
+
+        //la orientacion siempre será vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         tvInfo = findViewById(R.id.tvVerificarError);
         casosUsoUsuario = new CasosUsoUsuario(this);
