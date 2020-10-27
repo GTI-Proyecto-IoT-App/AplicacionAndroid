@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:padding="20sp"
+    android:padding="20dp"
     tools:context=".presentacion.AuthActivity"
     android:transitionName="transicion_login">
 
@@ -47,7 +47,7 @@
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/usuario"
                 app:hintTextColor="@color/blanco"
-                
+
                 >
 
 
@@ -114,31 +114,26 @@
             android:text="@string/iniciar_sesion" />
 
         <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@color/blanco"
+            android:drawableStart="@drawable/google"
+            android:gravity="center"
+            android:onClick="startGoogleLogin"
+            android:padding="8dp"
+            android:text="@string/googleInicioSesion"
+            android:textAllCaps="false"
+            android:textColor="@color/negro" />
+
+        <Button
             android:id="@+id/botonLanzarRegistro"
             style="@style/botonTransparente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/botonLanzarRegistrar" />
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="startGoogleLogin"
-            android:layout_marginTop="10dp"
-            android:padding="8dp"
-            android:background="@color/blanco"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:drawableStart="@drawable/google"
-            android:text="@string/googleInicioSesion"
-            android:textColor="@color/negro"
-            android:textAllCaps="false"/>
-
-
 
 
     </LinearLayout>

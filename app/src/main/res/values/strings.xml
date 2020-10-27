@@ -4,6 +4,8 @@
     <!--    SPLASH-->
     <string name="splash_subtitle">Hecho por GTI Grupo 2/3</string>
 
+    <string name="slogan_app">Analiza tu vivienda</string>
+
     <!--    AUTH ACTIVITY-->
     <string name="registrarse">Registrarse</string>
     <string name="iniciar_sesion">Iniciar Sesión</string>
@@ -21,9 +23,10 @@
 
     <!--VERIFY LAYOUT-->
 
-    <string name="yaQuedaMenos">Ya queda menos...</string>
+    <string name="yaQuedaMenos">Ya queda menos…</string>
     <string name="explicacion">Debes verificar  tu cuenta a través del email que te  hemos enviado</string>
-
+    <string name="subtitle_retailer_start_up">Inicia sesión o Regístrate para continuar</string>
+    <string name="volver_inicio_verify">Volver al Inicio</string>
 
     <!--LOADING LAYOUT-->
     <string name="carga_titulo">Cargando…</string>
@@ -38,8 +41,8 @@
     <string name="error_contra_no_igual">Las contraseñas deben coincidir</string>
     <string name="error_login_usuario_no_existe">No existe un usuario con esos credenciales</string>
     <string name="bienvenido">Bienvenido</string>
-    <string name="slogan_app">Analiza tu vivienda</string>
-    <string name="subtitle_retailer_start_up">Inicia sesión o Regístrate para continuar</string>
+    <string name="comprobar">Comprobar</string>
+    <string name="volver_a_enviar">Volver a enviar</string>
 
 
 </resources>

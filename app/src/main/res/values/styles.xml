@@ -9,6 +9,9 @@
 
     </style>
 
+
+
+
     <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="android:layout_marginTop">10dp</item>
         <item name="startIconTint">@color/blanco</item>

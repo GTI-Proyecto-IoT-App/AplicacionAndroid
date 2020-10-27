@@ -6,21 +6,19 @@
     android:layout_height="match_parent"
 
     android:background="@color/colorPrimary"
+    android:padding="32dp"
     tools:context=".presentacion.VerfiyEmailActivity">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/muli_black"
-        android:text="@string/yaQuedaMenos"
-        android:textAllCaps="true"
-        android:textColor="@color/blanco"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
+    <Button
+        android:id="@+id/btnVolverLogin"
+        style="@style/botonTransparente"
+        android:layout_width="99dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="64dp"
+        android:text="@string/volver_inicio_verify"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -38,22 +36,22 @@
             style="@style/botonImportante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
-            android:layout_marginRight="40dp"
-            android:text="Comprobar" />
+            android:layout_marginRight="0dp"
+            android:text="@string/comprobar" />
 
         <Button
             android:id="@+id/btnSendEmailVerification"
             style="@style/botonImportante"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="0dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="40dp"
+            android:layout_marginRight="0dp"
             android:background="@color/blanco"
             android:padding="10dp"
-            android:text="Volver a enviar"
+            android:text="@string/volver_a_enviar"
             android:textColor="@color/fondoBotonImportante" />
 
     </LinearLayout>
@@ -65,21 +63,34 @@
         android:layout_marginTop="32dp"
         android:background="@color/colorPrimary"
         android:fontFamily="@font/muli_light_italic"
-        android:gravity="center"
-        android:padding="20dp"
         android:textColor="@color/blanco"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
-    <Button
-        android:id="@+id/btnVolverLogin"
-        style="@style/botonTransparente"
-        android:layout_width="99dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="64dp"
-        android:text="Volver al Inicio"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/muli_black"
+        android:text="@string/yaQuedaMenos"
+        android:textAllCaps="true"
+        android:textColor="@color/blanco"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/muli_light_italic"
+        android:text="@string/explicacion"
+        android:textColor="@color/blanco"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -89,19 +100,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="239dp" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:fontFamily="@font/muli_light_italic"
-        android:gravity="center"
-        android:text="@string/explicacion"
-        android:textColor="@color/blanco"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
