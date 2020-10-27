@@ -1,82 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/tvRegisterError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <Button
-        android:id="@+id/botonReturnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Volver"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:padding="16dp"
+    android:transitionName="transicion_register"
+    >
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextRegisterName"
+        <ImageView
+            android:id="@+id/botonRetrocederLogin"
+            android:layout_width="45dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="32dp"
+            android:padding="5dp"
+            android:src="@drawable/flecha_izquierda"
+            app:tint="@color/blanco" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_nombre"
-            android:inputType="textPersonName" />
+            android:padding="16dp"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editTextRegisterEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_email"
-            android:inputType="textEmailAddress" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/muli_black"
+                android:text="Registrarse "
+                android:textAllCaps="true"
+                android:textColor="@color/blanco"
+                android:textSize="30sp" />
 
-        <EditText
-            android:id="@+id/editTextRegisterPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_contra"
-            android:inputType="textPassword" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ayuda_contraseña" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
 
-        <EditText
-            android:id="@+id/editTextRegisterRepeatPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_introducir_contra_repetir"
-            android:inputType="textPassword" />
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_nombre"
 
-        <Button
-            android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="signUp"
-            android:text="@string/registrarse" />
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="clear_text"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/usuario">
+
+                    <com.google.android.material.textfield.TextInputEditText
+
+                        android:id="@+id/editTextRegisterName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="text"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_email"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="clear_text"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/sobre">
+
+                    <com.google.android.material.textfield.TextInputEditText
+
+                        android:id="@+id/editTextRegisterEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="text"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_contra"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="password_toggle"
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/llave">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextRegisterPass"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="textPassword"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/muli_light_italic"
+                    android:text="@string/ayuda_contraseña"
+                    android:textColor="@color/blanco">
+
+                </TextView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_introducir_contra_repetir"
+
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="password_toggle"
+
+
+                    app:hintTextColor="@color/blanco"
+                    app:startIconDrawable="@drawable/repetir">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextRegisterRepeatPass"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/muli_light_italic"
+                        android:inputType="textPassword"
+                        android:textColor="@color/blanco" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvRegisterError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/errorSobreRojo"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnVolverLogin"
+                style="@style/botonTransparente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/botonLanzarLogin" />
+
+            <Button
+                android:id="@+id/buttonRegister"
+                style="@style/botonImportante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="signUp"
+
+
+                android:text="@string/registrarse" />
+
+        </LinearLayout>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

@@ -5,12 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidappgestionbasura.R;
@@ -29,10 +34,11 @@ import com.google.android.gms.tasks.Task;
 
 public class AuthActivity extends AppCompatActivity {
 
-    // controladors registro
-    private EditText etRegisterNombre,etRegisterEmail,etRegisterContra,etRegisterRepetirContra;
+
     // controladores login
     private EditText etLoginNombreEmail, etLoginContra;
+    private ImageView btnLanzarRatailer;
+    private Button btnLanzarRegistro;
 
     private LoadingDialogActivity loadingDialogActivity;
     private CasosUsoUsuario casosUsoUsuario;
@@ -43,7 +49,18 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //full window para la acividad
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
         setContentView(R.layout.activity_auth);
+
+        //la orientacion siempre será vertical
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setUp(savedInstanceState);
 
     }
@@ -56,12 +73,26 @@ public class AuthActivity extends AppCompatActivity {
     private void setUp(Bundle savedInstanceState) {
         casosUsoUsuario = new CasosUsoUsuario(this);
 
-        Button btnLanzarRegistro = findViewById(R.id.botonLanzarRegistro);
-        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
+        //codigo para volver al ratailer
+        btnLanzarRatailer = findViewById(R.id.botonRetrocederLogin);
+        btnLanzarRatailer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                lanzarRegistro(null);
+                lanzarActividadRatailer(null);
             }
         });
+
+        //codigo para volver al registro
+        btnLanzarRegistro = findViewById(R.id.botonLanzarRegistro);
+        btnLanzarRegistro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarActividadRegistro(null);
+            }
+        });
+
+        //subrayado del boton de volver al registro
+        btnLanzarRegistro = (Button) this.findViewById(R.id.botonLanzarRegistro);
+        btnLanzarRegistro.setPaintFlags(btnLanzarRegistro.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
 
 
         etLoginNombreEmail = findViewById(R.id.editTextLoginUsuarioEmail);
@@ -225,9 +256,18 @@ public class AuthActivity extends AppCompatActivity {
 
     /**
      * @author Sergi Sirvent
+     * METODO PARA LANZAR LA ACTIVIDAD RATAILER
+     **/
+    public void lanzarActividadRatailer(View view) {
+        Intent i = new Intent(this, RatailerStartUpScreenActivity.class);
+        startActivity(i);
+    }
+
+    /**
+     * @author Sergi Sirvent
      * METODO PARA LANZAR LA ACTIVIDAD REGISTRO
-     * **/
-    public void lanzarRegistro(View view){
+     **/
+    public void lanzarActividadRegistro(View view) {
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
     }

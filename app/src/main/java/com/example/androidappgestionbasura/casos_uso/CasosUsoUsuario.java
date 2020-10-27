@@ -366,7 +366,7 @@ public class CasosUsoUsuario {
 
     }
     public void showAuthActivity() {
-        Intent intentHome = new Intent(actividad, AuthActivity.class);
+        Intent intentHome = new Intent(actividad, RatailerStartUpScreenActivity.class);
         actividad.startActivity(intentHome);
         actividad.finish();
     }
