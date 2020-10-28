@@ -1,4 +1,4 @@
-package com.example.androidappgestionbasura.presentacion;
+package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos;
 
 import android.content.Intent;
 import android.os.Bundle;

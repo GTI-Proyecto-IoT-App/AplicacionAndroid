@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentacion.FormularioCreacionBasura">
+    tools:context=".presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura">
 
     <LinearLayout
         android:layout_width="wrap_content"

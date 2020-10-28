@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentacion.FormularioCreacionBasura"/>
+        <activity android:name=".presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura"/>
         <activity android:name=".presentacion.VerfiyEmailActivity" />
         <activity
             android:name=".presentacion.SplashActivity"
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentacion.DispositivoDetallesActivity" />
+        <activity android:name=".presentacion.HomeActivityPackage.misdispositivos.DispositivoDetallesActivity" />
         <activity android:name=".presentacion.HomeActivityPackage.HomeActivity" />
         <activity android:name=".presentacion.AuthActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".presentacion.RegisterActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />

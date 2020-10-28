@@ -6,11 +6,10 @@ import android.content.Intent;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
-import com.example.androidappgestionbasura.presentacion.DispositivoDetallesActivity;
-import com.example.androidappgestionbasura.presentacion.FormularioCreacionBasura;
+import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.DispositivoDetallesActivity;
+import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_BORRAR;
-import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_EDITAR;
 
 public class CasosUsoDispositivo {
     private Activity actividad;

@@ -1,12 +1,14 @@
-package com.example.androidappgestionbasura.presentacion.HomeActivityPackage;
+package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispos
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.utility.Constantes;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,7 +44,6 @@ public class MisDispositivos extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.mis_dispositivos, container, false);
-
 
         activity = getActivity();
 
@@ -62,6 +64,14 @@ public class MisDispositivos extends Fragment {
         });
         emptyView = root.findViewById(R.id.textviewrecyclervacio);
 
+        FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDipositvo(null);
+            }
+        });
+
         comprobarVaciadoDispositivos();
 
 
@@ -70,6 +80,7 @@ public class MisDispositivos extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("RESULTDETALLES","ENTRO");
         if(codigoRespuestaCreacionDispositivo == requestCode && resultCode == RESULT_OK){
             int a = data.getIntExtra("Dispositivo creado",0);
             adaptador.notifyItemInserted(a);
@@ -113,9 +124,6 @@ public class MisDispositivos extends Fragment {
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
-
-
-
 
 
 }

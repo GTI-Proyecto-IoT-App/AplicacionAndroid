@@ -1,7 +1,8 @@
-package com.example.androidappgestionbasura.presentacion;
+package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -41,13 +42,15 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("RESULT DETALLES","ENTRO OK BORRADO");
+
         if (resultCode==RESULT_OK && requestCode==codigoRespuestaEdicionDispositivo){
 
             Intent intent = new Intent();
             intent.putExtra("Dispositivo a editar",pos);
             setResult(RESULT_RECYCLER_VIEW_EDITAR, intent);
             dispositivo = interfaceDispositivos.elemento(pos);
-           //Log.i("testAA", dispositivo.getNombre());
             findViewById(R.id.constraintDetallesDisp).invalidate();
             actualizaVistas();
         }
