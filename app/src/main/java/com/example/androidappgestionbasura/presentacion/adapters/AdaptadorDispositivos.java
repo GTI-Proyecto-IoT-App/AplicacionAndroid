@@ -15,18 +15,14 @@ import com.example.androidappgestionbasura.model.Dispositivo;
 public class AdaptadorDispositivos extends
         RecyclerView.Adapter<AdaptadorDispositivos.ViewHolder> {
 
-    protected InterfaceDispositivos interfaceDispositivos;
+    protected InterfaceDispositivos listaDispositivos;
 
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
-    }
 
     protected View.OnClickListener onClickListener;
-    private static RecyclerViewClickListener listener;
+
      // Lista de dispositivos a mostrar
-    public AdaptadorDispositivos(InterfaceDispositivos interfaceDispositivos, RecyclerViewClickListener listener) {
-        this.interfaceDispositivos = interfaceDispositivos;
-        this.listener = listener;
+    public AdaptadorDispositivos(InterfaceDispositivos listaDispositivos) {
+        this.listaDispositivos = listaDispositivos;
 
     }
     // Creamos el ViewHolder con la vista de un elemento sin personalizar
@@ -41,17 +37,19 @@ public class AdaptadorDispositivos extends
     // Usando como base el ViewHolder y lo personalizamos
     @Override
     public void onBindViewHolder(ViewHolder holder, int posicion) {
-        Dispositivo dispositivo = interfaceDispositivos.elemento(posicion);
+        Dispositivo dispositivo = listaDispositivos.elemento(posicion);
         holder.personaliza(dispositivo);
     }
     // Indicamos el número de elementos de la lista
     @Override public int getItemCount() {
 
-        return interfaceDispositivos.tamaño();
+        return listaDispositivos.tamaño();
     }
-    public interface RecyclerViewClickListener{
-        void onClick(View v, int position);
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
+
 
     //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
     public static class ViewHolder extends RecyclerView.ViewHolder  {
@@ -87,7 +85,9 @@ public class AdaptadorDispositivos extends
         }
 
 
+
     }
+
 
 }
 

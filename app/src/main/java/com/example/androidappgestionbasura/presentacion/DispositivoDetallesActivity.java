@@ -2,7 +2,6 @@ package com.example.androidappgestionbasura.presentacion;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -31,7 +30,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
        setContentView(R.layout.info_dispositivos);
         Bundle extras = getIntent().getExtras();
         pos = extras.getInt("pos", 0);
-        interfaceDispositivos = ((AppConf) getApplication()).interfaceDispositivos;
+        interfaceDispositivos = ((AppConf) getApplication()).listaDispositivos;
         usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
         dispositivo = interfaceDispositivos.elemento(pos);
         actualizaVistas();

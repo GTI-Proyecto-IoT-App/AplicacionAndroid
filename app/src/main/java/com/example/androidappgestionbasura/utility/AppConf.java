@@ -8,15 +8,12 @@ import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivos;
 
 public class AppConf extends Application {
-    private AdaptadorDispositivos.RecyclerViewClickListener listener;
 
     private Usuario usuario;
-    public InterfaceDispositivos interfaceDispositivos = new ListaDispositivos();
+    public InterfaceDispositivos listaDispositivos = new ListaDispositivos();
     @Override public void onCreate() {
         super.onCreate();
     }
-
-    public AdaptadorDispositivos adaptador = new AdaptadorDispositivos(interfaceDispositivos, listener );
 
 
     public Usuario getUsuario() {

@@ -29,7 +29,7 @@
 
     </style>
 
-    <style name="SplashScreen" parent="Theme.AppCompat.NoActionBar">
+    <style name="SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>

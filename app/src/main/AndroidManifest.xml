@@ -10,19 +10,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentacion.FormularioCreacionBasura"></activity>
+        <activity android:name=".presentacion.FormularioCreacionBasura"/>
         <activity android:name=".presentacion.VerfiyEmailActivity" />
         <activity
             android:name=".presentacion.SplashActivity"
-            android:theme="@style/SplashScreen"></activity>
-        <activity android:name=".presentacion.DispositivoDetallesActivity" />
-        <activity android:name=".presentacion.MisDispositivos">
+            android:theme="@style/SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentacion.DispositivoDetallesActivity" />
         <activity android:name=".presentacion.HomeActivityPackage.HomeActivity" />
         <activity android:name=".presentacion.AuthActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".presentacion.RegisterActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />

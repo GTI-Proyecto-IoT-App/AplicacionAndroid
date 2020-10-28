@@ -9,12 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
-import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.utility.AppConf;
-import com.example.androidappgestionbasura.utility.Constantes;
 
 public class FormularioCreacionBasura extends AppCompatActivity {
     private EditText nombre;
@@ -30,7 +28,7 @@ public class FormularioCreacionBasura extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_creacion_basura);
         Bundle extras = getIntent().getExtras();
-        interfaceDispositivos = ((AppConf) getApplication()).interfaceDispositivos;
+        interfaceDispositivos = ((AppConf) getApplication()).listaDispositivos;
         usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
 
         if(extras != null){

@@ -1,15 +1,18 @@
-package com.example.androidappgestionbasura.presentacion;
+package com.example.androidappgestionbasura.presentacion.HomeActivityPackage;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,30 +24,34 @@ import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.utility.Constantes;
 
+import static android.app.Activity.RESULT_OK;
 
-public class MisDispositivos extends AppCompatActivity  {
-    private InterfaceDispositivos interfaceDispositivos;
+
+public class MisDispositivos extends Fragment {
+    private InterfaceDispositivos listaDispositivos;
     private CasosUsoDispositivo usoDispositivo;
     private RecyclerView recyclerView;
     public AdaptadorDispositivos adaptador;
     private TextView emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
-    private AdaptadorDispositivos.RecyclerViewClickListener listener;
+    private Activity activity;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        View root = inflater.inflate(R.layout.mis_dispositivos, container, false);
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+        activity = getActivity();
 
-        super.onCreate(savedInstanceState);
-        interfaceDispositivos = ((AppConf) getApplication()).interfaceDispositivos;
-        usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
-        setContentView(R.layout.mis_dispositivos);
-        adaptador = ((AppConf) getApplication()).adaptador;
+        listaDispositivos = ((AppConf) activity.getApplication()).listaDispositivos;
+        usoDispositivo = new CasosUsoDispositivo(activity, listaDispositivos);
+        adaptador = new AdaptadorDispositivos(listaDispositivos);
 
-        recyclerView = findViewById(R.id.recyclerview_mis_dispositivos);
+        recyclerView = root.findViewById(R.id.recyclerview_mis_dispositivos);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
         recyclerView.setAdapter(adaptador);
         adaptador.setOnClickListener(new View.OnClickListener() {
@@ -53,21 +60,18 @@ public class MisDispositivos extends AppCompatActivity  {
                 lanzarVistaDispositivos(v);
             }
         });
-        emptyView = findViewById(R.id.textviewrecyclervacio);
+        emptyView = root.findViewById(R.id.textviewrecyclervacio);
 
         comprobarVaciadoDispositivos();
 
 
+        return root;
     }
-
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(codigoRespuestaCreacionDispositivo == requestCode && resultCode == RESULT_OK){
-
             int a = data.getIntExtra("Dispositivo creado",0);
-            Log.d("CREAR DISP", ""+a);
             adaptador.notifyItemInserted(a);
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_BORRAR){
             int a = data.getIntExtra("Dispositivo a borrar",0);
@@ -81,7 +85,7 @@ public class MisDispositivos extends AppCompatActivity  {
 
     public void comprobarVaciadoDispositivos() {
 
-        if (interfaceDispositivos.tamaño() == 0) {
+        if (listaDispositivos.tamaño() == 0) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
@@ -96,7 +100,7 @@ public class MisDispositivos extends AppCompatActivity  {
     }
 
     public void addDipositvo(View view) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(activity)
                 .setTitle("Vincular dispositivo")
                 .setMessage("Escanea su código QR")
 
