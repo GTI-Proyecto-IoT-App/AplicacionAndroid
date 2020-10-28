@@ -2,16 +2,16 @@ package com.example.androidappgestionbasura.model;
 
 import java.security.Key;
 
-public class Disp{
+public class Dispositivo {
     private String nombre;
     private String descripcion;
-    private int key;
+    private String key;
     private long fecha;
     private String foto;
     private TipoDispositivo tipo;
     private int numeroPersonasUso;
 
-    public Disp(String nombre, String descripcion, int key, TipoDispositivo tipo, int numeroPersonasUso) {
+    public Dispositivo(String key, String nombre, String descripcion, TipoDispositivo tipo, int numeroPersonasUso) {
 
         fecha = System.currentTimeMillis();
 
@@ -23,7 +23,7 @@ public class Disp{
 
     }
 
-    public Disp() {
+    public Dispositivo() {
         fecha = System.currentTimeMillis();
         tipo = TipoDispositivo.BASURA;
 
@@ -51,9 +51,9 @@ public class Disp{
         this.descripcion = descripcion;
     }
 
-    public int getKey() { return key; }
+    public String getKey() { return key; }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
