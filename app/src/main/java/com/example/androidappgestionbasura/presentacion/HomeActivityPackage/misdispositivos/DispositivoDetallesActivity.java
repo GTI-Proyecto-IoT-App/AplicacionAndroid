@@ -1,5 +1,6 @@
 package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.Dispositivo;
+import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.utility.AppConf;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_EDITAR;
@@ -42,8 +45,6 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d("RESULT DETALLES","ENTRO OK BORRADO");
 
         if (resultCode==RESULT_OK && requestCode==codigoRespuestaEdicionDispositivo){
 
@@ -75,14 +76,25 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     }
     @Override public boolean onOptionsItemSelected(MenuItem item) {
 
-
         switch (item.getItemId()) {
 
             case R.id.accion_editar:
                 usoDispositivo.editar(pos, codigoRespuestaEdicionDispositivo);
                 return true;
             case R.id.accion_borrar:
-                usoDispositivo.borrar(pos);
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.confirmar_borrado_titulo)
+                        .setMessage(R.string.confirmar_borrado_mensaje)
+
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                usoDispositivo.borrar(pos);
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

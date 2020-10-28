@@ -115,13 +115,13 @@ public class MisDispositivos extends Fragment {
                 .setTitle("Vincular dispositivo")
                 .setMessage("Escanea su código QR")
 
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         usoDispositivo.crear(TipoDispositivo.BASURA, codigoRespuestaCreacionDispositivo);
 
                     }
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }
 

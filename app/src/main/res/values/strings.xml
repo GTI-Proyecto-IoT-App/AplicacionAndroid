@@ -57,10 +57,9 @@
 
     <string name="comprobar">Comprobar</string>
     <string name="volver_a_enviar">Volver a enviar</string>
-
-
-
-
+    <string name="confirmar_borrado_titulo">Borrar dispositivo</string>
+    <string name="confirmar_borrado_mensaje">¿Estás seguro que deseas borrar este dispositivo?</string>
+    <string name="error_creacion_basura_numero_no_cero">Debe ser mínimo 1</string>
 
 
 </resources>

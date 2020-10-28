@@ -2,9 +2,11 @@ package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.mis
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
@@ -13,12 +15,12 @@ import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.utility.AppConf;
+import com.example.androidappgestionbasura.utility.Utility;
 
 public class FormularioCreacionBasura extends AppCompatActivity {
     private EditText nombre;
     private EditText descripcion;
     private EditText numero;
-    private InterfaceDispositivos interfaceDispositivos;
     private CasosUsoDispositivo usoDispositivo;
     private int pos;
     private Dispositivo dispositivo;
@@ -28,18 +30,17 @@ public class FormularioCreacionBasura extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_creacion_basura);
         Bundle extras = getIntent().getExtras();
-        interfaceDispositivos = ((AppConf) getApplication()).listaDispositivos;
-        usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
+        InterfaceDispositivos listaDispositivos = ((AppConf) getApplication()).listaDispositivos;
+        usoDispositivo = new CasosUsoDispositivo(this, listaDispositivos);
 
         if(extras != null){
 
             pos = extras.getInt("pos", 0);
             edicion = true;
-            dispositivo = interfaceDispositivos.elemento(pos);
+            dispositivo = listaDispositivos.elemento(pos);
             actualizaVistas();
-
         }
-
+        recueprarEstadoSiEsPosible(savedInstanceState);
     }
 
     public void actualizaVistas() {
@@ -98,13 +99,16 @@ public class FormularioCreacionBasura extends AppCompatActivity {
 
         if(nombreBasura.length()==0){
             isValid = false;
-            nombre.setError("Este campo no puede estar vacío");
+            Utility.setError(this,getString(R.string.error_campo_vacio),nombre);
         }
          if(numeroBasura.length()==0){
             isValid = false;
-            numero.setError(getString(R.string.error_campo_vacio));
+             Utility.setError(this,getString(R.string.error_campo_vacio),numero);
 
-        }
+        }else if(Integer.parseInt(numeroBasura)==0){
+             isValid = false;
+             Utility.setError(this,getString(R.string.error_creacion_basura_numero_no_cero),numero);
+         }
 
         return isValid;
 
@@ -113,4 +117,31 @@ public class FormularioCreacionBasura extends AppCompatActivity {
     public void lanzarCancelar(View view){
         finish();
     }
+
+
+
+    // guardar estado
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+        outState.putString("dispositivo-nombre",nombre.getText().toString());
+        outState.putString("dispositivo-desc",descripcion.getText().toString());
+        outState.putString("dispositivo-num",numero.getText().toString());
+
+    }
+
+    // recuperar estado
+    private void recueprarEstadoSiEsPosible(Bundle savedInstanceState) {
+
+        if(savedInstanceState!=null){
+            nombre.setText(savedInstanceState.getString("dispositivo-nombre",""));
+            descripcion.setText(savedInstanceState.getString("dispositivo-desc",""));
+            numero.setText(savedInstanceState.getString("dispositivo-num",""));
+
+        }
+
+    }
+
+
 }
