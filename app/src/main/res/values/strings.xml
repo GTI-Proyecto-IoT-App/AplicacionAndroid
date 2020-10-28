@@ -60,6 +60,8 @@
     <string name="confirmar_borrado_titulo">Borrar dispositivo</string>
     <string name="confirmar_borrado_mensaje">¿Estás seguro que deseas borrar este dispositivo?</string>
     <string name="error_creacion_basura_numero_no_cero">Debe ser mínimo 1</string>
+    <string name="vincular_disposiivo_dialog_title">Vincular dispositivo</string>
+    <string name="vincular_disposiivo_dialog_mensaje">Escanea su código QR</string>
 
 
 </resources>

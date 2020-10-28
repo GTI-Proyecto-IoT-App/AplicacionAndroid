@@ -84,6 +84,7 @@ public class MisDispositivos extends Fragment {
         if(codigoRespuestaCreacionDispositivo == requestCode && resultCode == RESULT_OK){
             int a = data.getIntExtra("Dispositivo creado",0);
             adaptador.notifyItemInserted(a);
+            comprobarVaciadoDispositivos();
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_BORRAR){
             int a = data.getIntExtra("Dispositivo a borrar",0);
             adaptador.notifyItemRemoved(a);
@@ -112,8 +113,8 @@ public class MisDispositivos extends Fragment {
 
     public void addDipositvo(View view) {
         new AlertDialog.Builder(activity)
-                .setTitle("Vincular dispositivo")
-                .setMessage("Escanea su código QR")
+                .setTitle(getString(R.string.vincular_disposiivo_dialog_title))
+                .setMessage(getString(R.string.vincular_disposiivo_dialog_mensaje))
 
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
