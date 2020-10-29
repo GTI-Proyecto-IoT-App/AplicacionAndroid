@@ -5,8 +5,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/MyActionBar</item>
+        <item name="android:statusBarColor">@color/blanco</item>
+    </style>
 
 
+<!--    ACTION BAR STYLE-->
+    <style name="MyActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@color/blanco</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
     </style>
 
 
@@ -26,6 +33,11 @@
     </style>
 
 
+    <style name="no_action_bar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -35,7 +47,6 @@
         <item name="android:windowBackground">@drawable/splashscreen</item>
 
     </style>
-
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>

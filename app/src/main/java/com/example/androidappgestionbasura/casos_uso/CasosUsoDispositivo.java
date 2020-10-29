@@ -1,13 +1,18 @@
 package com.example.androidappgestionbasura.casos_uso;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.util.Pair;
+import android.view.View;
 
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
+import com.example.androidappgestionbasura.presentacion.AuthActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.DispositivoDetallesActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura;
+import com.example.androidappgestionbasura.presentacion.RatailerStartUpScreenActivity;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_BORRAR;
 
@@ -20,10 +25,18 @@ public class CasosUsoDispositivo {
 
     }
     // OPERACIONES BÁSICAS
-    public void mostrar(int pos, int codigoRespuestaEdicionDispositivo) {
+    public void mostrar(View cardViewAMostrar, int pos, int codigoRespuestaEdicionDispositivo) {
+
         Intent i = new Intent(actividad, DispositivoDetallesActivity.class);
+        Pair[] pairs = new Pair[1];
+
+        pairs[0] = new Pair<View,String>(cardViewAMostrar,"transicion_card_item_dispositivos");
+
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(actividad,pairs);
+
+
         i.putExtra("pos", pos);
-        actividad.startActivityForResult(i, codigoRespuestaEdicionDispositivo);
+        actividad.startActivityForResult(i, codigoRespuestaEdicionDispositivo,options.toBundle());
     }
     public void crear(TipoDispositivo tipo, int codigoRespuestaCreacionDispositivo){
         switch(tipo) {

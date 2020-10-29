@@ -5,13 +5,13 @@
 
     <item
         android:id="@+id/accion_editar"
-        android:title="editar"
+        android:title="@string/editar"
         android:icon="@android:drawable/ic_menu_edit"
         android:orderInCategory="30"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/accion_borrar"
-        android:title="borrar"
+        android:title="@string/borrar"
         android:icon="@android:drawable/ic_menu_delete"
         android:orderInCategory="40"
         app:showAsAction="ifRoom"/>

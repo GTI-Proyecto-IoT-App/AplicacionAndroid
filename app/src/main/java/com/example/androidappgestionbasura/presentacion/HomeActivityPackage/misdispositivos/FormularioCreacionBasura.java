@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
@@ -29,6 +30,8 @@ public class FormularioCreacionBasura extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_creacion_basura);
+
+
         Bundle extras = getIntent().getExtras();
         InterfaceDispositivos listaDispositivos = ((AppConf) getApplication()).listaDispositivos;
         usoDispositivo = new CasosUsoDispositivo(this, listaDispositivos);

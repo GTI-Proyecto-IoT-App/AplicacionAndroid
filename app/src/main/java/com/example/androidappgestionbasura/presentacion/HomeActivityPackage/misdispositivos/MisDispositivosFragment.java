@@ -6,15 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +48,7 @@ public class MisDispositivosFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.mis_dispositivos, container, false);
+        setHasOptionsMenu(true);
 
         activity = getActivity();
 
@@ -72,11 +77,14 @@ public class MisDispositivosFragment extends Fragment {
             }
         });
 
+
         comprobarVaciadoDispositivos();
+
 
 
         return root;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -108,7 +116,7 @@ public class MisDispositivosFragment extends Fragment {
 
 
     public void lanzarVistaDispositivos(View view) {
-        usoDispositivo.mostrar(recyclerView.getChildAdapterPosition(view),codigoRespuestaEdicionDispositivo);
+        usoDispositivo.mostrar(view,recyclerView.getChildAdapterPosition(view),codigoRespuestaEdicionDispositivo);
     }
 
     public void addDipositvo(View view) {
@@ -124,6 +132,18 @@ public class MisDispositivosFragment extends Fragment {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+
+        inflater.inflate(R.menu.menu_dispositivos, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+
     }
 
 

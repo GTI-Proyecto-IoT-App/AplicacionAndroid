@@ -63,6 +63,8 @@
     <string name="vincular_disposiivo_dialog_title">Vincular dispositivo</string>
     <string name="vincular_disposiivo_dialog_mensaje">Escanea su código QR</string>
     <string name="title_notificaciones">Notificaciones</string>
+    <string name="borrar">Eliminar</string>
+    <string name="editar">Editar</string>
 
 
 </resources>
