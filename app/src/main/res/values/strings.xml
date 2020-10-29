@@ -65,6 +65,8 @@
     <string name="title_notificaciones">Notificaciones</string>
     <string name="borrar">Eliminar</string>
     <string name="editar">Editar</string>
+    <string name="cerrar_sesion_mensaje">¿Desas cerrar sesión?</string>
+    <string name="crear">Crear</string>
 
 
 </resources>

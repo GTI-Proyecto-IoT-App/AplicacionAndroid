@@ -37,7 +37,8 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
         dispositivo = interfaceDispositivos.elemento(pos);
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();// poner el boton de volver atrás
+        actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setElevation(0);
 
         actualizaVistas();
@@ -61,6 +62,9 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     }
 
     public void actualizaVistas() {
+
+        setTitle(dispositivo.getNombre());
+
         TextView nombre = findViewById(R.id.nombre);
         nombre.setText(dispositivo.getNombre());
         ImageView logo_tipo = findViewById(R.id.foto);
@@ -98,6 +102,10 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                         .setNegativeButton(android.R.string.cancel, null)
                         .show();
 
+                return true;
+
+            case android.R.id.home://boton de volver a atras
+                this.finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

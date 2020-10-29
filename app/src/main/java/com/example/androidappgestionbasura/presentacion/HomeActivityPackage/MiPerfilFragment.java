@@ -54,7 +54,7 @@ public class MiPerfilFragment extends Fragment {
     public void cerrar_sesion(View v){
         new AlertDialog.Builder(getContext())
                 .setTitle(getString(R.string.cerrar_sesion))
-                .setMessage("¿Desas cerrar sesión?")
+                .setMessage(R.string.cerrar_sesion_mensaje)
                 .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
