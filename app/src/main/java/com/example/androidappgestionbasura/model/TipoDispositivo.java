@@ -4,9 +4,9 @@ import com.example.androidappgestionbasura.R;
 
 public enum TipoDispositivo {
 
-    BASURA ("Basura", R.drawable.basura),
-    ELECTRICO ("Consumo eléctrico", R.drawable.electrico),
-    AGUA ("Agua", R.drawable.agua);
+    BASURA ("Basura", R.drawable.ic_smart_trash),
+    ELECTRICO ("Consumo eléctrico", R.drawable.ic_control_de_energia),
+    AGUA ("Agua", R.drawable.ic_control_de_agua);
 
     private final String texto;
     private final int recurso;

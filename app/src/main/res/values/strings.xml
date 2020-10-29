@@ -63,6 +63,17 @@
     <string name="vincular_disposiivo_dialog_title">Vincular dispositivo</string>
     <string name="vincular_disposiivo_dialog_mensaje">Escanea su código QR</string>
     <string name="title_notificaciones">Notificaciones</string>
+    <string name="borrar">Eliminar</string>
+    <string name="editar">Editar</string>
+    <string name="cerrar_sesion_mensaje">¿Desas cerrar sesión?</string>
+    <string name="crear">Crear</string>
+    <string name="tituloFormularioAddBasura">Vincular cubo inteligente</string>
+    <string name="botonAceptar">Aceptar</string>
+    <string name="botonCancelar">Cancelar</string>
+    <string name="hint_nombre_formulario_basura">Nombre del dispositivo</string>
+    <string name="hint_descripcion_basura">Descripción del dispositivo</string>
+    <string name="hint_numero_personas_uso_basura">Número de personas que lo usan</string>
+    <string name="mi_dispositivos_empty">No tienes ningún dispositivo. Vincula un nuevo dispositivo</string>
 
 
 </resources>

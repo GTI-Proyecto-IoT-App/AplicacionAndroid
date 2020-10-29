@@ -1,12 +1,16 @@
 package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
@@ -29,21 +33,27 @@ public class FormularioCreacionBasura extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_creacion_basura);
+
         Bundle extras = getIntent().getExtras();
         InterfaceDispositivos listaDispositivos = ((AppConf) getApplication()).listaDispositivos;
         usoDispositivo = new CasosUsoDispositivo(this, listaDispositivos);
 
-        if(extras != null){
 
+        if(extras != null){
+            setTitle(getString(R.string.editar));
             pos = extras.getInt("pos", 0);
             edicion = true;
             dispositivo = listaDispositivos.elemento(pos);
             actualizaVistas();
+        }else{
+            setTitle(getString(R.string.tituloFormularioAddBasura));
         }
         recueprarEstadoSiEsPosible(savedInstanceState);
     }
 
     public void actualizaVistas() {
+
+
         nombre = findViewById(R.id.editTextNombreBasura);
         nombre.setText(dispositivo.getNombre());
 
@@ -142,6 +152,4 @@ public class FormularioCreacionBasura extends AppCompatActivity {
         }
 
     }
-
-
 }

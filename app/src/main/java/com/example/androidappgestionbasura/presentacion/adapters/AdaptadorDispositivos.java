@@ -53,7 +53,7 @@ public class AdaptadorDispositivos extends
 
     //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
     public static class ViewHolder extends RecyclerView.ViewHolder  {
-        public TextView nombre, descripcion, numero;
+        public TextView nombre, descripcion;
         public ImageView foto;
 
 
@@ -61,7 +61,6 @@ public class AdaptadorDispositivos extends
             super(itemView);
             nombre = itemView.findViewById(R.id.nombre);
             descripcion = itemView.findViewById(R.id.descripcion);
-            numero = itemView.findViewById(R.id.textViewNumeroPersonas);
             foto = itemView.findViewById(R.id.foto);
 
 
@@ -71,13 +70,12 @@ public class AdaptadorDispositivos extends
         public void personaliza(Dispositivo dispositivo) {
             nombre.setText(dispositivo.getNombre());
             descripcion.setText(dispositivo.getDescripcion());
-            numero.setText(String.valueOf(dispositivo.getNumeroPersonasUso()));
-            int id = R.drawable.basura;
+            int id = R.drawable.ic_smart_trash;
             switch(dispositivo.getTipo()) {
                 case BASURA:
-                    id = R.drawable.basura; break;
-                case ELECTRICO: id = R.drawable.electrico; break;
-                case AGUA: id = R.drawable.agua; break;
+                    id = R.drawable.ic_smart_trash; break;
+                case ELECTRICO: id = R.drawable.ic_control_de_energia; break;
+                case AGUA: id = R.drawable.ic_control_de_agua; break;
                  }
             foto.setImageResource(id);
             foto.setScaleType(ImageView.ScaleType.FIT_END);

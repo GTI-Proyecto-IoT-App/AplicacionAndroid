@@ -170,7 +170,7 @@
 
             <Button
                 android:id="@+id/buttonRegister"
-                style="@style/botonImportante"
+                style="@style/botonImportanteSobrePrimario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="signUp"

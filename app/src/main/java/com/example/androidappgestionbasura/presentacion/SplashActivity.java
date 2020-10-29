@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
@@ -33,6 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         final CasosUsoUsuario casosUsoUsuario = new CasosUsoUsuario(this);
         // comprobamos si tenemos guarda una UID en preferences
         if(casosUsoUsuario.isUsuarioLogeado()){
