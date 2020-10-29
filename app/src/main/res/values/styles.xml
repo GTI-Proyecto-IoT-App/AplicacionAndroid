@@ -32,10 +32,22 @@
         <item name="android:tint">@color/colorAccent</item>
     </style>
 
+    <style name="LoginTextInputLayoutStyleSobreBlanco" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="startIconTint">@color/negro</item>
+        <item name="endIconTint">@color/negro</item>
+        <item name="boxStrokeColor">@color/negro</item>
+        <item name="android:textColorHint">@color/negro</item>
+        <item name="colorControlNormal">@color/negro</item>
+        <item name="colorControlActivated">@color/negro </item>
+        <item name="colorOnSurface">@color/negro</item>
+        <item name="android:tint">@color/negro</item>
+    </style>
 
-    <style name="no_action_bar">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+
+    <style name="no_action_bar" parent="Theme.MaterialComponents.Light" >
+        <item name = "android:windowActionBar">false</item>
+        <item name = "android:windowNoTitle">true</item>
     </style>
 
     <style name="SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
@@ -51,10 +63,18 @@
         <item name="android:windowBackground">@drawable/splashscreen</item>
     </style>
 
-    <style name="botonImportante">
+    <style name="botonImportanteSobrePrimario">
         <item name="android:textAllCaps">true</item>
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:background">@color/fondoBotonImportante</item>
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:padding">12dp</item>
+
+    </style>
+    <style name="botonImportante">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/blanco</item>
         <item name="android:padding">12dp</item>
 

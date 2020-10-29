@@ -33,7 +33,7 @@
 
         <Button
             android:id="@+id/btnCheckEmailVerified"
-            style="@style/botonImportante"
+            style="@style/botonImportanteSobrePrimario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
@@ -43,7 +43,7 @@
 
         <Button
             android:id="@+id/btnSendEmailVerification"
-            style="@style/botonImportante"
+            style="@style/botonImportanteSobrePrimario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
