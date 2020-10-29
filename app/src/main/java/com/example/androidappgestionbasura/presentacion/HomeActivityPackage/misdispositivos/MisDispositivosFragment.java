@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,7 @@ public class MisDispositivosFragment extends Fragment {
     private CasosUsoDispositivo usoDispositivo;
     private RecyclerView recyclerView;
     public AdaptadorDispositivos adaptador;
-    private TextView emptyView;
+    private LinearLayout emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
     private Activity activity;

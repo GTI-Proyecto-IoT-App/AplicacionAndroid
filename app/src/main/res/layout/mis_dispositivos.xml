@@ -20,14 +20,39 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <TextView
+
+    <LinearLayout
         android:id="@+id/textviewrecyclervacio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No tienes ningún dispositivo."
-        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_gravity="center"
+            app:tint="@color/textoSecundario"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/ic_ningun_dispostivios"
+            />
+        <TextView
+            android:id="@+id/tvTitleEmpty"
+            android:textSize="26sp"
+            android:paddingTop="16dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mi_dispositivos_empty"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,6 +64,7 @@
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/colorPrimary"
         android:tint="@color/blanco"
         android:src="@drawable/ic_add_24px" />
 

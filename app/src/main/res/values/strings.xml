@@ -67,6 +67,7 @@
     <string name="editar">Editar</string>
     <string name="cerrar_sesion_mensaje">¿Desas cerrar sesión?</string>
     <string name="crear">Crear</string>
+    <string name="mi_dispositivos_empty">No tienes ningún dispositivo. Vincula un nuevo dispositivo</string>
 
 
 </resources>
