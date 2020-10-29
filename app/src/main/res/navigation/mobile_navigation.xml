@@ -7,12 +7,23 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.MisDispositivos"
+        android:name="com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.MisDispositivosFragment"
         android:label="@string/title_mis_dispostivos" />
+
+
+    <fragment
+        android:id="@+id/navigation_notificaciones"
+        android:name="com.example.androidappgestionbasura.presentacion.HomeActivityPackage.NotifiacionesFragment"
+        android:label="@string/title_notificaciones"
+        tools:layout="@layout/fragment_mis_notificaciones" />
 
     <fragment
         android:id="@+id/navigation_perfil"
         android:name="com.example.androidappgestionbasura.presentacion.HomeActivityPackage.MiPerfilFragment"
         android:label="@string/title_perfil"
         tools:layout="@layout/fragment_mi_perfil" />
+
+
+
+
 </navigation>
