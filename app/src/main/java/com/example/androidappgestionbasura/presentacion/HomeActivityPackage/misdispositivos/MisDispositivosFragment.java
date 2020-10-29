@@ -30,7 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import static android.app.Activity.RESULT_OK;
 
 
-public class MisDispositivos extends Fragment {
+public class MisDispositivosFragment extends Fragment {
     private InterfaceDispositivos listaDispositivos;
     private CasosUsoDispositivo usoDispositivo;
     private RecyclerView recyclerView;
