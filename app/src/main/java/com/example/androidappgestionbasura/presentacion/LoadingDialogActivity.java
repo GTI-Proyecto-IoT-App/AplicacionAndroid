@@ -3,6 +3,7 @@ package com.example.androidappgestionbasura.presentacion;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.widget.ProgressBar;
 
 import com.example.androidappgestionbasura.R;
 

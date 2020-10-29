@@ -21,6 +21,7 @@ import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
+import com.example.androidappgestionbasura.utility.Utility;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -175,17 +176,18 @@ public class RegisterActivity extends AppCompatActivity {
         //-----------------------------------------
         // nombre no vacio
         if(nombre.length()==0){
-            etRegisterNombre.setError(getString(R.string.error_campo_vacio));
+            Utility.setError(this,getString(R.string.error_campo_vacio),etRegisterNombre);
+
             isValid = false;
         }
         //-----------------------------------------
         // email no vacio y email valido
         if(email.length()==0){
-            etRegisterEmail.setError(getString(R.string.error_campo_vacio));
+            Utility.setError(this,getString(R.string.error_campo_vacio),etRegisterEmail);
             isValid = false;
         }
         else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            etRegisterEmail.setError(getString(R.string.error_correo_valido));
+            Utility.setError(this,getString(R.string.error_correo_valido),etRegisterEmail);
             isValid = false;
         }
 

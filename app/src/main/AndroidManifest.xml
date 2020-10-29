@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura"/>
         <activity android:name=".presentacion.VerfiyEmailActivity" />
         <activity
             android:name=".presentacion.SplashActivity"
@@ -21,11 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".presentacion.HomeActivity" />
-        <activity android:name=".presentacion.AuthActivity" />
-        <activity android:name=".presentacion.RegisterActivity"  />
-        <activity android:name=".presentacion.RatailerStartUpScreenActivity"  />
+        <activity android:name=".presentacion.HomeActivityPackage.misdispositivos.DispositivoDetallesActivity" />
+        <activity android:name=".presentacion.HomeActivityPackage.HomeActivity" />
+        <activity android:name=".presentacion.AuthActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity android:name=".presentacion.RegisterActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity android:name=".presentacion.RatailerStartUpScreenActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
 
         <meta-data
             android:name="preloaded_fonts"

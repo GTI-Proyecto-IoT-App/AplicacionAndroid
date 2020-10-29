@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -229,15 +230,16 @@ public class AuthActivity extends AppCompatActivity {
         String contra = etLoginContra.getText().toString();
 
         if(email.length()==0){
+
             isValid = false;
-            etLoginNombreEmail.setError(getString(R.string.error_campo_vacio));
+            Utility.setError(this,getString(R.string.error_campo_vacio),etLoginNombreEmail);
         }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            etLoginNombreEmail.setError(getString(R.string.error_correo_valido));
+            Utility.setError(this,getString(R.string.error_correo_valido),etLoginNombreEmail);
             isValid = false;
         }
 
         if(contra.length()==0){
-            etLoginContra.setError(getString(R.string.error_campo_vacio));
+            etLoginContra.setError(getString(R.string.error_campo_vacio),getDrawable(R.drawable.ic_alert));
         }
 
         return isValid;
