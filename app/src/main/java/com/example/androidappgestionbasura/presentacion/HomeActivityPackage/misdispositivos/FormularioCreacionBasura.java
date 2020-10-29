@@ -46,7 +46,7 @@ public class FormularioCreacionBasura extends AppCompatActivity {
             dispositivo = listaDispositivos.elemento(pos);
             actualizaVistas();
         }else{
-            setTitle(getString(R.string.crear));
+            setTitle(getString(R.string.tituloFormularioAddBasura));
         }
         recueprarEstadoSiEsPosible(savedInstanceState);
     }

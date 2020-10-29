@@ -64,15 +64,10 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     public void actualizaVistas() {
 
         setTitle(dispositivo.getNombre());
-
-        TextView nombre = findViewById(R.id.nombre);
-        nombre.setText(dispositivo.getNombre());
         ImageView logo_tipo = findViewById(R.id.foto);
         logo_tipo.setImageResource(dispositivo.getTipo().getRecurso());
         TextView descripcion = findViewById(R.id.descripcion);
         descripcion.setText(dispositivo.getDescripcion());
-        TextView numero = findViewById(R.id.textViewNumeroPersonas);
-        numero.setText(String.valueOf(dispositivo.getNumeroPersonasUso()));
 
 
 
