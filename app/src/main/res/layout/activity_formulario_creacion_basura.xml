@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura">
+
+    <LinearLayout  android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blanco"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/logoBasura"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:padding="16dp"
+                app:srcCompat="@drawable/ic_smart_trash" />
+
+
+        </LinearLayout>
+
+
+        <EditText
+            android:hint="@string/hint_nombre_formulario_basura"
+            android:id="@+id/editTextNombreBasura"
+            android:layout_width="match_parent"
+            android:textColorHint="@color/textoSecundario"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/editTextDescripcionBasura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="@null"
+            android:layout_marginVertical="8dp"
+            android:textColorHint="@color/textoSecundario"
+            android:hint="@string/hint_descripcion_basura"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:padding="16dp" />
+
+
+
+        <EditText
+            android:id="@+id/editTextNumeroPersonasBasura"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="8dp"
+            android:textColorHint="@color/textoSecundario"
+            android:hint="@string/hint_numero_personas_uso_basura"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:padding="16dp" />
+
+
+        <Button
+            android:id="@+id/buttonBasuraAceptar"
+            style="@style/botonImportante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="lanzarAceptar"
+            android:text="@string/botonAceptar" />
+
+        <Button
+            android:id="@+id/buttonBasuraCancelar"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="lanzarCancelar"
+            android:text="@string/botonCancelar" />
+
+    </LinearLayout>
+</ScrollView>

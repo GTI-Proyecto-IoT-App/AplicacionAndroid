@@ -1,10 +1,93 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTheme">@style/MyActionBar</item>
+        <item name="android:statusBarColor">@color/blanco</item>
     </style>
+
+
+<!--    ACTION BAR STYLE-->
+    <style name="MyActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:background">@color/blanco</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+    </style>
+
+
+
+
+    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="startIconTint">@color/blanco</item>
+        <item name="endIconTint">@color/blanco</item>
+        <item name="boxStrokeColor">@color/blanco</item>
+        <item name="android:textColorHint">@color/blanco</item>
+        <item name="colorControlNormal">@color/blanco</item>
+        <item name="colorControlActivated">@color/blanco </item>
+        <item name="colorOnSurface">@color/blanco</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="android:tint">@color/colorAccent</item>
+    </style>
+
+    <style name="LoginTextInputLayoutStyleSobreBlanco" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="startIconTint">@color/negro</item>
+        <item name="endIconTint">@color/negro</item>
+        <item name="boxStrokeColor">@color/negro</item>
+        <item name="android:textColorHint">@color/negro</item>
+        <item name="colorControlNormal">@color/negro</item>
+        <item name="colorControlActivated">@color/negro </item>
+        <item name="colorOnSurface">@color/negro</item>
+        <item name="android:tint">@color/negro</item>
+    </style>
+
+
+    <style name="no_action_bar" parent="Theme.MaterialComponents.Light" >
+        <item name = "android:windowActionBar">false</item>
+        <item name = "android:windowNoTitle">true</item>
+    </style>
+
+    <style name="SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- below one -->
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+
+    </style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splashscreen</item>
+    </style>
+
+    <style name="botonImportanteSobrePrimario">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@color/fondoBotonImportante</item>
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:padding">12dp</item>
+
+    </style>
+    <style name="botonImportante">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:padding">12dp</item>
+
+    </style>
+
+    <style name="botonTransparente" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">@color/transparente</item>
+        <item name="android:textColor">@color/blanco</item>
+        <item name="android:fontFamily">@font/muli_light_italic</item>
+    </style>
+
+
 
 </resources>

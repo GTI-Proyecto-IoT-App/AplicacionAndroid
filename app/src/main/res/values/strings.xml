@@ -1,3 +1,79 @@
 <resources>
     <string name="app_name">AndroidBasuraApp</string>
+
+    <!--    SPLASH-->
+    <string name="splash_subtitle">Hecho por GTI Grupo 2/3</string>
+
+    <string name="slogan_app">Analiza tu vivienda</string>
+
+    <!--    AUTH ACTIVITY-->
+    <string name="registrarse">Registrarse</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+
+    <string name="hint_introducir_nombre">Nombre de usuario</string>
+    <string name="hint_introducir_email">Correo electrónico</string>
+    <string name="hint_introducir_contra">Contraseña</string>
+    <string name="hint_introducir_contra_repetir">Repetir la contraseña</string>
+
+    <string name="botonLanzarRegistrar">Crear una cuenta</string>
+    <string name="botonLanzarLogin">Ya tengo una cuenta</string>
+    <string name="googleInicioSesion">Inicia Sesión con Google</string>
+
+    <string name="ayuda_contraseña">8 o mas caracteres, con al menos una mayuscula, una minuscula, un número y un caracter especial </string>
+
+    <!--VERIFY LAYOUT-->
+
+    <string name="yaQuedaMenos">Ya queda menos…</string>
+    <string name="explicacion">Debes verificar  tu cuenta a través del email que te  hemos enviado</string>
+    <string name="subtitle_retailer_start_up">Inicia sesión o Regístrate para continuar</string>
+    <string name="volver_inicio_verify">Volver al Inicio</string>
+
+    <!--LOADING LAYOUT-->
+    <string name="carga_titulo">Cargando…</string>
+
+    <!--    HOME ACTIVITY-->
+    <string name="bienvenido">Bienvenido</string>
+    <string name="title_activity_prueba_bottom">MainActivity</string>
+    <string name="title_mis_dispostivos">Mis dispositivos</string>
+    <string name="title_perfil">Mi perfil</string>
+
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+
+
+
+    <!--    ERRORES-->
+    <string name="error_campo_vacio">Este campo no puede estar vacío</string>
+    <string name="error_correo_valido">Introduce un correo valido</string>
+    <string name="error_contr_no_valida">Contraseña no valida</string>
+    <string name="error_contra_no_igual">Las contraseñas deben coincidir</string>
+    <string name="error_login_usuario_no_existe">El correo electrónico o contraseña son incorrectos</string>
+    <string name="error_email_no_verficado">El correo $ no está verificado, compruebe su bandeja de entrada para verificar su correo.\nSi no le llegó pulse en \"Renviar correo de verificación\"</string>
+    <string name="error_de_conexion">Error de conexión. Verifique su conexión a Internet y vuelva a intentarlo.</string>
+    <string name="error_inesperado">Error inesperado, intentlo más tarde</string>
+    <string name="error_verificar_usuario_no_existe">"No existe un usuario con correo: "</string>
+    <string name="message_correct_correo_verificacion_enviado">"Correo enviado a:  "</string>
+    <string name="error_correo_verificacion_enviado">"No se pudo enviar el correo a: "</string>
+    <string name="error_email_already_in_use">La dirección de correo electrónico ya está siendo utilizada por otra cuenta.</string>
+
+    <string name="comprobar">Comprobar</string>
+    <string name="volver_a_enviar">Volver a enviar</string>
+    <string name="confirmar_borrado_titulo">Borrar dispositivo</string>
+    <string name="confirmar_borrado_mensaje">¿Estás seguro que deseas borrar este dispositivo?</string>
+    <string name="error_creacion_basura_numero_no_cero">Debe ser mínimo 1</string>
+    <string name="vincular_disposiivo_dialog_title">Vincular dispositivo</string>
+    <string name="vincular_disposiivo_dialog_mensaje">Escanea su código QR</string>
+    <string name="title_notificaciones">Notificaciones</string>
+    <string name="borrar">Eliminar</string>
+    <string name="editar">Editar</string>
+    <string name="cerrar_sesion_mensaje">¿Desas cerrar sesión?</string>
+    <string name="crear">Crear</string>
+    <string name="tituloFormularioAddBasura">Vincular cubo inteligente</string>
+    <string name="botonAceptar">Aceptar</string>
+    <string name="botonCancelar">Cancelar</string>
+    <string name="hint_nombre_formulario_basura">Nombre del dispositivo</string>
+    <string name="hint_descripcion_basura">Descripción del dispositivo</string>
+    <string name="hint_numero_personas_uso_basura">Número de personas que lo usan</string>
+    <string name="mi_dispositivos_empty">No tienes ningún dispositivo. Vincula un nuevo dispositivo</string>
+
+
 </resources>
