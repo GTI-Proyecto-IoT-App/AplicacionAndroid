@@ -52,6 +52,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     // google auth
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    //codigo QR
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
 
     // material design
 
