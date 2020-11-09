@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
+import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivos;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
@@ -70,7 +71,7 @@ public class MisDispositivosFragment extends Fragment {
         });
         emptyView = root.findViewById(R.id.textviewrecyclervacio);
 
-        FloatingActionButton fab = root.findViewById(R.id.floatingActionButton);
+        FloatingActionButton fab = root.findViewById(R.id.buttonQR);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +128,8 @@ public class MisDispositivosFragment extends Fragment {
 
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        usoDispositivo.crear(TipoDispositivo.BASURA, codigoRespuestaCreacionDispositivo);
+                        startActivity(new Intent(getContext(), ScanCodeActivity.class));
+                        //usoDispositivo.crear(TipoDispositivo.BASURA, codigoRespuestaCreacionDispositivo);
 
                     }
                 })

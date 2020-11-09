@@ -40,7 +40,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
     @Override
     public void handleResult(Result result) {
 
-        MisDispositivos.textViewResult.setText(result.getText());
+       // MisDispositivos.textViewResult.setText(result.getText());
         onBackPressed();
     }
 

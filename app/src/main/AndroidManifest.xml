@@ -27,6 +27,7 @@
         <activity android:name=".presentacion.AuthActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".presentacion.RegisterActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".presentacion.RatailerStartUpScreenActivity" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity android:name=".presentacion.ScanCodeActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
