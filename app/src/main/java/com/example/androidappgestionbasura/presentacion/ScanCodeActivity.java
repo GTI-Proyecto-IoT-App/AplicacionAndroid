@@ -1,6 +1,7 @@
 package com.example.androidappgestionbasura.presentacion;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -39,9 +40,12 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
     @Override
     public void handleResult(Result result) {
+        Intent intent = new Intent();
+        intent.putExtra("codigoQR",result.getText());
+        setResult(RESULT_OK,intent);
+        finish();//va a mis dispositivos
 
-       // MisDispositivos.textViewResult.setText(result.getText());
-        onBackPressed();
+
     }
 
     @Override

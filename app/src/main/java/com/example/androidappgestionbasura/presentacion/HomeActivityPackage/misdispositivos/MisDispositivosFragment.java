@@ -46,6 +46,7 @@ public class MisDispositivosFragment extends Fragment {
     private LinearLayout emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
+    private final int codigoRespuestaCodigoQR = 1789;
     private Activity activity;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -103,6 +104,9 @@ public class MisDispositivosFragment extends Fragment {
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_EDITAR){
             int a = data.getIntExtra("Dispositivo a editar",0);
             adaptador.notifyItemChanged(a);
+        }else if (codigoRespuestaCodigoQR == requestCode && resultCode == RESULT_OK){
+            String idDispositivo = data.getStringExtra("codigoQR");
+            gestionarDispositivo(idDispositivo);
         }
     }
 
@@ -129,11 +133,7 @@ public class MisDispositivosFragment extends Fragment {
 
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        startActivity(new Intent(getContext(), ScanCodeActivity.class));
-                        //usoDispositivo.crear(TipoDispositivo.BASURA, codigoRespuestaCreacionDispositivo);
-                        String idDispositivo = "25:6F:28:A0:90:80%basura";
-                        gestionarDispositivo(idDispositivo);
-
+                        startActivityForResult(new Intent(getContext(), ScanCodeActivity.class), codigoRespuestaCodigoQR);
 
                     }
                 })
@@ -154,9 +154,6 @@ public class MisDispositivosFragment extends Fragment {
     }
 
     private void gestionarDispositivo(final String idDispositivo){
-        String[] tmp = idDispositivo.split("%");
-        String macDispositivo = tmp[0];
-        String tipoDispositivo = tmp[1];
         usoDispositivo.dipositivoYaVinculado(idDispositivo, casosUsoUsuario.getUsuario().getUid(), new CallBack() {
             @Override
             public void onSuccess(Object object) {
