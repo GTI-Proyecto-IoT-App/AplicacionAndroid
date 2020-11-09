@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispos
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.utility.Constantes;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class MisDispositivos extends AppCompatActivity  {
@@ -31,6 +33,8 @@ public class MisDispositivos extends AppCompatActivity  {
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
     private AdaptadorDispositivos.RecyclerViewClickListener listener;
+    public static TextView textViewResult;
+    FloatingActionButton buttonQR;
 
 
     @Override
@@ -41,7 +45,8 @@ public class MisDispositivos extends AppCompatActivity  {
         usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
         setContentView(R.layout.mis_dispositivos);
         adaptador = ((AppConf) getApplication()).adaptador;
-
+        textViewResult = (TextView)findViewById(R.id.textViewResult);
+        buttonQR = (FloatingActionButton)findViewById(R.id.buttonQR);
         recyclerView = findViewById(R.id.recyclerview_mis_dispositivos);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -102,7 +107,7 @@ public class MisDispositivos extends AppCompatActivity  {
 
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        usoDispositivo.crear(TipoDispositivo.BASURA, codigoRespuestaCreacionDispositivo);
+                        startActivity(new Intent(getApplicationContext(),ScanCodeActivity.class));
 
                     }
                 })
