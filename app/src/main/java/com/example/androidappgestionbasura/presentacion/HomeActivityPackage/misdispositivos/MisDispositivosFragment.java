@@ -4,34 +4,35 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
+import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.model.Dispositivo;
+import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivos;
 import com.example.androidappgestionbasura.utility.AppConf;
-import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.utility.Constantes;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,6 +42,7 @@ public class MisDispositivosFragment extends Fragment {
     private CasosUsoDispositivo usoDispositivo;
     private RecyclerView recyclerView;
     public AdaptadorDispositivos adaptador;
+    private CasosUsoUsuario casosUsoUsuario;
     private LinearLayout emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
@@ -78,7 +80,7 @@ public class MisDispositivosFragment extends Fragment {
                 addDipositvo(null);
             }
         });
-
+        casosUsoUsuario = new CasosUsoUsuario(getActivity());
 
         comprobarVaciadoDispositivos();
 
@@ -90,7 +92,6 @@ public class MisDispositivosFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("RESULTDETALLES","ENTRO");
         if(codigoRespuestaCreacionDispositivo == requestCode && resultCode == RESULT_OK){
             int a = data.getIntExtra("Dispositivo creado",0);
             adaptador.notifyItemInserted(a);
@@ -130,6 +131,9 @@ public class MisDispositivosFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         startActivity(new Intent(getContext(), ScanCodeActivity.class));
                         //usoDispositivo.crear(TipoDispositivo.BASURA, codigoRespuestaCreacionDispositivo);
+                        String idDispositivo = "25:6F:28:A0:90:80%basura";
+                        gestionarDispositivo(idDispositivo);
+
 
                     }
                 })
@@ -147,6 +151,65 @@ public class MisDispositivosFragment extends Fragment {
 
 
 
+    }
+
+    private void gestionarDispositivo(final String idDispositivo){
+        String[] tmp = idDispositivo.split("%");
+        String macDispositivo = tmp[0];
+        String tipoDispositivo = tmp[1];
+        usoDispositivo.dipositivoYaVinculado(idDispositivo, casosUsoUsuario.getUsuario().getUid(), new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                if (object == null) {
+
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), Html.fromHtml("<font color=\"#808080\">El dispositivo ya esta vinculado</font>"), Snackbar.LENGTH_LONG).show();
+                }else{
+                    Dispositivo dispositivo = (Dispositivo) object;
+                    if (dispositivo.getUsuariosVinculados().isEmpty()){
+                        usoDispositivo.vincular(TipoDispositivo.BASURA, idDispositivo,codigoRespuestaCreacionDispositivo);
+                    }else{
+                        dispositivo.getUsuariosVinculados().add(casosUsoUsuario.getUsuario().getUid());
+                        usoDispositivo.add(dispositivo);
+                    }
+
+                }
+            }
+            @Override
+            public void onError(Object object) {
+                Snackbar.make(getActivity().findViewById(android.R.id.content), Html.fromHtml("<font color=\"#808080\">No se ha podido encontrar el dispositivo</font>"), Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+        /*
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Dispositivo d  = new Dispositivo();
+
+        d.setNombre("basura ter");
+        d.setDescripcion("situada en el comedor");
+        d.setNumeroPersonasUso(4);
+        d.getUsuariosVinculados().add(db.collection("usuarios").document(casosUsoUsuario.getUsuario().getUid()));
+        //d.getDispVinculados().get(0).getId() -> devuelve la UID del usuario
+        //db.collection("dispositivos").document(stringDispositivo).set(d);
+
+        db.collection("dispositivos").document(idDispositivo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+
+                   Dispositivo dispositivo = task.getResult().toObject(Dispositivo.class);
+                    Log.e("Firebase", "Usuario 0 vinculado: "+dispositivo.getUsuariosVinculados().get(0).getId());
+
+                } else {
+                    Log.e("Firebase", "Error al leer", task.getException());
+                   // escuchador.onRespuesta(null);
+                }
+            }
+        });
+
+        if (usoDispositivo.dipositivoYaVinculado(macDispositivo, casosUsoUsuario.getUsuario().getUid())){
+
+        };
+*/
     }
 
 

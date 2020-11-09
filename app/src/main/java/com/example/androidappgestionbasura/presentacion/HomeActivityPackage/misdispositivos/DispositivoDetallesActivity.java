@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
+import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.utility.AppConf;
@@ -24,6 +25,7 @@ import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECY
 public class DispositivoDetallesActivity extends AppCompatActivity {
     private InterfaceDispositivos interfaceDispositivos;
     private CasosUsoDispositivo usoDispositivo;
+    private CasosUsoUsuario casosUsoUsuario;
     private int pos;
     private Dispositivo dispositivo;
     private final int codigoRespuestaEdicionDispositivo = 7777;
@@ -36,7 +38,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         interfaceDispositivos = ((AppConf) getApplication()).listaDispositivos;
         usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
         dispositivo = interfaceDispositivos.elemento(pos);
-
+        casosUsoUsuario = new CasosUsoUsuario(this);
         ActionBar actionBar = getSupportActionBar();// poner el boton de volver atrás
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setElevation(0);
@@ -90,7 +92,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                usoDispositivo.borrar(pos);
+                                usoDispositivo.borrar(pos, casosUsoUsuario.getUsuario().getUid());
 
                             }
                         })
