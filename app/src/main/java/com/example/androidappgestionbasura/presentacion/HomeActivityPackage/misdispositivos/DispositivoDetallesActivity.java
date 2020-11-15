@@ -18,14 +18,16 @@ import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.Dispositivo;
+import com.example.androidappgestionbasura.model.Usuario;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_EDITAR;
 
 public class DispositivoDetallesActivity extends AppCompatActivity {
-    private InterfaceDispositivos interfaceDispositivos;
+    private AdaptadorDispositivosFirestoreUI adaptador;
     private CasosUsoDispositivo usoDispositivo;
-    private CasosUsoUsuario casosUsoUsuario;
+    private Usuario usuario;
     private int pos;
     private Dispositivo dispositivo;
     private final int codigoRespuestaEdicionDispositivo = 7777;
@@ -35,10 +37,10 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
        setContentView(R.layout.info_dispositivos);
         Bundle extras = getIntent().getExtras();
         pos = extras.getInt("pos", 0);
-        interfaceDispositivos = ((AppConf) getApplication()).listaDispositivos;
-        usoDispositivo = new CasosUsoDispositivo(this, interfaceDispositivos);
-        dispositivo = interfaceDispositivos.elemento(pos);
-        casosUsoUsuario = new CasosUsoUsuario(this);
+        adaptador = ((AppConf) getApplication()).adaptador;
+        usoDispositivo = new CasosUsoDispositivo(this);
+        dispositivo =adaptador.getItem(pos);
+        usuario =((AppConf) getApplication()).getUsuario();
         ActionBar actionBar = getSupportActionBar();// poner el boton de volver atrás
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setElevation(0);
@@ -57,7 +59,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("Dispositivo a editar",pos);
             setResult(RESULT_RECYCLER_VIEW_EDITAR, intent);
-            dispositivo = interfaceDispositivos.elemento(pos);
+            dispositivo = adaptador.getItem(pos);
             findViewById(R.id.constraintDetallesDisp).invalidate();
             actualizaVistas();
         }
@@ -92,7 +94,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                usoDispositivo.borrar(pos, casosUsoUsuario.getUsuario().getUid());
+                                usoDispositivo.borrar(pos, usuario.getUid());
 
                             }
                         })

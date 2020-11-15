@@ -29,19 +29,23 @@ import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivos;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Constantes;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import static android.app.Activity.RESULT_OK;
 
 
 public class MisDispositivosFragment extends Fragment {
-    private InterfaceDispositivos listaDispositivos;
     private CasosUsoDispositivo usoDispositivo;
     private RecyclerView recyclerView;
-    public AdaptadorDispositivos adaptador;
+    public static AdaptadorDispositivosFirestoreUI adaptador;
+
     private CasosUsoUsuario casosUsoUsuario;
     private LinearLayout emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
@@ -56,17 +60,15 @@ public class MisDispositivosFragment extends Fragment {
         setHasOptionsMenu(true);
 
         activity = getActivity();
-
-        listaDispositivos = ((AppConf) activity.getApplication()).listaDispositivos;
-        usoDispositivo = new CasosUsoDispositivo(activity, listaDispositivos);
-        adaptador = new AdaptadorDispositivos(listaDispositivos);
+        usoDispositivo = new CasosUsoDispositivo(activity);
+        casosUsoUsuario = new CasosUsoUsuario(getActivity());
 
         recyclerView = root.findViewById(R.id.recyclerview_mis_dispositivos);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-
+        adaptador = ((AppConf) activity.getApplication()).adaptador;
         recyclerView.setAdapter(adaptador);
-        adaptador.setOnClickListener(new View.OnClickListener() {
+        adaptador.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 lanzarVistaDispositivos(v);
@@ -81,12 +83,8 @@ public class MisDispositivosFragment extends Fragment {
                 addDipositvo(null);
             }
         });
-        casosUsoUsuario = new CasosUsoUsuario(getActivity());
 
         comprobarVaciadoDispositivos();
-
-
-
         return root;
     }
 
@@ -94,16 +92,16 @@ public class MisDispositivosFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(codigoRespuestaCreacionDispositivo == requestCode && resultCode == RESULT_OK){
-            int a = data.getIntExtra("Dispositivo creado",0);
-            adaptador.notifyItemInserted(a);
+            //int a = data.getIntExtra("Dispositivo creado",0);
+            //adaptador.notifyItemInserted(a);
             comprobarVaciadoDispositivos();
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_BORRAR){
             int a = data.getIntExtra("Dispositivo a borrar",0);
-            adaptador.notifyItemRemoved(a);
+            //adaptador.notifyItemRemoved(a);
             comprobarVaciadoDispositivos();
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_EDITAR){
             int a = data.getIntExtra("Dispositivo a editar",0);
-            adaptador.notifyItemChanged(a);
+            //adaptador.notifyItemChanged(a);
         }else if (codigoRespuestaCodigoQR == requestCode && resultCode == RESULT_OK){
             String idDispositivo = data.getStringExtra("codigoQR");
             gestionarDispositivo(idDispositivo);
@@ -112,7 +110,7 @@ public class MisDispositivosFragment extends Fragment {
 
     public void comprobarVaciadoDispositivos() {
 
-        if (listaDispositivos.tamaño() == 0) {
+        if (adaptador.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
             emptyView.setVisibility(View.VISIBLE);
         } else {
@@ -134,7 +132,6 @@ public class MisDispositivosFragment extends Fragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         startActivityForResult(new Intent(getContext(), ScanCodeActivity.class), codigoRespuestaCodigoQR);
-
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
@@ -145,12 +142,8 @@ public class MisDispositivosFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-
         inflater.inflate(R.menu.menu_dispositivos, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
-
-
     }
 
     private void gestionarDispositivo(final String idDispositivo){
@@ -168,7 +161,6 @@ public class MisDispositivosFragment extends Fragment {
                         dispositivo.getUsuariosVinculados().add(casosUsoUsuario.getUsuario().getUid());
                         usoDispositivo.add(dispositivo);
                     }
-
                 }
             }
             @Override
@@ -176,38 +168,21 @@ public class MisDispositivosFragment extends Fragment {
                 Snackbar.make(getActivity().findViewById(android.R.id.content), Html.fromHtml("<font color=\"#808080\">No se ha podido encontrar el dispositivo</font>"), Snackbar.LENGTH_LONG).show();
             }
         });
+    }
 
-        /*
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Dispositivo d  = new Dispositivo();
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        adaptador.startListening();
 
-        d.setNombre("basura ter");
-        d.setDescripcion("situada en el comedor");
-        d.setNumeroPersonasUso(4);
-        d.getUsuariosVinculados().add(db.collection("usuarios").document(casosUsoUsuario.getUsuario().getUid()));
-        //d.getDispVinculados().get(0).getId() -> devuelve la UID del usuario
-        //db.collection("dispositivos").document(stringDispositivo).set(d);
-
-        db.collection("dispositivos").document(idDispositivo).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-
-                   Dispositivo dispositivo = task.getResult().toObject(Dispositivo.class);
-                    Log.e("Firebase", "Usuario 0 vinculado: "+dispositivo.getUsuariosVinculados().get(0).getId());
-
-                } else {
-                    Log.e("Firebase", "Error al leer", task.getException());
-                   // escuchador.onRespuesta(null);
-                }
-            }
-        });
-
-        if (usoDispositivo.dipositivoYaVinculado(macDispositivo, casosUsoUsuario.getUsuario().getUid())){
-
-        };
-*/
     }
 
 
+    //TODO XXX revisar cuando llamar al metodo stop listening. Actualemten si haces click 2 veces en la pestaña de mis dispositivos se destruye
+    //no sirve utilizar el onDestroy, direcatmente cuando cambimos de fragmente siempre se muere
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adaptador.stopListening();
+    }
 }

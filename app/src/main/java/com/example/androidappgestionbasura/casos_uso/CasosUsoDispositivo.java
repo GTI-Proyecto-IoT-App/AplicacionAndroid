@@ -12,19 +12,21 @@ import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.DispositivoDetallesActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
+import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Utility;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_BORRAR;
 
 public class CasosUsoDispositivo {
     private Activity actividad;
-    private InterfaceDispositivos dispositivos;
+    private AdaptadorDispositivosFirestoreUI adaptador;
     private final DispositivosRepositoryImpl dispositivosRepository;// leer editar dispositivos
 
-    public CasosUsoDispositivo(Activity actividad, InterfaceDispositivos dispositivos) {
+    public CasosUsoDispositivo(Activity actividad) {
         this.actividad = actividad;
-        this.dispositivos = dispositivos;
+        adaptador = ((AppConf) actividad.getApplication()).adaptador;
         dispositivosRepository = new DispositivosRepositoryImpl();
 
     }
@@ -61,12 +63,11 @@ public class CasosUsoDispositivo {
      * @param id
      */
     public void borrar(final int id, String idUsuario) {
-        Dispositivo disp = dispositivos.elemento(id);
+        Dispositivo disp = adaptador.getItem(id);
         disp.getUsuariosVinculados().remove(idUsuario);
         dispositivosRepository.updateDispositivo(disp.getId(), Utility.objectToHashMap(disp), new CallBack() {
             @Override
             public void onSuccess(Object object) {
-                dispositivos.borrar(id);
                 Intent intent = new Intent();
                 intent.putExtra("Dispositivo a borrar",id);
                 actividad.setResult(RESULT_RECYCLER_VIEW_BORRAR,intent);
@@ -92,11 +93,11 @@ public class CasosUsoDispositivo {
     }
 
     //TODO revisar funcionalida de actualizar el recycler view
-   public int add (final Dispositivo dispositivo){
+   public void add (final Dispositivo dispositivo){
        dispositivosRepository.updateDispositivo(dispositivo.getId(), Utility.objectToHashMap(dispositivo), new CallBack() {
            @Override
            public void onSuccess(Object object) {
-               dispositivos.añade(dispositivo);
+
            }
 
            @Override
@@ -104,9 +105,6 @@ public class CasosUsoDispositivo {
 
            }
        });
-
-       return dispositivos.tamaño()-1;
-
    }
 
     /**
@@ -119,7 +117,6 @@ public class CasosUsoDispositivo {
         dispositivosRepository.updateDispositivo(dispositivo.getId(), Utility.objectToHashMap(dispositivo), new CallBack() {
             @Override
             public void onSuccess(Object object) {
-                dispositivos.actualiza(id, dispositivo);
             }
 
             @Override

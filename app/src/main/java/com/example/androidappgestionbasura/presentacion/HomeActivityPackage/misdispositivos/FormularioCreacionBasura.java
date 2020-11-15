@@ -20,6 +20,8 @@ import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
+import com.example.androidappgestionbasura.model.Usuario;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Utility;
 
@@ -29,10 +31,11 @@ public class FormularioCreacionBasura extends AppCompatActivity {
     private EditText numero;
 
     private CasosUsoDispositivo usoDispositivo;
-    private CasosUsoUsuario usoUsuario;
+    private Usuario usuario;
     private int pos;
     private Dispositivo dispositivo;
     private  boolean edicion;//si viene de edicion sera true
+    private AdaptadorDispositivosFirestoreUI adaptador;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,25 +45,22 @@ public class FormularioCreacionBasura extends AppCompatActivity {
         numero = findViewById(R.id.editTextNumeroPersonasBasura);
 
         Bundle extras = getIntent().getExtras();
-        InterfaceDispositivos listaDispositivos = ((AppConf) getApplication()).listaDispositivos;
-        usoDispositivo = new CasosUsoDispositivo(this, listaDispositivos);
-        usoUsuario = new CasosUsoUsuario(this);
+        adaptador = ((AppConf) getApplication()).adaptador;
+        usoDispositivo = new CasosUsoDispositivo(this);
+        usuario = ((AppConf) getApplication()).getUsuario();
 
         if(extras != null){
             pos = extras.getInt("pos", -1);
             if (pos==-1){
-                Log.i("INFO-JC", "Creando dispositvo");
                 setTitle(getString(R.string.tituloFormularioAddBasura));
                 dispositivo = new Dispositivo();
                 dispositivo.setId(extras.getString("idDispositivo"));
             }else{
                 edicion = true;
                 setTitle(getString(R.string.editar));
-                dispositivo = listaDispositivos.elemento(pos);
+                dispositivo = adaptador.getItem(pos);
                 actualizaVistas();
             }
-        }else{
-            Log.i("INFO-JC", "NO se han encotrado extras");
         }
         recueprarEstadoSiEsPosible(savedInstanceState);
     }
@@ -94,8 +94,9 @@ public class FormularioCreacionBasura extends AppCompatActivity {
             }else{
 
                 Intent intent = new Intent();
-                dispositivo.getUsuariosVinculados().add(usoUsuario.getUsuario().getUid());
-                intent.putExtra("Dispositivo creado",usoDispositivo.add(dispositivo));
+                dispositivo.getUsuariosVinculados().add(usuario.getUid());
+                usoDispositivo.add(dispositivo);
+                //intent.putExtra("Dispositivo creado",usoDispositivo.add(dispositivo));
 
                 setResult(RESULT_OK,intent);
                 finish();//va a mis dispositivos

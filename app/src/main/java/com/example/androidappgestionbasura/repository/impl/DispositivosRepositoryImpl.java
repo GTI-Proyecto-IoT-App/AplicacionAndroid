@@ -45,6 +45,9 @@ public class DispositivosRepositoryImpl extends FirebaseRepository implements Di
 
 
     }
+    public Query getDispositvosVinculados(String uidUsuario){
+        return dispositivosCollectionReference.whereArrayContains("usuariosVinculados",uidUsuario);
+    }
 
 
 
@@ -58,7 +61,7 @@ public class DispositivosRepositoryImpl extends FirebaseRepository implements Di
                 @Override
                 public void onSuccess(Object object) {
                     if (object != null) {
-                        // creamos un dispositvo y lo enviamos por el callbacl
+                        // creamos un dispositvo y lo enviamos por el callback
                         Dispositivo dispositivo = getDataFromQuerySnapshot(object);
                         callback.onSuccess(dispositivo);
 
