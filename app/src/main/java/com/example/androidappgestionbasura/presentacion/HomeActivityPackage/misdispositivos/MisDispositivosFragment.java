@@ -28,15 +28,11 @@ import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
-import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivos;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Constantes;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,7 +40,7 @@ import static android.app.Activity.RESULT_OK;
 public class MisDispositivosFragment extends Fragment {
     private CasosUsoDispositivo usoDispositivo;
     private RecyclerView recyclerView;
-    public static AdaptadorDispositivosFirestoreUI adaptador;
+    private AdaptadorDispositivosFirestoreUI adaptador;
 
     private CasosUsoUsuario casosUsoUsuario;
     private LinearLayout emptyView;
@@ -83,8 +79,9 @@ public class MisDispositivosFragment extends Fragment {
                 addDipositvo(null);
             }
         });
-
         comprobarVaciadoDispositivos();
+        adaptador.startListening();
+
         return root;
     }
 
@@ -171,15 +168,10 @@ public class MisDispositivosFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         adaptador.startListening();
-
     }
-
-
-    //TODO XXX revisar cuando llamar al metodo stop listening. Actualemten si haces click 2 veces en la pestaña de mis dispositivos se destruye
-    //no sirve utilizar el onDestroy, direcatmente cuando cambimos de fragmente siempre se muere
     @Override
     public void onDestroyView() {
         super.onDestroyView();

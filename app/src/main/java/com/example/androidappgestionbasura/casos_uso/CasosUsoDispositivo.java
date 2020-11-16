@@ -136,6 +136,7 @@ public class CasosUsoDispositivo {
             public void onSuccess(Object object) {
 
                 if (object == null){
+                    //no se ha encontrado el dispositivo
                     callBack.onError(null);
                 }else {
                     Dispositivo dispositivo = (Dispositivo) object;

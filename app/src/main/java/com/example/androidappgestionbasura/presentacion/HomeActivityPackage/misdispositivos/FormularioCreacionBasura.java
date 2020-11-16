@@ -97,7 +97,7 @@ public class FormularioCreacionBasura extends AppCompatActivity {
                 dispositivo.getUsuariosVinculados().add(usuario.getUid());
                 usoDispositivo.add(dispositivo);
                 //intent.putExtra("Dispositivo creado",usoDispositivo.add(dispositivo));
-
+                adaptador.setEmpty(false);
                 setResult(RESULT_OK,intent);
                 finish();//va a mis dispositivos
             }

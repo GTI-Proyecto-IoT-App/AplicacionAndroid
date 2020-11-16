@@ -25,6 +25,7 @@ public class AdaptadorDispositivosFirestoreUI extends FirestoreRecyclerAdapter<D
             @NonNull FirestoreRecyclerOptions<Dispositivo> options, Context context){
         super(options);
         this.context = context;
+        empty = true;
     }
     @Override public ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
@@ -54,6 +55,11 @@ public class AdaptadorDispositivosFirestoreUI extends FirestoreRecyclerAdapter<D
 
     public boolean isEmpty() {
         return empty;
+    }
+
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
     }
 
     public void setEmpty(boolean empty) {
