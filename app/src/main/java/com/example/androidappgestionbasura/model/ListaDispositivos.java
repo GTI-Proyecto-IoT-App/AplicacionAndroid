@@ -1,5 +1,8 @@
 package com.example.androidappgestionbasura.model;
 
+import com.example.androidappgestionbasura.model.Dispositivo;
+import com.example.androidappgestionbasura.model.InterfaceDispositivos;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -298,6 +299,24 @@ public class FirebaseRepository {
         });
     }
 
+
+    protected final void readCollection(final CollectionReference collectionReference, final CallBack callBack) {
+        collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot document = task.getResult();
+                    if (document != null) {
+                        callBack.onSuccess(document);
+                    } else {
+                        callBack.onSuccess(null);
+                    }
+                } else {
+                    callBack.onError(task.getException());
+                }
+            }
+        });
+    }
     /**
      * Data fetch listener with Document reference
      *

@@ -74,6 +74,7 @@
     <string name="hint_descripcion_basura">Descripción del dispositivo</string>
     <string name="hint_numero_personas_uso_basura">Número de personas que lo usan</string>
     <string name="mi_dispositivos_empty">No tienes ningún dispositivo. Vincula un nuevo dispositivo</string>
+    <string name="title_basuras_municipales_cercanas">Contenedores Cercanos</string>
 
 
 </resources>

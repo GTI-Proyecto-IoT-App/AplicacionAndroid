@@ -5,15 +5,11 @@ import android.app.Application;
 import androidx.annotation.Nullable;
 
 import com.example.androidappgestionbasura.model.Dispositivo;
-import com.example.androidappgestionbasura.model.InterfaceDispositivos;
-import com.example.androidappgestionbasura.model.ListaDispositivos;
 import com.example.androidappgestionbasura.model.Usuario;
-import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivos;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;

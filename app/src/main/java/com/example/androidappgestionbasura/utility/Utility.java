@@ -1,6 +1,8 @@
 package com.example.androidappgestionbasura.utility;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,10 +10,14 @@ import android.util.Log;
 import android.widget.EditText;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class Utility {
 
@@ -44,5 +50,16 @@ public class Utility {
             }
         }
         return map;
+    }
+
+    public static void permissionAsk(String permission, Activity activity, int requestCode) {
+
+        int grant = ContextCompat.checkSelfPermission(activity, permission);
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            String[] permission_list = new String[1];
+            permission_list[0] = permission;
+            ActivityCompat.requestPermissions(activity, permission_list, requestCode);
+        }
+
     }
 }
