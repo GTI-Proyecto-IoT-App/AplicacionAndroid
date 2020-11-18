@@ -1,5 +1,7 @@
 package com.example.androidappgestionbasura.model.basura_municipal;
 
+import com.example.androidappgestionbasura.model.GeoPunto;
+
 import java.util.ArrayList;
 import java.util.List;
 

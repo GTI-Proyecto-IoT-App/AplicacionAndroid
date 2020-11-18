@@ -10,7 +10,7 @@ import com.example.androidappgestionbasura.model.GeoPunto;
 public class BasuraMunicipal {
 
     private GeoPunto posicion;
-    private TipoBasuraMunicipal tipoBasuraMunicipal;
+    private TipoBasuraMunicipal tipo;
 
 
     public BasuraMunicipal(){
@@ -19,15 +19,15 @@ public class BasuraMunicipal {
 
     public BasuraMunicipal(GeoPunto posicion, TipoBasuraMunicipal tipoBasuraMunicipal) {
         this.posicion = posicion;
-        this.tipoBasuraMunicipal = tipoBasuraMunicipal;
+        this.tipo = tipoBasuraMunicipal;
     }
 
-    public TipoBasuraMunicipal getTipoBasuraMunicipal() {
-        return tipoBasuraMunicipal;
+    public TipoBasuraMunicipal getTipo() {
+        return tipo;
     }
 
-    public void setTipoBasuraMunicipal(TipoBasuraMunicipal tipoBasuraMunicipal) {
-        this.tipoBasuraMunicipal = tipoBasuraMunicipal;
+    public void setTipo(TipoBasuraMunicipal tipo) {
+        this.tipo = tipo;
     }
 
     public GeoPunto getPosicion() {

@@ -2,6 +2,7 @@ package com.example.androidappgestionbasura.datos.firebase;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.DocumentsContract;
 import android.util.Log;
 
 import com.example.androidappgestionbasura.R;
@@ -31,9 +32,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.model.Document;
 
 import java.util.Map;
 
@@ -304,15 +307,10 @@ public class FirebaseRepository {
         collectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    QuerySnapshot document = task.getResult();
-                    if (document != null) {
-                        callBack.onSuccess(document);
-                    } else {
-                        callBack.onSuccess(null);
-                    }
-                } else {
-                    callBack.onError(task.getException());
+                if(task.isSuccessful()){
+                  callBack.onSuccess(task.getResult());
+                }else{
+                    callBack.onError(null);
                 }
             }
         });

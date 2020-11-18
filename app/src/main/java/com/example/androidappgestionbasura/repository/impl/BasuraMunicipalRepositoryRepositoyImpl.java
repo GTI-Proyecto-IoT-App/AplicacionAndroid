@@ -61,11 +61,7 @@ public class BasuraMunicipalRepositoryRepositoyImpl extends FirebaseRepository i
         ListaBasurasMunicipales basuras = new ListaBasurasMunicipales();
         QuerySnapshot queryDocumentSnapshots = (QuerySnapshot) object;
         for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-            Log.d("TAG-PRUEBA","un snapshot");
-            Log.d("TAG-PRUEBA",snapshot.getData().toString());
-
             BasuraMunicipal basuraMunicipal = snapshot.toObject(BasuraMunicipal.class);
-//            Log.d("TAG-PRUEBA",basuraMunicipal.getTipoBasuraMunicipal().getTexto());
             basuras.getBasuraMunicipalList().add(basuraMunicipal);
         }
         return basuras;
