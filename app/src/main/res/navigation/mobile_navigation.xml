@@ -12,6 +12,13 @@
 
 
     <fragment
+        android:id="@+id/navigation_mapa_basuras_municipales"
+        android:name="com.example.androidappgestionbasura.presentacion.HomeActivityPackage.BasuraMunicipalesMapsFragment"
+        android:label="@string/title_basuras_municipales_cercanas"
+        tools:layout="@layout/fragment_basura_municipales_maps" />
+
+
+    <fragment
         android:id="@+id/navigation_notificaciones"
         android:name="com.example.androidappgestionbasura.presentacion.HomeActivityPackage.NotifiacionesFragment"
         android:label="@string/title_notificaciones"

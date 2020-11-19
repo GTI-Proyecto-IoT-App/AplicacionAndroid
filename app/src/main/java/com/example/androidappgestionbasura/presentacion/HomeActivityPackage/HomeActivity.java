@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_notificaciones, R.id.navigation_perfil)
+                R.id.navigation_home, R.id.navigation_mapa_basuras_municipales,R.id.navigation_notificaciones, R.id.navigation_perfil)
                 .build();
 
         NavHostFragment fragmentNavHost = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment) ;
@@ -90,7 +90,17 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // reenviar los activity result a los fragments hijo
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment !=null) {
 
-
-
+            List<Fragment> childFragments = navHostFragment.getChildFragmentManager().getFragments();
+            for (Fragment fragment: childFragments) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
