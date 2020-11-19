@@ -38,9 +38,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -50,12 +52,14 @@ import static android.content.Context.LOCATION_SERVICE;
  * @author Ruben Pardo
  * Fecha: 16/11/2020
  */
-public class BasuraMunicipalesMapsFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class BasuraMunicipalesMapsFragment extends Fragment
+        implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
 
+    private List<Marker> mMarkerArray;// para poder actualizar los iconos cuando se pulse
 
     public static final int PERMISION_CODE_LOCATION = 1235;
 
-    private static final long TIEMPO_MIN = 10 * 1000 ; // 10 segundos
+    private static final long TIEMPO_MIN = 5 * 1000 ; // 5 segundos
     private static final long DISTANCIA_MIN = 5; // 5 metros
 
     private LocationManager manejador;
@@ -74,12 +78,21 @@ public class BasuraMunicipalesMapsFragment extends Fragment implements OnMapRead
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        // ciclo de vida de las basuras municipales para no pedir cada vez
+        if(savedInstanceState!=null){
+            listaBasurasMunicipales = (ListaBasurasMunicipales) savedInstanceState.getSerializable("basuras-array");
+        }
+
         return inflater.inflate(R.layout.fragment_basura_municipales_maps, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // ciclo de vida de las basuras municipales para no pedir cada vez
+        if(savedInstanceState!=null){
+            listaBasurasMunicipales = (ListaBasurasMunicipales) savedInstanceState.getSerializable("basuras-array");
+        }
 
         basuraMunicipalRepository = new BasuraMunicipalRepositoryRepositoyImpl();
         mapView = (MapView) view.findViewById(R.id.map);
@@ -135,22 +148,27 @@ public class BasuraMunicipalesMapsFragment extends Fragment implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapa = googleMap;
+        mapa.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_json));
+        mapa.setOnMarkerClickListener(this);
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ultimaLocalizacion.getLatitude(), ultimaLocalizacion.getLongitude()),15.0F));
+        if(listaBasurasMunicipales==null || listaBasurasMunicipales.getBasuraMunicipalList().isEmpty()){
 
-        basuraMunicipalRepository.readBasurasMunicipales(new CallBack() {
-            @Override
-            public void onSuccess(Object object) {
-                listaBasurasMunicipales = (ListaBasurasMunicipales) object;
-                mostrarBasurasEnMapa();
-            }
+            basuraMunicipalRepository.readBasurasMunicipales(new CallBack() {
+                @Override
+                public void onSuccess(Object object) {
+                    listaBasurasMunicipales = (ListaBasurasMunicipales) object;
+                    mostrarBasurasEnMapa();
+                }
 
-            @Override
-            public void onError(Object object) {
-                // TODO MOSTRAR ERROR
-            }
-        });
+                @Override
+                public void onError(Object object) {
+                    // TODO MOSTRAR ERROR
+                }
+            });
 
-
-
+        }else{
+            mostrarBasurasEnMapa();
+        }
 
         actualizarPosicion();
 
@@ -163,10 +181,13 @@ public class BasuraMunicipalesMapsFragment extends Fragment implements OnMapRead
     }
 
     private void mostrarBasurasEnMapa() {
-
+        mMarkerArray =  new ArrayList<Marker>();
         for(BasuraMunicipal basuraMunicipal: listaBasurasMunicipales.getBasuraMunicipalList()){
             LatLng location = new LatLng(basuraMunicipal.getPosicion().getLat(),basuraMunicipal.getPosicion().getLng());
-            mapa.addMarker(new MarkerOptions().position(location).icon(Utility.bitmapDescriptorFromVector(getActivity(),basuraMunicipal.getTipo().getRecurso())));
+            Marker m = mapa.addMarker(new MarkerOptions().position(location).icon(Utility.bitmapDescriptorFromVector(getActivity(),basuraMunicipal.getTipo().getRecurso())));
+            m.setTag(listaBasurasMunicipales.getBasuraMunicipalList().indexOf(basuraMunicipal));
+            mMarkerArray.add(m);
+            // le ponemos el id como tag para que en el on click del marker podamos cogerlo y saber cual es
         }
 
 
@@ -174,7 +195,7 @@ public class BasuraMunicipalesMapsFragment extends Fragment implements OnMapRead
 
     private void actualizarPosicion() {
         LatLng current = new LatLng(ultimaLocalizacion.getLatitude(), ultimaLocalizacion.getLongitude());
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15.0F));
+        //mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15.0F));
     }
 
     // Métodos del ciclo de vida de la actividad
@@ -200,8 +221,33 @@ public class BasuraMunicipalesMapsFragment extends Fragment implements OnMapRead
     }
 
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("basuras-array",listaBasurasMunicipales);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(),19.3F));
+
+        for(Marker m : mMarkerArray){
+            if(marker.getTag() == m.getTag()){
+                BasuraMunicipal basuraAsociadaMarker = listaBasurasMunicipales.getBasuraMunicipalList().get((int)m.getTag());
+                m.setIcon(Utility.bitmapDescriptorFromVector(
+                        getActivity(),basuraAsociadaMarker.getTipo().getRecursoSeleccionado()));
+            }else{
+                BasuraMunicipal basuraAsociadaMarker = listaBasurasMunicipales.getBasuraMunicipalList().get((int)m.getTag());
+                m.setIcon(Utility.bitmapDescriptorFromVector(
+                        getActivity(),basuraAsociadaMarker.getTipo().getRecurso()));
+            }
+
+
+        }
 
 
 
 
+        return false;
+    }
 }

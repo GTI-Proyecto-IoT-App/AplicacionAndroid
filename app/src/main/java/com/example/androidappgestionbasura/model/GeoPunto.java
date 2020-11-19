@@ -1,11 +1,13 @@
 package com.example.androidappgestionbasura.model;
 
+import java.io.Serializable;
+
 /**
  * Almacena un punto geolocalizado
  * @author Ruben Pardo
  * Fecha: 16/11/2020
  */
-public class GeoPunto {
+public class GeoPunto implements Serializable{
 
     private double lat;
     private double lng;

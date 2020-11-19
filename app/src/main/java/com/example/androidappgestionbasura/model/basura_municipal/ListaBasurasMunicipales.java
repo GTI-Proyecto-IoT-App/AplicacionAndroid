@@ -2,10 +2,11 @@ package com.example.androidappgestionbasura.model.basura_municipal;
 
 import com.example.androidappgestionbasura.model.GeoPunto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaBasurasMunicipales {
+public class ListaBasurasMunicipales implements Serializable {
 
 
     List<BasuraMunicipal> basuraMunicipalList;
