@@ -40,7 +40,6 @@
     <string name="cerrar_sesion">Cerrar Sesión</string>
 
 
-
     <!--    ERRORES-->
     <string name="error_campo_vacio">Este campo no puede estar vacío</string>
     <string name="error_correo_valido">Introduce un correo valido</string>
@@ -75,6 +74,9 @@
     <string name="hint_numero_personas_uso_basura">Número de personas que lo usan</string>
     <string name="mi_dispositivos_empty">No tienes ningún dispositivo. Vincula un nuevo dispositivo</string>
     <string name="title_basuras_municipales_cercanas">Contenedores Cercanos</string>
+    <string name="title_huella_c02">Huella C02</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
