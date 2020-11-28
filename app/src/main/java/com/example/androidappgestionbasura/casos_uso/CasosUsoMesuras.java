@@ -1,10 +1,12 @@
 package com.example.androidappgestionbasura.casos_uso;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
+import com.example.androidappgestionbasura.model.mesuras_dispositivos.Mesura;
 import com.example.androidappgestionbasura.presentacion.LoadingDialogActivity;
 import com.example.androidappgestionbasura.repository.impl.MesurasRepositorioImpl;
 
@@ -36,6 +38,7 @@ public class CasosUsoMesuras {
             @Override
             public void onSuccess(Object object) {
                 loadingDialogActivity.dismissDialog();
+                listaMesuras = (ListaMesuras) object;
                 callBack.onSuccess(object);
             }
 

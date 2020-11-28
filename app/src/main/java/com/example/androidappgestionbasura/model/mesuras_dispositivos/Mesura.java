@@ -7,11 +7,13 @@ package com.example.androidappgestionbasura.model.mesuras_dispositivos;
 public class Mesura {
 
     private String tipoMedida;//plastico|vidrio|organico|papel
-    private String unixTime;
+    private long unixTime;
     private double llenado;
     private double peso;
 
-    public Mesura(String tipoMedida, String fecha, double llenado, double peso) {
+    public Mesura(){}
+
+    public Mesura(String tipoMedida, long fecha, double llenado, double peso) {
         this.tipoMedida = tipoMedida;
         this.unixTime = fecha;
         this.llenado = llenado;
@@ -26,11 +28,11 @@ public class Mesura {
         this.tipoMedida = tipoMedida;
     }
 
-    public String getUnixTime() {
+    public long getUnixTime() {
         return unixTime;
     }
 
-    public void setUnixTime(String unixTime) {
+    public void setUnixTime(long unixTime) {
         this.unixTime = unixTime;
     }
 

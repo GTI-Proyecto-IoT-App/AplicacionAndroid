@@ -13,6 +13,7 @@ import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoMesuras;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
+import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
 import com.example.androidappgestionbasura.presentacion.LoadingDialogActivity;
 import com.example.androidappgestionbasura.repository.MesurasRepository;
 import com.example.androidappgestionbasura.repository.impl.MesurasRepositorioImpl;
