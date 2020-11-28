@@ -12,11 +12,6 @@ import android.widget.TextView;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoMesuras;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
-import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
-import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
-import com.example.androidappgestionbasura.presentacion.LoadingDialogActivity;
-import com.example.androidappgestionbasura.repository.MesurasRepository;
-import com.example.androidappgestionbasura.repository.impl.MesurasRepositorioImpl;
 
 /**
  * 26/11/2020 Rubén Pardo
@@ -61,12 +56,12 @@ public class HuellaC02Fragment extends Fragment {
     }
 
     private void setUpError(View root) {
-        TextView tvInfo = root.findViewById(R.id.tvInfo);
+        TextView tvInfo = root.findViewById(R.id.tvKgC02);
         tvInfo.setText("ERROR");
     }
 
     private void setUpSucces(View root) {
-        TextView tvInfo = root.findViewById(R.id.tvInfo);
+        TextView tvInfo = root.findViewById(R.id.tvKgC02);
         tvInfo.setText("SUCCES");
     }
 

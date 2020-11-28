@@ -20,6 +20,7 @@ public class Mesura {
         this.peso = peso;
     }
 
+
     public String getTipoMedida() {
         return tipoMedida;
     }

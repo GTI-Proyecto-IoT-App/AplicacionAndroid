@@ -39,6 +39,7 @@ public class CasosUsoMesuras {
             public void onSuccess(Object object) {
                 loadingDialogActivity.dismissDialog();
                 listaMesuras = (ListaMesuras) object;
+                listaMesuras.getBolsasBasura();
                 callBack.onSuccess(object);
             }
 
