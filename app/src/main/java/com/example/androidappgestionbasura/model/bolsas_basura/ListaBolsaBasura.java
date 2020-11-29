@@ -23,4 +23,21 @@ public class ListaBolsaBasura {
         this.bolsasBasuraList = bolsasBasuraList;
     }
 
+
+    // el organico suma y los demas restan
+    public double getKgC02Generados(){
+        double kgC02 = 0;
+
+        for (BolsaBasura bolsaBasura : bolsasBasuraList){
+            if(bolsaBasura.getTipo().equals("organico")){
+                kgC02+= bolsaBasura.getKgCo2();
+            }else{
+                kgC02-= bolsaBasura.getKgCo2();
+            }
+        }
+
+
+        return (double)Math.round(kgC02*100)/100;
+    }
+
 }

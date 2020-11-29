@@ -9,6 +9,7 @@ import com.example.androidappgestionbasura.model.bolsas_basura.ListaBolsaBasura;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.Mesura;
 import com.example.androidappgestionbasura.repository.MesurasRepository;
+import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -93,10 +94,11 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
      * @param callBack return List<Mesuras> || error
      */
     @Override
-    public void readBolsasBasurasByUID(String uid, final CallBack callBack) {
+    public void readBolsasBasurasMensualesByUID(String uid, final CallBack callBack) {
         // coger todas las colleciones "mediciones" de todos los dispositivos vinculados
 
         Query query = dispositivosCollectionReferencia.whereArrayContains("usuariosVinculados",uid);
+        final long unixTimeInicioMes = Utility.getUnixTimeInicioMes();// un mes en milisegundos
 
         final ListaBolsaBasura listaBolsaBasura = new ListaBolsaBasura();
         readQueryDocuments(query, new CallBack() {
@@ -107,11 +109,14 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
                 // va a llamar a onComplete cuando sea 0 se ha completado la llamada a base de datos
 
                 // por cada dispositivo vinculado obtener la collecion mediciones
+                // ordenadas por tipo y tiempo,
+                // solo las de este mes
                 for(QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot){
                     queryDocumentSnapshot.getReference()
                             .collection("mediciones")
-                            .orderBy("tipoMedida")
                             .orderBy("unixTime", Query.Direction.ASCENDING)
+                            .orderBy("tipoMedida")
+                            //.whereGreaterThan("unixTime",unixTimeInicioMes)
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 

@@ -1,6 +1,8 @@
 package com.example.androidappgestionbasura.model.mesuras_dispositivos;
 
 
+import android.util.Log;
+
 import com.example.androidappgestionbasura.model.bolsas_basura.BolsaBasura;
 
 import java.util.ArrayList;
@@ -31,10 +33,22 @@ public class ListaMesuras {
         this.mesuras = mesuras;
     }
 
-    
+
+    /**
+     * se ordena por nombre para evitar problemas
+     * comprueba cuando la basura baja de llenado
+     * @return lista de bolsas de basura
+     */
     public List<BolsaBasura> getBolsasBasura(){
 
         List<BolsaBasura> bolsaBasuras = new ArrayList<>();
+
+        Collections.sort(mesuras, new Comparator<Mesura>() {
+            @Override
+            public int compare(Mesura o1, Mesura o2) {
+                return o1.getTipoMedida().compareTo(o2.getTipoMedida());
+            }
+        });
 
         // ver cuando el llenado baja a 0
         // al estar ordenado por tipo hay que hacer la comprobacion cada
@@ -43,7 +57,6 @@ public class ListaMesuras {
             String lastTipo = mesuras.get(0).getTipoMedida();
             double lastLlenado = mesuras.get(0).getLlenado();
             for(Mesura mesura : mesuras){
-
                 if(lastTipo.equals(mesura.getTipoMedida())){
 
                     // mismo tipo

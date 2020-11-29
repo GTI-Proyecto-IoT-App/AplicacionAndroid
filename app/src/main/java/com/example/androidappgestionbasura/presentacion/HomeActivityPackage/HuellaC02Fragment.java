@@ -36,7 +36,7 @@ public class HuellaC02Fragment extends Fragment {
         final View root = inflater.inflate(R.layout.fragment_huella_c02, container, false);
         // si no hay mesuras pediras al servidor
         if(casosUsoMesuras.getListaMesuras()==null){
-            casosUsoMesuras.getMesurasAnuales(new CallBack() {
+            casosUsoMesuras.getMesurasMensuales(new CallBack() {
                 @Override
                 public void onSuccess(Object object) {
                     // llamar a set up succes
@@ -62,8 +62,14 @@ public class HuellaC02Fragment extends Fragment {
 
     private void setUpSucces(View root) {
         TextView tvInfo = root.findViewById(R.id.tvKgC02);
-        
-        tvInfo.setText("SUCCES");
+        double kgCo2Generados = casosUsoMesuras.getBolsasBasura().getKgC02Generados();
+
+        if(kgCo2Generados>=0){
+            tvInfo.setText("Has generado " + kgCo2Generados +" kg de C02 en este mes");
+        }else{
+            tvInfo.setText("Has reducido " + -kgCo2Generados +" kg de C02 en este mes");
+        }
+
     }
 
 

@@ -7,11 +7,8 @@ import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.bolsas_basura.BolsaBasura;
 import com.example.androidappgestionbasura.model.bolsas_basura.ListaBolsaBasura;
-import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
 import com.example.androidappgestionbasura.presentacion.LoadingDialogActivity;
 import com.example.androidappgestionbasura.repository.impl.MesurasRepositorioImpl;
-
-import java.util.List;
 
 /**
  * 26/11/2020 Rubén Pardo
@@ -31,18 +28,19 @@ public class CasosUsoMesuras {
     }
 
 
-    public void getMesurasAnuales(final CallBack callBack){
+    public void getMesurasMensuales(final CallBack callBack){
         loadingDialogActivity.startLoadingDialog();
         String uid =  SharedPreferencesHelper.getInstance().getUID();
-        mesurasRepository.readBolsasBasurasByUID(uid, new CallBack() {
+        mesurasRepository.readBolsasBasurasMensualesByUID(uid, new CallBack() {
             @Override
             public void onSuccess(Object object) {
                 loadingDialogActivity.dismissDialog();
                 bolsaBasuras = (ListaBolsaBasura) object;
 
                 for(BolsaBasura bolsaBasura : bolsaBasuras.getBolsasBasuraList()){
-                    Log.d("DATO----",bolsaBasura.getTipo());
-                    Log.d("DATO",bolsaBasura.getLlenado()+"");
+                    Log.d("Dato----",bolsaBasura.getTipo());
+                    Log.d("Dato",bolsaBasura.getLlenado()+"");
+                    Log.d("Dato",bolsaBasura.getFecha()+"");
                 }
 
                 callBack.onSuccess(object);
