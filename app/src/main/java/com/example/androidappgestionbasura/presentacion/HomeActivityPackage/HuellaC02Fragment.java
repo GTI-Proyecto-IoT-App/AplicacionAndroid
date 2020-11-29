@@ -62,6 +62,7 @@ public class HuellaC02Fragment extends Fragment {
 
     private void setUpSucces(View root) {
         TextView tvInfo = root.findViewById(R.id.tvKgC02);
+        
         tvInfo.setText("SUCCES");
     }
 

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.model.bolsas_basura.ListaBolsaBasura;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.Mesura;
 import com.example.androidappgestionbasura.repository.MesurasRepository;
@@ -34,7 +35,7 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
     }
 
     /**
-     * Obtiene los datos de un año de las basuras de un usuario
+     * Obtiene los datos de las basuras de un usuario
      * @param uid del usuario
      * @param callBack return List<Mesuras> || error
      */
@@ -85,4 +86,69 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
 
 
     }
+
+    /**
+     * Obtiene los datos de las basuras de un usuario
+     * @param uid del usuario
+     * @param callBack return List<Mesuras> || error
+     */
+    @Override
+    public void readBolsasBasurasByUID(String uid, final CallBack callBack) {
+        // coger todas las colleciones "mediciones" de todos los dispositivos vinculados
+
+        Query query = dispositivosCollectionReferencia.whereArrayContains("usuariosVinculados",uid);
+
+        final ListaBolsaBasura listaBolsaBasura = new ListaBolsaBasura();
+        readQueryDocuments(query, new CallBack() {
+            @Override
+            public void onSuccess(Object object) {// object = querySnapshot
+                QuerySnapshot querySnapshot = (QuerySnapshot) object;
+                final int[] contDispositivos = {querySnapshot.size()};// para saber cuantas veces se
+                // va a llamar a onComplete cuando sea 0 se ha completado la llamada a base de datos
+
+                // por cada dispositivo vinculado obtener la collecion mediciones
+                for(QueryDocumentSnapshot queryDocumentSnapshot : querySnapshot){
+                    queryDocumentSnapshot.getReference()
+                            .collection("mediciones")
+                            .orderBy("tipoMedida")
+                            .orderBy("unixTime", Query.Direction.ASCENDING)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        ListaMesuras listaMesuras = new ListaMesuras();
+                                        QuerySnapshot q = task.getResult();
+                                        for(DocumentSnapshot documentSnapshot : q.getDocuments()){
+                                            listaMesuras.getMesuras().add(documentSnapshot.toObject(Mesura.class));
+                                        }
+
+                                        listaBolsaBasura.getBolsasBasuraList().addAll(listaMesuras.getBolsasBasura());
+
+                                        contDispositivos[0]--;// on complete terminado
+                                        if(contDispositivos[0] == 0){
+                                            // solo tiene que llamarse una vez y es cuando todos los
+                                            // on complete se termine
+                                            callBack.onSuccess(listaBolsaBasura);
+                                        }
+
+
+                                    }else{
+                                        callBack.onError(task.getException());
+                                    }
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Object object) {
+                callBack.onError(object);
+            }
+        });
+
+
+    }
+
 }

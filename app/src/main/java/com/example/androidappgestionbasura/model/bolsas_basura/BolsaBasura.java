@@ -1,4 +1,4 @@
-package com.example.androidappgestionbasura.model;
+package com.example.androidappgestionbasura.model.bolsas_basura;
 
 public class BolsaBasura {
 

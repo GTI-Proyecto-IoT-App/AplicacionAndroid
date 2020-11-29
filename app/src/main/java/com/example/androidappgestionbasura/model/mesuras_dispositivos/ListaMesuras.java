@@ -1,9 +1,7 @@
 package com.example.androidappgestionbasura.model.mesuras_dispositivos;
 
 
-import android.util.Log;
-
-import com.example.androidappgestionbasura.model.BolsaBasura;
+import com.example.androidappgestionbasura.model.bolsas_basura.BolsaBasura;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,28 +31,8 @@ public class ListaMesuras {
         this.mesuras = mesuras;
     }
 
-
-    // obtener las basuras por tipo
-    // ordenar las mesuras por tiempo y tipo
-    // ver cuando baja de llenado = bolsa
+    
     public List<BolsaBasura> getBolsasBasura(){
-        // ordenar por tipo y fecha
-        Collections.sort(mesuras, new Comparator<Mesura>() {
-            @Override
-            public int compare(Mesura o1, Mesura o2) {
-                String x1 = o1.getTipoMedida();
-                String x2 = o2.getTipoMedida();
-                int sComp = x1.compareTo(x2);
-
-                if (sComp != 0) {
-                    return sComp;
-                }
-
-                Long x3 = o1.getUnixTime();
-                Long x4 = o2.getUnixTime();
-                return x3.compareTo(x4);
-            }
-        });
 
         List<BolsaBasura> bolsaBasuras = new ArrayList<>();
 

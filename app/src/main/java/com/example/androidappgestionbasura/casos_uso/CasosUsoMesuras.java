@@ -5,12 +5,13 @@ import android.util.Log;
 
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
+import com.example.androidappgestionbasura.model.bolsas_basura.BolsaBasura;
+import com.example.androidappgestionbasura.model.bolsas_basura.ListaBolsaBasura;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
-import com.example.androidappgestionbasura.model.mesuras_dispositivos.Mesura;
 import com.example.androidappgestionbasura.presentacion.LoadingDialogActivity;
 import com.example.androidappgestionbasura.repository.impl.MesurasRepositorioImpl;
 
-import androidx.fragment.app.FragmentActivity;
+import java.util.List;
 
 /**
  * 26/11/2020 Rubén Pardo
@@ -21,8 +22,7 @@ public class CasosUsoMesuras {
     private MesurasRepositorioImpl mesurasRepository;
     private LoadingDialogActivity loadingDialogActivity;
 
-    private ListaMesuras listaMesuras;
-
+    private ListaBolsaBasura bolsaBasuras;
 
     public CasosUsoMesuras(Activity activity) {
         actividad = activity;
@@ -34,12 +34,17 @@ public class CasosUsoMesuras {
     public void getMesurasAnuales(final CallBack callBack){
         loadingDialogActivity.startLoadingDialog();
         String uid =  SharedPreferencesHelper.getInstance().getUID();
-        mesurasRepository.readMesurasAnualesByUID(uid, new CallBack() {
+        mesurasRepository.readBolsasBasurasByUID(uid, new CallBack() {
             @Override
             public void onSuccess(Object object) {
                 loadingDialogActivity.dismissDialog();
-                listaMesuras = (ListaMesuras) object;
-                listaMesuras.getBolsasBasura();
+                bolsaBasuras = (ListaBolsaBasura) object;
+
+                for(BolsaBasura bolsaBasura : bolsaBasuras.getBolsasBasuraList()){
+                    Log.d("DATO----",bolsaBasura.getTipo());
+                    Log.d("DATO",bolsaBasura.getLlenado()+"");
+                }
+
                 callBack.onSuccess(object);
             }
 
@@ -51,7 +56,11 @@ public class CasosUsoMesuras {
         });
     }
 
-    public ListaMesuras getListaMesuras() {
-        return listaMesuras;
+    public ListaBolsaBasura getListaMesuras(){
+        return bolsaBasuras;
+    }
+
+    public ListaBolsaBasura getBolsasBasura(){
+        return bolsaBasuras;
     }
 }
