@@ -14,6 +14,11 @@
         android:title="@string/title_basuras_municipales_cercanas" />
 
     <item
+        android:id="@+id/navigation_huella_c02"
+        android:icon="@drawable/ic_signo_de_flechas_triangulares_para_reciclar"
+        android:title="@string/title_huella_c02" />
+
+    <item
         android:id="@+id/navigation_notificaciones"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_notificaciones" />

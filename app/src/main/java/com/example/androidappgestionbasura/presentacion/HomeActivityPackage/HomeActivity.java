@@ -74,7 +74,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_mapa_basuras_municipales,R.id.navigation_notificaciones, R.id.navigation_perfil)
+                R.id.navigation_home,
+                R.id.navigation_mapa_basuras_municipales,
+                R.id.navigation_huella_c02,
+                R.id.navigation_notificaciones,
+                R.id.navigation_perfil)
                 .build();
 
         NavHostFragment fragmentNavHost = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment) ;
