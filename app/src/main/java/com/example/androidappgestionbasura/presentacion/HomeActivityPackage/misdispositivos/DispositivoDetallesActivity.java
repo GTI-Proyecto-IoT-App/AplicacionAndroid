@@ -30,6 +30,7 @@ import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesur
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.Mesura;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -61,6 +62,18 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     PieChart pieChartVidrio;
     PieChart pieChartPapel;
 
+    //Grafica lineal
+
+    LineChart lineChartGeneral;
+
+    //Colores para las graficas
+
+    String colorGraficaOrganica ="#983909";
+    String colorGraficaPlastica ="#ECCA0F";
+    String colorGraficaPapel ="#1235AF";
+    String colorGraficaVidrio ="#359004";
+    String colorVacio = "#D3D3D3";
+
 
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +89,13 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setElevation(0);
 
-        //buscamos las vistas de las graficas circulares
+        //buscamos las vistas de las graficas circulares y lineal
 
         pieChartOrganico = findViewById(R.id.pieChartOrganico);
         pieChartPapel = findViewById(R.id.pieChartPapel);
         pieChartPlastico = findViewById(R.id.pieChartPlastico);
         pieChartVidrio = findViewById(R.id.pieChartVidrio);
+        lineChartGeneral = findViewById(R.id.lineChart);
 
         usoMesuras = new CasosUsoMesuras(this);
         usoMesuras.getMesurasPorId(new CallBack() {
@@ -129,24 +143,17 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                     }
 
 
-//                    Log.d("DatoMesura----LLenado","" + mesura.getLlenado());
-//                    Log.d("DatoMesura----Tipo","" + mesura.getTipoMedida());
-//                    Log.d("DatoMesura----Peso","" + mesura.getPeso());
-//                    Log.d("DatoMesura----UnixTime","" + mesura.getUnixTime());
-
                 }
 
-//                Log.d("TAG",mesuraFinalOrganico.getLlenado()+ "");
-//                Log.d("TAG",mesuraFinalOrganico.getTipoMedida()+ "");
-//                Log.d("TAG",mesuraFinalOrganico.getUnixTime()+ "");
-//                Log.d("TAG",mesuraFinalOrganico.getPeso()+ "");
-
-
-
+                //llamamos a los metodos de crear las graficas
                crearGraficaPie(mesuraFinalOrganico.getTipoMedida(),mesuraFinalOrganico.getLlenado(),pieChartOrganico);
                crearGraficaPie(mesuraFinalPlastico.getTipoMedida(),mesuraFinalPlastico.getLlenado(),pieChartPlastico);
                crearGraficaPie(mesuraFinalPapel.getTipoMedida(),mesuraFinalPapel.getLlenado(),pieChartPapel);
                crearGraficaPie(mesuraFinalVidrio.getTipoMedida(),mesuraFinalVidrio.getLlenado(),pieChartVidrio);
+
+               crearGraficaLineal(listaMesuras,lineChartGeneral);
+
+
 
             }
 
@@ -243,32 +250,23 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         listaCantidades.put(tipoBasura,(int)ultimaMedida);
 
         //inicializar sector vacio
-        listaCantidades.put("acio",100-(int)ultimaMedida);
-
-
-
-        //Inicializamos los colores para las entradas
-        ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor("#304567"));
-        colors.add(Color.parseColor("#309967"));
-        colors.add(Color.parseColor("#476567"));
-        colors.add(Color.parseColor("#890567"));
-        colors.add(Color.parseColor("#a35567"));
-        colors.add(Color.parseColor("#ff5f67"));
-        colors.add(Color.parseColor("#3ca567"));
+        int numeroVacio = 100-(int)ultimaMedida;
+        listaCantidades.put("Vacio",numeroVacio);
 
         //Metemos los datos en pieEntries
         for(String type: listaCantidades.keySet()){
-            pieEntries.add(new PieEntry(listaCantidades.get(type).floatValue(), "%"));
+            pieEntries.add(new PieEntry(listaCantidades.get(type).floatValue(), ""));
         }
 
         //recogemos los datos que coincidan con el nombre de la label
         PieDataSet pieDataSet = new PieDataSet(pieEntries,label);
 
         //tamaño de texto
-        pieDataSet.setValueTextSize(12f);
+        pieDataSet.setValueTextSize(0);
 
-        //indicamos el color de las diferentes entradas
+        //indicamos el color de las diferentes entradas en funcion del tipo de basura
+
+        ArrayList<Integer> colors = setearColores(graficaCircular,tipoBasura);
         pieDataSet.setColors(colors);
 
         //agrupamos los datos de las entradas en la grafica
@@ -280,11 +278,77 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         //adjudicamos los datos a la grafica
         graficaCircular.setData(pieData);
 
+        //ponemos el texto central dentro de la grafica
+
+        graficaCircular.setCenterText(String.valueOf(ultimaMedida+"%"));
+
         //desactivamos la leyenda
         Legend l = graficaCircular.getLegend();
+        graficaCircular.getDescription().setText("");
         l.setEnabled(false);
+
+        //adecuamos el grosor de la linea de la grafica
+
+        graficaCircular.setHoleRadius(80);
+
+        //animamos la grafica
+        graficaCircular.animateX(2000); // animar milisegundos horizaontales
+
+        graficaCircular.animateY(2000); // animar milisegundos verticales
+
+        graficaCircular.animateXY(2000, 2000); // animar milisegundos horizaontales y verticales
 
         //la invalidamos
         graficaCircular.invalidate();
+
+
+    }
+
+    /**
+     *
+     * Metodo para asignar los colores a las graficas circulares
+     */
+    ArrayList<Integer> setearColores(PieChart grafica , String tipoBasura){
+
+        ArrayList<Integer> listaFinal = new ArrayList<>();
+
+        if(tipoBasura.equals("organico")){
+
+            listaFinal.add(Color.parseColor(colorGraficaOrganica));
+            listaFinal.add(Color.parseColor(colorVacio));
+
+
+        }else if(tipoBasura.equals("papel")){
+
+            listaFinal.add(Color.parseColor(colorVacio));
+            listaFinal.add(Color.parseColor(colorGraficaPapel));
+
+        }else if(tipoBasura.equals("plastico")){
+
+            listaFinal.add(Color.parseColor(colorVacio));
+            listaFinal.add(Color.parseColor(colorGraficaPlastica));
+
+        }else if(tipoBasura.equals("vidrio")){
+
+            listaFinal.add(Color.parseColor(colorGraficaVidrio));
+            listaFinal.add(Color.parseColor(colorVacio));
+
+
+        }
+
+        return listaFinal;
+    }
+
+
+    /**
+     *
+     * Metodo para crear la lineal
+     * Autor : Sergi Sirvent Sempere
+     *
+     */
+    public void crearGraficaLineal(ListaMesuras listaMesuras , LineChart graficaLineal){
+
+
+
     }
 }
