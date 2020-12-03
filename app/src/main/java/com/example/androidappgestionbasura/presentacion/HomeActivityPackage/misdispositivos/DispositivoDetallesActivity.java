@@ -1,14 +1,11 @@
 package com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,9 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoMesuras;
-import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
-import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.model.mesuras_dispositivos.ListaMesuras;
@@ -32,15 +27,20 @@ import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispos
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_EDITAR;
 
@@ -65,6 +65,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     //Grafica lineal
 
     LineChart lineChartGeneral;
+
 
     //Colores para las graficas
 
@@ -151,7 +152,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                crearGraficaPie(mesuraFinalPapel.getTipoMedida(),mesuraFinalPapel.getLlenado(),pieChartPapel);
                crearGraficaPie(mesuraFinalVidrio.getTipoMedida(),mesuraFinalVidrio.getLlenado(),pieChartVidrio);
 
-               crearGraficaLineal(listaMesuras,lineChartGeneral);
+               crearGraficaLineal(listaMesuras.getMesuras(),lineChartGeneral);
 
 
 
@@ -266,7 +267,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
         //indicamos el color de las diferentes entradas en funcion del tipo de basura
 
-        ArrayList<Integer> colors = setearColores(graficaCircular,tipoBasura);
+        ArrayList<Integer> colors = setearColoresPieChart(graficaCircular,tipoBasura);
         pieDataSet.setColors(colors);
 
         //agrupamos los datos de las entradas en la grafica
@@ -308,7 +309,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
      *
      * Metodo para asignar los colores a las graficas circulares
      */
-    ArrayList<Integer> setearColores(PieChart grafica , String tipoBasura){
+    ArrayList<Integer> setearColoresPieChart(PieChart grafica , String tipoBasura){
 
         ArrayList<Integer> listaFinal = new ArrayList<>();
 
@@ -344,11 +345,164 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
      *
      * Metodo para crear la lineal
      * Autor : Sergi Sirvent Sempere
-     *
+     *Recibe una lista de mesuras y la view de una grafica lineal y devuelve void
      */
-    public void crearGraficaLineal(ListaMesuras listaMesuras , LineChart graficaLineal){
+    public void crearGraficaLineal(List<Mesura> listaMesuras , LineChart graficaLineal){
 
+        //declaramos los dataSets
+        LineDataSet dataSetOrganico = new LineDataSet(llenarDataSets(separarMesuras("organico",listaMesuras)),"Organico");
+        LineDataSet dataSetPlastico = new LineDataSet(llenarDataSets(separarMesuras("plastico",listaMesuras)),"Plastico");
+        LineDataSet dataSetVidrio = new LineDataSet(llenarDataSets(separarMesuras("vidrio",listaMesuras)),"Vidrio");
+        LineDataSet dataSetPapel = new LineDataSet(llenarDataSets(separarMesuras("papel",listaMesuras)),"Papel");
+
+        //personalizamos los dataset
+
+        personalizarDataset("organico",dataSetOrganico);
+        personalizarDataset("plastico",dataSetPlastico);
+        personalizarDataset("vidrio",dataSetVidrio);
+        personalizarDataset("papel",dataSetPapel);
+
+
+
+        //array de datasets
+
+        ArrayList<ILineDataSet>dataSets = new ArrayList<>();
+        dataSets.add(dataSetOrganico);
+        dataSets.add(dataSetPlastico);
+        dataSets.add(dataSetVidrio);
+        dataSets.add(dataSetPapel);
+
+        //si la grafica se queda sin datos aparecerá este texto
+
+        graficaLineal.setNoDataText("No hay datos para representar");
+        graficaLineal.setNoDataTextColor(Color.RED);
+
+        //ocultamos la descripcion
+        Description description = new Description();
+        description.setText("");
+        graficaLineal.setDescription(description);
+
+
+        //habilitamos  el touch en la grafica
+
+        graficaLineal.setTouchEnabled(true);
+         graficaLineal.setPinchZoom(true);
+
+        //animamos la grafica
+        graficaLineal.animateX(2000); // animar milisegundos horizaontales
+
+        graficaLineal.animateY(2000); // animar milisegundos verticales
+
+        graficaLineal.animateXY(2000, 2000); // animar milisegundos horizaontales y verticales
+
+
+        //adjudicamos los datasets a la grafica
+        LineData data = new LineData(dataSets);
+        graficaLineal.setData(data);
+
+        //invalidamos la grafica
+        graficaLineal.invalidate();
 
 
     }
+
+    /**
+     *
+     * Metodo para separar por tipos las diferentes mesuras
+     * Autor : Sergi Sirvent Sempere
+     *Recibe una lista de mesuras y el tipo de basura que se quiera separar, devuelve una lista solo con las medidas de ese tipo
+     */
+
+    private List<Mesura> separarMesuras(String tipoBasura,List<Mesura> listaMesuras){
+
+        List<Mesura> mesurasConcretas = new ArrayList<>();
+        for (Mesura mesura:listaMesuras
+             ) {
+            if (mesura.getTipoMedida().equals(tipoBasura)){
+                mesurasConcretas.add(mesura);
+            }
+        }
+        return mesurasConcretas;
+    }
+
+    /**
+     *
+     * Metodo para llenar los diferentes datasets de la grafica lineal
+     * Autor : Sergi Sirvent Sempere
+     *Recibe una lista de mesuras y devuelve un array de entrys
+     */
+
+    private ArrayList<Entry> llenarDataSets(List<Mesura> listaMesuras){
+
+        ArrayList<Entry> entrys = new ArrayList<>();
+
+        int i = 0;
+        for (Mesura mesura:listaMesuras
+             ) {
+
+
+
+                // este codigo devuelve el dia en que la medida fue tomada
+//            Date date = new Date(mesura.getUnixTime() * 1000);
+//            DateFormat dateFormat = new SimpleDateFormat("dd");
+//            String strDate = dateFormat.format(date);
+//
+//            int dia = Integer.parseInt(strDate);
+//
+//            Log.d("Fecha","Milliseconds to Date: " + strDate);
+
+            entrys.add(new Entry(i,(float)mesura.getLlenado()));
+            i++;
+        }
+
+        return entrys;
+
+    }
+
+    /**
+     *
+     * Metodo para personalizar los datasets
+     * Autor : Sergi Sirvent Sempere
+     *Recibe el tipo de basura que tiene  ese dataset  y el dataset
+     */
+
+    private void personalizarDataset(String tipoBasura , LineDataSet dataSet){
+
+        //caracteristicas comunes para todos los datasets
+        dataSet.setCircleColor(Color.BLACK);
+        dataSet.setCircleHoleRadius(3);
+        dataSet.setCircleRadius(5);
+        dataSet.setLineWidth(3);
+
+        switch (tipoBasura) {
+            case "organico":
+
+                dataSet.setColor(Color.parseColor(colorGraficaOrganica));
+                dataSet.setCircleColorHole(Color.parseColor(colorGraficaOrganica));
+
+                break;
+            case "plastico":
+
+                dataSet.setColor(Color.parseColor(colorGraficaPlastica));
+                dataSet.setCircleColorHole(Color.parseColor(colorGraficaPlastica));
+
+                break;
+            case "vidrio":
+
+                dataSet.setColor(Color.parseColor(colorGraficaVidrio));
+                dataSet.setCircleColorHole(Color.parseColor(colorGraficaVidrio));
+
+                break;
+            case "papel":
+
+                dataSet.setColor(Color.parseColor(colorGraficaPapel));
+                dataSet.setCircleColorHole(Color.parseColor(colorGraficaPapel));
+
+                break;
+        }
+
+
+    }
+
+
 }
