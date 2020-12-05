@@ -1,7 +1,5 @@
 package com.example.androidappgestionbasura.repository.impl;
 
-import android.util.Log;
-
 import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
@@ -98,7 +96,7 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
         // coger todas las colleciones "mediciones" de todos los dispositivos vinculados
 
         Query query = dispositivosCollectionReferencia.whereArrayContains("usuariosVinculados",uid);
-        final long unixTimeInicioMes = Utility.getUnixTimeInicioMes();// un mes en milisegundos
+        final long unixTimeInicioMes = Utility.getUnixTimeInicioYear();// un mes en milisegundos
 
         final ListaBolsaBasura listaBolsaBasura = new ListaBolsaBasura();
         readQueryDocuments(query, new CallBack() {

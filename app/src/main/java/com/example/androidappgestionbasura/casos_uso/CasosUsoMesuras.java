@@ -29,26 +29,24 @@ public class CasosUsoMesuras {
 
 
     public void getMesurasMensuales(final CallBack callBack){
-        loadingDialogActivity.startLoadingDialog();
+
         String uid =  SharedPreferencesHelper.getInstance().getUID();
         mesurasRepository.readBolsasBasurasMensualesByUID(uid, new CallBack() {
             @Override
             public void onSuccess(Object object) {
-                loadingDialogActivity.dismissDialog();
                 bolsaBasuras = (ListaBolsaBasura) object;
 
-                for(BolsaBasura bolsaBasura : bolsaBasuras.getBolsasBasuraList()){
-                    Log.d("Dato----",bolsaBasura.getTipo());
-                    Log.d("Dato",bolsaBasura.getLlenado()+"");
-                    Log.d("Dato",bolsaBasura.getFecha()+"");
-                }
+//                for(BolsaBasura bolsaBasura : bolsaBasuras.getBolsasBasuraList()){
+//                    Log.d("Dato----",bolsaBasura.getTipo());
+//                    Log.d("Dato",bolsaBasura.getLlenado()+"");
+//                    Log.d("Dato",bolsaBasura.getFecha()+"");
+//                }
 
                 callBack.onSuccess(object);
             }
 
             @Override
             public void onError(Object object) {
-                loadingDialogActivity.dismissDialog();
                 callBack.onError(object);
             }
         });
