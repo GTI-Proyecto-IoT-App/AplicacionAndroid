@@ -40,7 +40,6 @@
     <string name="cerrar_sesion">Cerrar Sesión</string>
 
 
-
     <!--    ERRORES-->
     <string name="error_campo_vacio">Este campo no puede estar vacío</string>
     <string name="error_correo_valido">Introduce un correo valido</string>
@@ -75,6 +74,12 @@
     <string name="hint_numero_personas_uso_basura">Número de personas que lo usan</string>
     <string name="mi_dispositivos_empty">No tienes ningún dispositivo. Vincula un nuevo dispositivo</string>
     <string name="title_basuras_municipales_cercanas">Contenedores Cercanos</string>
+    <string name="title_huella_c02">Mi huella de C02</string>
+    <string name="kg_de_c02_en_este_año">kg de C02 en este año</string>
+    <string name="huella_co2_generado">Has generado</string>
+    <string name="huella_co2_reducido">Has reducido</string>
+    <string name="equivale_a">Equivale a</string>
+    <string name="arboles_plantados">arboles plantados</string>
 
 
 </resources>
