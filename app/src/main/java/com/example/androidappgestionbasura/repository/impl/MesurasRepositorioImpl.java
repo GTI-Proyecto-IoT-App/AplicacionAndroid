@@ -180,20 +180,23 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
             @Override
             public void onSuccess(Object object) {// object = querySnapshot
 
+
+
                 // sacamos las mediciones del dispositivo que coincide con nuestra id
+
+//                Log.d("tagS",((QuerySnapshot)object).getDocuments()) + "");
 
                 for(DocumentSnapshot document : ((QuerySnapshot)object).getDocuments()){
 
                     //Log.d("TAG", document.getId() + " => " + document.getData());
 
-                    Mesura nuevaMesura = new Mesura();
 
-                    nuevaMesura.setLlenado(document.getDouble("llenado"));
-                    nuevaMesura.setPeso(document.getDouble("peso"));
-                    nuevaMesura.setTipoMedida(document.getString("tipoMedida"));
-                    nuevaMesura.setUnixTime(document.getLong("unixTime"));
+                    Mesura nuevaMesura = document.toObject(Mesura.class);
+
 
                     listaMesuras.getMesuras().add(nuevaMesura);
+//                    Log.d("tagS",listaMesuras.getMesuras() + "");
+
 
                 }
 
@@ -201,7 +204,7 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
 
                 callBack.onSuccess(listaMesuras);
 
-                Log.d("tagS",query.toString());
+                //Log.d("tagS",query.toString());
 
             }
 

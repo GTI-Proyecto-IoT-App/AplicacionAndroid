@@ -65,10 +65,10 @@ public class CasosUsoMesuras {
         return bolsaBasuras;
     }
 
-    public void getMesurasPorId(final CallBack callBack){
+    public void getMesurasPorId(String id, final CallBack callBack){
         loadingDialogActivity.startLoadingDialog();
 
-        String id =  "24:6F:28:A0:90:80%basura"; //aqui almaceno la id de la basura
+        //String id =  "24:6F:28:A0:90:80%basura"; //aqui almaceno la id de la basura
 
         mesurasRepository.readMesurasByID(id, new CallBack() {
             @Override
@@ -80,16 +80,17 @@ public class CasosUsoMesuras {
 
                 for(Mesura mesura : listaMesuras.getMesuras()){
 
-                    /*
+
                     Log.d("DatoMesura----","" + mesura.getLlenado());
                     Log.d("DatoMesura----","" + mesura.getTipoMedida());
                     Log.d("DatoMesura----","" + mesura.getPeso());
-                    Log.d("DatoMesura----","" + mesura.getUnixTime());
+                    Log.d("DatoMesura----","" + mesura+ "");
 
-                     */
+
 
 
                 }
+                //Log.d("Datoss","" + listaMesuras.getMesuras()+ "");
 
                 callBack.onSuccess(object);
             }

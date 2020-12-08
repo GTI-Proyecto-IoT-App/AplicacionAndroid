@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -79,6 +80,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
        setContentView(R.layout.info_dispositivos);
         Bundle extras = getIntent().getExtras();
         pos = extras.getInt("pos", 0);
@@ -99,7 +101,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         lineChartGeneral = findViewById(R.id.lineChart);
 
         usoMesuras = new CasosUsoMesuras(this);
-        usoMesuras.getMesurasPorId(new CallBack() {
+        usoMesuras.getMesurasPorId(dispositivo.getId(),new CallBack() {
             @Override
             public void onSuccess(Object object) {
 
@@ -110,6 +112,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                 Mesura mesuraFinalVidrio = new Mesura();
 
                 long tiempoUltimo = 0;//si las medidas superan a este tiempo seran consideradas mas recientes
+
 
                 for(Mesura mesura : listaMesuras.getMesuras()){
 
@@ -147,12 +150,20 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                 }
 
                 //llamamos a los metodos de crear las graficas
-               crearGraficaPie(mesuraFinalOrganico.getTipoMedida(),mesuraFinalOrganico.getLlenado(),pieChartOrganico);
-               crearGraficaPie(mesuraFinalPlastico.getTipoMedida(),mesuraFinalPlastico.getLlenado(),pieChartPlastico);
-               crearGraficaPie(mesuraFinalPapel.getTipoMedida(),mesuraFinalPapel.getLlenado(),pieChartPapel);
-               crearGraficaPie(mesuraFinalVidrio.getTipoMedida(),mesuraFinalVidrio.getLlenado(),pieChartVidrio);
 
-               crearGraficaLineal(listaMesuras.getMesuras(),lineChartGeneral);
+                //CAMBIAR , LE PASO DIRECTAMENTE EL TIPO Y LA MESURA , Y SI LA MESURA ES NULL, QUE SEA CREE LA GRAFICA SIN DATOS
+                
+               crearGraficaPie("organico",mesuraFinalOrganico,pieChartOrganico);
+               crearGraficaPie("plastico",mesuraFinalPlastico,pieChartPlastico);
+               crearGraficaPie("papel",mesuraFinalPapel,pieChartPapel);
+               crearGraficaPie("vidrio",mesuraFinalVidrio,pieChartVidrio);
+
+                Log.d("Hloa orga",mesuraFinalOrganico.getTipoMedida()+"");
+                Log.d("Hloa plas",mesuraFinalPlastico.getTipoMedida()+ "");
+                Log.d("Hloa papl",mesuraFinalPapel.getLlenado() + "");
+                Log.d("Hloa vidrio",mesuraFinalVidrio.getLlenado()+ "");
+
+               //crearGraficaLineal(listaMesuras.getMesuras(),lineChartGeneral);
 
 
 
@@ -238,21 +249,41 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
      * Metodo que recibe los datos procedentes de Firebase y crea graficas tipo PIE en el layout info_dispositivos
      * Autor : Sergi Sirvent Sempere
      **/
-    private void crearGraficaPie(String tipoBasura , double ultimaMedida, PieChart graficaCircular){
+    private void crearGraficaPie(String tipoBasura , Mesura mesura, PieChart graficaCircular){
 
         //definimos la lista de entradas a la grafica
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
 
-        //definimos el label de la grafica
-        String label = tipoBasura;
-
         //inicializar datos
         Map<String, Integer> listaCantidades = new HashMap<>();
-        listaCantidades.put(tipoBasura,(int)ultimaMedida);
 
-        //inicializar sector vacio
-        int numeroVacio = 100-(int)ultimaMedida;
-        listaCantidades.put("Vacio",numeroVacio);
+
+        if (mesura == null){
+
+            listaCantidades.put(tipoBasura,0);
+            //inicializar sector vacio
+            int numeroVacio = 100;
+            listaCantidades.put("Vacio",numeroVacio);
+
+            //ponemos el texto central dentro de la grafica
+            graficaCircular.setCenterText(String.valueOf(101+"%"));
+
+
+
+
+
+        }else{
+
+            listaCantidades.put(tipoBasura,(int)mesura.getLlenado());
+
+            //inicializar sector vacio
+            int numeroVacio = 100-(int)mesura.getLlenado();
+            listaCantidades.put("Vacio",numeroVacio);
+
+            //ponemos el texto central dentro de la grafica
+            graficaCircular.setCenterText(String.valueOf(mesura.getLlenado()+"%"));
+
+        }
 
         //Metemos los datos en pieEntries
         for(String type: listaCantidades.keySet()){
@@ -260,14 +291,15 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         }
 
         //recogemos los datos que coincidan con el nombre de la label
-        PieDataSet pieDataSet = new PieDataSet(pieEntries,label);
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,tipoBasura);
 
         //tamaño de texto
         pieDataSet.setValueTextSize(0);
 
         //indicamos el color de las diferentes entradas en funcion del tipo de basura
+        //Log.d("Tipo basura",tipoBasura+"");
 
-        ArrayList<Integer> colors = setearColoresPieChart(graficaCircular,tipoBasura);
+        ArrayList<Integer> colors = setearColoresPieChart(tipoBasura);
         pieDataSet.setColors(colors);
 
         //agrupamos los datos de las entradas en la grafica
@@ -279,9 +311,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         //adjudicamos los datos a la grafica
         graficaCircular.setData(pieData);
 
-        //ponemos el texto central dentro de la grafica
 
-        graficaCircular.setCenterText(String.valueOf(ultimaMedida+"%"));
 
         //desactivamos la leyenda
         Legend l = graficaCircular.getLegend();
@@ -303,17 +333,25 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         graficaCircular.invalidate();
 
 
+
+
+
+
+
     }
 
     /**
      *
      * Metodo para asignar los colores a las graficas circulares
      */
-    ArrayList<Integer> setearColoresPieChart(PieChart grafica , String tipoBasura){
+    ArrayList<Integer> setearColoresPieChart( String tipoBasura){
 
         ArrayList<Integer> listaFinal = new ArrayList<>();
+        if(tipoBasura == null){
 
-        if(tipoBasura.equals("organico")){
+            listaFinal.add(Color.parseColor(colorVacio));
+
+        }else if(tipoBasura.equals("organico")){
 
             listaFinal.add(Color.parseColor(colorGraficaOrganica));
             listaFinal.add(Color.parseColor(colorVacio));
