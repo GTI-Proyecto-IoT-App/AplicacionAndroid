@@ -1,5 +1,6 @@
 package com.example.androidappgestionbasura.utility;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -8,8 +9,12 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
@@ -17,6 +22,9 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,5 +83,32 @@ public class Utility {
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    public static long getUnixTimeInicioYear() {
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_YEAR, 1);
+
+        return c.getTime().getTime()/1000L;
+    }
+
+    /**
+     * Ruben Pardo Casanova
+     * @param initialValue valor donde empieza la animacion
+     * @param finalValue valor donde finañiza la animacion
+     * @param textview donde ocurre la animacion
+     */
+    public static void animateTextValue(int initialValue , int finalValue , final TextView textview) {
+        final ValueAnimator valueAnimator = ValueAnimator.ofInt(initialValue, finalValue);
+        valueAnimator.setDuration(350L);
+        valueAnimator.setInterpolator(new AccelerateInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                textview.setText(valueAnimator.getAnimatedValue().toString());
+            }
+        });
+        valueAnimator.start();
     }
 }
