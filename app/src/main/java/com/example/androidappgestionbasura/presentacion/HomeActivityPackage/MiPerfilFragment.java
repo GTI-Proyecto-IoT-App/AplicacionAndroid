@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -46,6 +48,8 @@ import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 
@@ -94,48 +98,72 @@ public class MiPerfilFragment extends Fragment {
 
         return root;
     }
+    private void handleImageClick(View view) {
+        final CharSequence[] options = { "Saca una foto", "Selecciona desde la galería","Cancelar" };
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Selecciona tu foto de perfil");
 
-    public void handleImageClick(View view){
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+        builder.setItems(options, new DialogInterface.OnClickListener() {
 
-           startActivityForResult(intent,TAKE_IMAGE_CODE);
-        }
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Saca una foto")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Selecciona desde la galería")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto , 1);
+
+                } else if (options[item].equals("Cancelar")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
 
-   /* public void ponerDeGaleria(int codidoSolicitud) {
-        String action;
-        if (android.os.Build.VERSION.SDK_INT >= 19) { // API 19 - Kitkat
-            action = Intent.ACTION_OPEN_DOCUMENT;
-        } else {
-            action = Intent.ACTION_PICK;
-        }
-        Intent intent = new Intent(action,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(intent, codidoSolicitud);
-    }
-    public void ponerDeGaleria(View view) {
-        ponerDeGaleria(RESULTADO_GALERIA);
-    }
-*/
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == TAKE_IMAGE_CODE) {
-            switch (resultCode) {
-                case Activity.RESULT_OK:
-                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                    circleImageView.setImageBitmap(bitmap);
-                    handleUpload(bitmap);
+        if(resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                        circleImageView.setImageBitmap(bitmap);
+                        handleUpload(bitmap);
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage =  data.getData();
+                        String[] filePath = {MediaStore.Images.Media.DATA};
+                        Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
+                        c.moveToFirst();
+                        int columnIndex = c.getColumnIndex(filePath[0]);
+                        String picturePath = c.getString(columnIndex);
+                        c.close();
+                        Bitmap bitmap = (BitmapFactory.decodeFile(picturePath));
+
+                        circleImageView.setImageBitmap(bitmap);
+                        handleUpload(bitmap);
+
+                    }
+                    break;
+
+
+
             }
         }else if(requestCode == REQUEST_EDIT_USER){
             switch (resultCode) {
-                case Activity.RESULT_OK:
+                case RESULT_OK:
                    setUpVista(null);
                     Toast.makeText(getContext(), "Actualizado correctamente", Toast.LENGTH_SHORT).show();
 
