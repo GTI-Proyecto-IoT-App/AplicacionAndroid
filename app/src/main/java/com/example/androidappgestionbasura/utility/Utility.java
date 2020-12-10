@@ -2,6 +2,7 @@ package com.example.androidappgestionbasura.utility;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -93,6 +94,23 @@ public class Utility {
         return c.getTime().getTime()/1000L;
     }
 
+    public static long getUnixTimeHaceUnMes() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+
+        return calendar.getTime().getTime()/1000L;
+    }
+
+
+    public static long getUnixTimeHaceUnaSemana() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+
+        return calendar.getTime().getTime()/1000L;
+    }
+
     /**
      * Ruben Pardo Casanova
      * @param initialValue valor donde empieza la animacion
@@ -111,4 +129,22 @@ public class Utility {
         });
         valueAnimator.start();
     }
+
+    /**
+     *
+     * @param serviceClass nombre del servicio
+     * @param context de la actividad
+     * @return true o false si el servicio esta ya en marcha
+     */
+    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

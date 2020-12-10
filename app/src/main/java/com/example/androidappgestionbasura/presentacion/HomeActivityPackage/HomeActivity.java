@@ -25,6 +25,8 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.servicios.ServicioNotificacionesMqtt;
+import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -41,8 +43,14 @@ public class HomeActivity extends AppCompatActivity {
 
 
         setUp();
+        arrancarSerivicio();
     }
 
+    private void arrancarSerivicio() {
+        if(!Utility.isMyServiceRunning(ServicioNotificacionesMqtt.class,this)){
+            startService(new Intent(this, ServicioNotificacionesMqtt.class));
+        }
+    }
 
 
     @Override

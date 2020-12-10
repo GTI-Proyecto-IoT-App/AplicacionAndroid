@@ -352,7 +352,7 @@ public class FirebaseRepository {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     QuerySnapshot querySnapshot = task.getResult();
-                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                    if (querySnapshot != null ) {
                         callBack.onSuccess(querySnapshot);
                     } else {
                         callBack.onSuccess(null);

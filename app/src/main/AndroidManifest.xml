@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.androidappgestionbasura">
+    package="com.example.androidappgestionbasura"
+    android:installLocation="internalOnly">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+<!--    Para el servicio en segundo plano constante, para poder escuchar cuando el movil se inicia-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".utility.AppConf"
@@ -50,6 +52,19 @@
             android:name=".presentacion.RatailerStartUpScreenActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".presentacion.ScanCodeActivity" />
+
+        <service android:name=".servicios.ServicioNotificacionesMqtt"
+            android:enabled="true"
+            android:exported="false" />
+<!--        Broadcast receiver que escucha cuando el telefono se inicia para arrancar el servicio-->
+        <receiver
+            android:name=".broadcast.BroadcastReciverBootCompleted">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
