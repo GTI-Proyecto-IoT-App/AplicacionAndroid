@@ -172,7 +172,8 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
         // de un dispositivo en concreto
 
 
-        final Query query = dispositivosCollectionReferencia.document(id).collection("mediciones");
+        final Query query = dispositivosCollectionReferencia.document(id).collection("mediciones")
+                .orderBy("unixTime", Query.Direction.ASCENDING);
 
         final ListaMesuras listaMesuras = new ListaMesuras();
 

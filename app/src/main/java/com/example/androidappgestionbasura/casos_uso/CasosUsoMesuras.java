@@ -81,10 +81,10 @@ public class CasosUsoMesuras {
                 for(Mesura mesura : listaMesuras.getMesuras()){
 
 
-                    Log.d("DatoMesura----","" + mesura.getLlenado());
-                    Log.d("DatoMesura----","" + mesura.getTipoMedida());
-                    Log.d("DatoMesura----","" + mesura.getPeso());
-                    Log.d("DatoMesura----","" + mesura+ "");
+//                    Log.d("DatoMesura----","" + mesura.getLlenado());
+//                    Log.d("DatoMesura----","" + mesura.getTipoMedida());
+//                    Log.d("DatoMesura----","" + mesura.getPeso());
+//                    Log.d("DatoMesura----","" + mesura+ "");
 
 
 
