@@ -94,6 +94,23 @@ public class Utility {
         return c.getTime().getTime()/1000L;
     }
 
+    public static long getUnixTimeHaceUnMes() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+
+        return calendar.getTime().getTime()/1000L;
+    }
+
+
+    public static long getUnixTimeHaceUnaSemana() {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+
+        return calendar.getTime().getTime()/1000L;
+    }
+
     /**
      * Ruben Pardo Casanova
      * @param initialValue valor donde empieza la animacion

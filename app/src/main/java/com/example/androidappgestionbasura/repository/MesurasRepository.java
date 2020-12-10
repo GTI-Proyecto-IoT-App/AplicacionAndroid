@@ -6,5 +6,6 @@ public interface MesurasRepository {
 
     void readMesurasAnualesByUID(String uid, final CallBack callBack);
     void readBolsasBasurasMensualesByUID(String uid, final CallBack callBack);
+    void readMesurasByID(String id, final CallBack callBack) ;
 
 }

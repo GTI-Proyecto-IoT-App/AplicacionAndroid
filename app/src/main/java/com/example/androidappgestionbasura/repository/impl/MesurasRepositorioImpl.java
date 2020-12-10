@@ -12,11 +12,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.example.androidappgestionbasura.datos.firebase.constants.FirebaseConstants.TABLA_DISPOSITIVOS;
 
@@ -143,6 +145,66 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
                                 }
                             });
                 }
+            }
+
+            @Override
+            public void onError(Object object) {
+                callBack.onError(object);
+            }
+        });
+
+
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Obtiene las mesuras de una basura en concreto gracias a su id
+     * @param id de la basura
+     * @param callBack return List<Mesuras> || error
+     */
+
+    public void readMesurasByID(String id, final CallBack callBack) {
+
+        // coger las mediciones de la id que se pasa por parametro , es decir ,
+        // de un dispositivo en concreto
+
+
+        final Query query = dispositivosCollectionReferencia.document(id).collection("mediciones")
+                .orderBy("unixTime", Query.Direction.ASCENDING);
+
+        final ListaMesuras listaMesuras = new ListaMesuras();
+
+        readQueryDocuments(query, new CallBack() {
+            @Override
+            public void onSuccess(Object object) {// object = querySnapshot
+
+
+
+                // sacamos las mediciones del dispositivo que coincide con nuestra id
+
+//                Log.d("tagS",((QuerySnapshot)object).getDocuments()) + "");
+
+                for(DocumentSnapshot document : ((QuerySnapshot)object).getDocuments()){
+
+                    //Log.d("TAG", document.getId() + " => " + document.getData());
+
+
+                    Mesura nuevaMesura = document.toObject(Mesura.class);
+
+
+                    listaMesuras.getMesuras().add(nuevaMesura);
+//                    Log.d("tagS",listaMesuras.getMesuras() + "");
+
+
+                }
+
+
+
+                callBack.onSuccess(listaMesuras);
+
+                //Log.d("tagS",query.toString());
+
             }
 
             @Override
