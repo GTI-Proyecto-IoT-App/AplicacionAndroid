@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
+<!--    Para el servicio en segundo plano constante, para poder escuchar cuando el movil se inicia-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".utility.AppConf"
@@ -47,6 +48,21 @@
             android:name=".presentacion.RatailerStartUpScreenActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity android:name=".presentacion.ScanCodeActivity" />
+
+        <service android:name=".servicios.ServicioNotificacionesMqtt"
+            android:enabled="true"
+            android:exported="false" />
+<!--        Broadcast receiver que escucha cuando el telefono se inicia para arrancar el servicio-->
+        <receiver android:enabled="true"
+            android:exported="false"
+            android:name=".broadcast.BroadcastReciverBootCompleted"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
