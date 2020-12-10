@@ -34,22 +34,25 @@ public class AppConf extends Application {
         initAdaptador();
     }
     private void initAdaptador(){
-        Query query=dispositivos.getDispositvosVinculados(usuario.getUid());
-        //TODO XXX revisar una manera mejor de detacar si esta vacio o no... Esto solo te detecta la primera vez :/
-        //añadir listener para saber si esata vacio o no
-        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value!=null && !value.isEmpty()){
-                    adaptador.setEmpty(false);
-                }else{
-                    adaptador.setEmpty(true);
+        if(usuario != null){
+            Query query=dispositivos.getDispositvosVinculados(usuario.getUid());
+            //TODO XXX revisar una manera mejor de detacar si esta vacio o no... Esto solo te detecta la primera vez :/
+            //añadir listener para saber si esata vacio o no
+            query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (value!=null && !value.isEmpty()){
+                        adaptador.setEmpty(false);
+                    }else{
+                        adaptador.setEmpty(true);
+                    }
                 }
-            }
-        });
-        FirestoreRecyclerOptions<Dispositivo> opciones = new FirestoreRecyclerOptions
-                .Builder<Dispositivo>().setQuery(query, Dispositivo.class).build();
-        adaptador = new AdaptadorDispositivosFirestoreUI(opciones, this);
+            });
+            FirestoreRecyclerOptions<Dispositivo> opciones = new FirestoreRecyclerOptions
+                    .Builder<Dispositivo>().setQuery(query, Dispositivo.class).build();
+            adaptador = new AdaptadorDispositivosFirestoreUI(opciones, this);
+        }
+
 
     }
 }

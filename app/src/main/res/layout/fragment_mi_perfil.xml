@@ -4,20 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E9EEF1"
     android:padding="20dp"
     tools:context=".presentacion.HomeActivityPackage.MiPerfilFragment">
 
     <Button
         android:id="@+id/btnCerrarSesion"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="310dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:background="@drawable/buttonshape"
         android:text="@string/cerrar_sesion"
         android:textColor="@color/colorPrimary"
         android:textColorHighlight="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
@@ -26,6 +31,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
+        android:background="#10DEF8"
         android:padding="5dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
@@ -37,14 +43,17 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#FFFFFF">
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/fotoPerfil"
                 android:layout_width="86dp"
                 android:layout_height="95dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:src="@drawable/ic_person_black_24dp"
+                app:civ_border_color="#348CD1"
+                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +64,7 @@
                 android:layout_height="25dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/hint_introducir_email"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/textViewNombreUsuario"
                 app:layout_constraintTop_toBottomOf="@+id/textViewNombreUsuario" />
@@ -65,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
+                android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView7"
@@ -76,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="TextView"
+                android:textColor="#000000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textViewNombre"
@@ -85,12 +97,41 @@
                 android:id="@+id/textViewNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="90dp"
                 android:text="@string/hint_introducir_nombre"
+                android:textColor="#000000"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+                app:layout_constraintTop_toBottomOf="@+id/fotoPerfil" />
+
+            <Button
+                android:id="@+id/buttonInactivar"
+                android:layout_width="152dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="95dp"
+                android:background="@drawable/buttondelete"
+                android:onClick="inactivarCuenta"
+                android:text="Inactivar cuenta"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCorreoUsuario" />
+
+            <ImageButton
+                android:id="@+id/btnFoto"
+                android:layout_width="46dp"
+                android:layout_height="41dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="55dp"
+                android:background="@drawable/buttonphoto"
+                android:onClick="handleImageClick"
+                android:src="@android:drawable/ic_menu_camera"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/fotoPerfil" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

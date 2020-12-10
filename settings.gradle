@@ -1,2 +1,3 @@
+include ':Mqtt'
 include ':app'
 rootProject.name = "AndroidBasuraApp"
