@@ -9,7 +9,7 @@ import com.example.androidappgestionbasura.servicios.ServicioNotificacionesMqtt;
 public class BroadcastReciverBootCompleted extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent service = new Intent(context,  ServicioNotificacionesMqtt.class);
+        Intent service = new Intent(context.getApplicationContext(),  ServicioNotificacionesMqtt.class);
         service.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startService(service);
     }

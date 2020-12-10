@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,12 +32,14 @@ public class ServicioNotificacionesMqtt extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Toast.makeText(this, "Service started...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Service created...", Toast.LENGTH_SHORT).show();
         Log.i(TAG, "onCreate() , service started...");
 
     }
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Toast.makeText(this, "Service started...", Toast.LENGTH_SHORT).show();
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.buttonphoto)
                 .setContentTitle("SERVICIO")
@@ -59,8 +62,13 @@ public class ServicioNotificacionesMqtt extends Service {
         Random random = new Random();
         notificationManager.notify(random.nextInt(Integer.MAX_VALUE), builder.build());
 
+
+
         return Service.START_STICKY;
     }
+
+
+
 
     public IBinder onUnBind(Intent arg0) {
         Log.i(TAG, "onUnBind()");
