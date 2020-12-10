@@ -2,6 +2,7 @@ package com.example.androidappgestionbasura.utility;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -111,4 +112,22 @@ public class Utility {
         });
         valueAnimator.start();
     }
+
+    /**
+     *
+     * @param serviceClass nombre del servicio
+     * @param context de la actividad
+     * @return true o false si el servicio esta ya en marcha
+     */
+    public static boolean isMyServiceRunning(Class<?> serviceClass, Context context) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
