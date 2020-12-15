@@ -1,5 +1,6 @@
 package com.example.androidappgestionbasura.presentacion.HomeActivityPackage;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +25,8 @@ import android.view.View;
 import android.widget.Toolbar;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.servicios.ServicioNotificacionesMqtt;
+import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -40,8 +43,14 @@ public class HomeActivity extends AppCompatActivity {
 
 
         setUp();
+        arrancarSerivicio();
     }
 
+    private void arrancarSerivicio() {
+        if(!Utility.isMyServiceRunning(ServicioNotificacionesMqtt.class,this)){
+            startService(new Intent(this, ServicioNotificacionesMqtt.class));
+        }
+    }
 
 
     @Override
@@ -64,8 +73,20 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
+
+        navView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                //Necesario para que cuando vuelvas a clicar en un item del Navigation no se llame al onDestroy
+            }
+        });
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_notificaciones, R.id.navigation_perfil)
+                R.id.navigation_home,
+                R.id.navigation_mapa_basuras_municipales,
+                R.id.navigation_huella_c02,
+                R.id.navigation_notificaciones,
+                R.id.navigation_perfil)
                 .build();
 
         NavHostFragment fragmentNavHost = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment) ;
@@ -81,7 +102,17 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // reenviar los activity result a los fragments hijo
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment !=null) {
 
-
-
+            List<Fragment> childFragments = navHostFragment.getChildFragmentManager().getFragments();
+            for (Fragment fragment: childFragments) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

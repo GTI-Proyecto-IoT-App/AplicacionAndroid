@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -15,9 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
+import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
+import com.example.androidappgestionbasura.model.Usuario;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Utility;
 
@@ -25,28 +29,38 @@ public class FormularioCreacionBasura extends AppCompatActivity {
     private EditText nombre;
     private EditText descripcion;
     private EditText numero;
+
     private CasosUsoDispositivo usoDispositivo;
+    private Usuario usuario;
     private int pos;
     private Dispositivo dispositivo;
     private  boolean edicion;//si viene de edicion sera true
+    private AdaptadorDispositivosFirestoreUI adaptador;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_creacion_basura);
+        nombre = findViewById(R.id.editTextNombreBasura);
+        descripcion = findViewById(R.id.editTextDescripcionBasura);
+        numero = findViewById(R.id.editTextNumeroPersonasBasura);
 
         Bundle extras = getIntent().getExtras();
-        InterfaceDispositivos listaDispositivos = ((AppConf) getApplication()).listaDispositivos;
-        usoDispositivo = new CasosUsoDispositivo(this, listaDispositivos);
-
+        adaptador = ((AppConf) getApplication()).adaptador;
+        usoDispositivo = new CasosUsoDispositivo(this);
+        usuario = ((AppConf) getApplication()).getUsuario();
 
         if(extras != null){
-            setTitle(getString(R.string.editar));
-            pos = extras.getInt("pos", 0);
-            edicion = true;
-            dispositivo = listaDispositivos.elemento(pos);
-            actualizaVistas();
-        }else{
-            setTitle(getString(R.string.tituloFormularioAddBasura));
+            pos = extras.getInt("pos", -1);
+            if (pos==-1){
+                setTitle(getString(R.string.tituloFormularioAddBasura));
+                dispositivo = new Dispositivo();
+                dispositivo.setId(extras.getString("idDispositivo"));
+            }else{
+                edicion = true;
+                setTitle(getString(R.string.editar));
+                dispositivo = adaptador.getItem(pos);
+                actualizaVistas();
+            }
         }
         recueprarEstadoSiEsPosible(savedInstanceState);
     }
@@ -68,24 +82,22 @@ public class FormularioCreacionBasura extends AppCompatActivity {
 
     public void lanzarAceptar(View view){
         if(validarForm()){
-
-            Dispositivo dip = new Dispositivo(
-                    ",",
-                    nombre.getText().toString().trim(),
-                    descripcion.getText().toString().trim(),
-                    TipoDispositivo.BASURA,
-                    Integer.parseInt(numero.getText().toString())
-            );
+            dispositivo.setNombre(nombre.getText().toString().trim());
+            dispositivo.setDescripcion(descripcion.getText().toString().trim());
+            dispositivo.setTipo(TipoDispositivo.BASURA);
+            dispositivo.setNumeroPersonasUso(Integer.parseInt(numero.getText().toString()));
 
             if (edicion){
-                usoDispositivo.guardar(pos, dip);
+                usoDispositivo.guardar(pos, dispositivo);
                 setResult(RESULT_OK);
                 finish(); // va a disp detalles
             }else{
 
                 Intent intent = new Intent();
-                intent.putExtra("Dispositivo creado",usoDispositivo.add(dip));
-
+                dispositivo.getUsuariosVinculados().add(usuario.getUid());
+                usoDispositivo.add(dispositivo);
+                //intent.putExtra("Dispositivo creado",usoDispositivo.add(dispositivo));
+                adaptador.setEmpty(false);
                 setResult(RESULT_OK,intent);
                 finish();//va a mis dispositivos
             }
@@ -99,12 +111,8 @@ public class FormularioCreacionBasura extends AppCompatActivity {
 
     private boolean validarForm() {
         boolean isValid = true;
-        nombre = findViewById(R.id.editTextNombreBasura);
-        descripcion = findViewById(R.id.editTextDescripcionBasura);
-        numero = findViewById(R.id.editTextNumeroPersonasBasura);
 
         String nombreBasura = nombre.getText().toString().trim();
-        String descripcionBasura = descripcion.getText().toString().trim();
         String numeroBasura = numero.getText().toString();
 
         if(nombreBasura.length()==0){

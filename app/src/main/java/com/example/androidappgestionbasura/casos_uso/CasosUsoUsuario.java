@@ -42,6 +42,7 @@ public class CasosUsoUsuario {
     }
 
 
+
     // =============================================================================
     // Metodos generales de acceso
     /**
@@ -349,6 +350,7 @@ public class CasosUsoUsuario {
 
 
 
+
     // ===================================================================
     // metodos para moverse entre activities
 
@@ -375,6 +377,10 @@ public class CasosUsoUsuario {
         Intent intent = new Intent(actividad, VerfiyEmailActivity.class);
         actividad.startActivity(intent);
         actividad.finish();
+    }
+
+    public void updateUsuario(Usuario user, final CallBack callBack){
+        usuariosRepository.updateUsuario(user.getKey(), user.getMap(), callBack);
     }
 
 

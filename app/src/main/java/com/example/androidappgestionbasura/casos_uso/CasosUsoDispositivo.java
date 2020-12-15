@@ -6,22 +6,28 @@ import android.content.Intent;
 import android.util.Pair;
 import android.view.View;
 
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
-import com.example.androidappgestionbasura.presentacion.AuthActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.DispositivoDetallesActivity;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.misdispositivos.FormularioCreacionBasura;
-import com.example.androidappgestionbasura.presentacion.RatailerStartUpScreenActivity;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
+import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
+import com.example.androidappgestionbasura.utility.AppConf;
+import com.example.androidappgestionbasura.utility.Utility;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_BORRAR;
 
 public class CasosUsoDispositivo {
     private Activity actividad;
-    private InterfaceDispositivos dispositivos;
-    public CasosUsoDispositivo(Activity actividad, InterfaceDispositivos dispositivos) {
+    private AdaptadorDispositivosFirestoreUI adaptador;
+    private final DispositivosRepositoryImpl dispositivosRepository;// leer editar dispositivos
+
+    public CasosUsoDispositivo(Activity actividad) {
         this.actividad = actividad;
-        this.dispositivos = dispositivos;
+        adaptador = ((AppConf) actividad.getApplication()).adaptador;
+        dispositivosRepository = new DispositivosRepositoryImpl();
 
     }
     // OPERACIONES BÁSICAS
@@ -38,12 +44,14 @@ public class CasosUsoDispositivo {
         i.putExtra("pos", pos);
         actividad.startActivityForResult(i, codigoRespuestaEdicionDispositivo,options.toBundle());
     }
-    public void crear(TipoDispositivo tipo, int codigoRespuestaCreacionDispositivo){
+    public void vincular(TipoDispositivo tipo, String idDispositivo , int codigoRespuestaCreacionDispositivo){
         switch(tipo) {
             case BASURA:
-                Intent Formulario = new Intent(actividad, FormularioCreacionBasura.class);
-                actividad.startActivityForResult(Formulario, codigoRespuestaCreacionDispositivo);
+                Intent formulario = new Intent(actividad, FormularioCreacionBasura.class);
+                formulario.putExtra("idDispositivo", idDispositivo);
+                actividad.startActivityForResult(formulario, codigoRespuestaCreacionDispositivo);
                 break;
+
             case ELECTRICO:  break;
             case AGUA:  break;
         }
@@ -54,12 +62,24 @@ public class CasosUsoDispositivo {
      * vuelve a mis dispositivos
      * @param id
      */
-    public void borrar(int id) {
-        dispositivos.borrar(id);
-        Intent intent = new Intent();
-        intent.putExtra("Dispositivo a borrar",id);
-        actividad.setResult(RESULT_RECYCLER_VIEW_BORRAR,intent);
-        actividad.finish();
+    public void borrar(final int id, String idUsuario) {
+        Dispositivo disp = adaptador.getItem(id);
+        disp.getUsuariosVinculados().remove(idUsuario);
+        dispositivosRepository.updateDispositivo(disp.getId(), Utility.objectToHashMap(disp), new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                Intent intent = new Intent();
+                intent.putExtra("Dispositivo a borrar",id);
+                actividad.setResult(RESULT_RECYCLER_VIEW_BORRAR,intent);
+                actividad.finish();
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
+
     }
 
     /**
@@ -71,21 +91,72 @@ public class CasosUsoDispositivo {
         i.putExtra("pos", pos);
         actividad.startActivityForResult(i, codigo );
     }
-   public int add (Dispositivo dispositivo){
-        dispositivos.añade(dispositivo);
-        return dispositivos.tamaño()-1;
 
+    //TODO revisar funcionalida de actualizar el recycler view
+   public void add (final Dispositivo dispositivo){
+       dispositivosRepository.updateDispositivo(dispositivo.getId(), Utility.objectToHashMap(dispositivo), new CallBack() {
+           @Override
+           public void onSuccess(Object object) {
+
+           }
+
+           @Override
+           public void onError(Object object) {
+
+           }
+       });
    }
 
     /**
-     * actualiza el objeto de la array local
+     * actualiza el objeto
      * @param id
      * @param dispositivo
      */
-    public void guardar(int id, Dispositivo dispositivo) {
-        dispositivos.actualiza(id, dispositivo);
+    //TODO revisar mostrar mensajes de error
+    public void guardar(final int id, final Dispositivo dispositivo) {
+        dispositivosRepository.updateDispositivo(dispositivo.getId(), Utility.objectToHashMap(dispositivo), new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
+
+
     }
 
 
 
+    public void dipositivoYaVinculado(String idDispositivo, final String idUsuario, final CallBack callBack) {
+        dispositivosRepository.readDispostivoByID(idDispositivo, new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+
+                if (object == null){
+                    //no se ha encontrado el dispositivo
+                    callBack.onError(null);
+                }else {
+                    Dispositivo dispositivo = (Dispositivo) object;
+                    if (dispositivo.getUsuariosVinculados().contains(idUsuario)){
+                        //el dipositivo ya esta vinculado
+                        callBack.onSuccess(null);
+
+                    }else{
+                        //vincular dispositivo
+                        callBack.onSuccess(dispositivo);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onError(Object object) {
+               callBack.onError(null);
+            }
+        });
+    }
 }

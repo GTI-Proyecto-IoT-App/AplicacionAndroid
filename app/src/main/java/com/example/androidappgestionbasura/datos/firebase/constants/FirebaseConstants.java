@@ -8,5 +8,7 @@ package com.example.androidappgestionbasura.datos.firebase.constants;
 public class FirebaseConstants {
 
     public static String TABLA_USUARIOS = "usuarios";
+    public static String TABLA_DISPOSITIVOS = "dispositivos";
+    public static String TABLA_BASURAS_MUNICIPALES = "basurasMunicipales";
 
 }
