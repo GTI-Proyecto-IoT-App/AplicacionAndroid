@@ -1,9 +1,12 @@
 package com.example.androidappgestionbasura.presentacion.HomeActivityPackage;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,11 +29,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
+import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -55,6 +60,9 @@ import static android.content.ContentValues.TAG;
 
 public class MiPerfilFragment extends Fragment {
 
+
+    private static final int REQUEST_CODE_CAMERA = 234;
+    private static final int REQUEST_CODE_GALLERY = 445;
 
     private CasosUsoUsuario casosUsoUsuario;
     private TextView editTextNombre;
@@ -81,6 +89,7 @@ public class MiPerfilFragment extends Fragment {
         editTextNombre = root.findViewById(R.id.textViewNombreUsuario);
         editTextCorreo = root.findViewById(R.id.textViewCorreoUsuario);
         setHasOptionsMenu(true);
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -98,7 +107,32 @@ public class MiPerfilFragment extends Fragment {
 
         return root;
     }
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
     private void handleImageClick(View view) {
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                android.Manifest.permission.READ_CONTACTS,
+                android.Manifest.permission.WRITE_CONTACTS,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_SMS,
+                android.Manifest.permission.CAMERA
+        };
+
+        if (!hasPermissions(getActivity(), PERMISSIONS)) {
+            ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
+        }
+
+
+
         final CharSequence[] options = { "Saca una foto", "Selecciona desde la galería","Cancelar" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -110,10 +144,12 @@ public class MiPerfilFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Saca una foto")) {
+
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePicture, 0);
 
                 } else if (options[item].equals("Selecciona desde la galería")) {
+
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto , 1);
 
@@ -133,6 +169,7 @@ public class MiPerfilFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode != RESULT_CANCELED) {
+
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
@@ -143,6 +180,7 @@ public class MiPerfilFragment extends Fragment {
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
+
                         Uri selectedImage =  data.getData();
                         String[] filePath = {MediaStore.Images.Media.DATA};
                         Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
