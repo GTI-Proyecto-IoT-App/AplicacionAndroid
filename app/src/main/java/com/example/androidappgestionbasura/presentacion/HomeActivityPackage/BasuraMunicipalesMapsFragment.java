@@ -78,6 +78,7 @@ public class BasuraMunicipalesMapsFragment extends Fragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+
         // ciclo de vida de las basuras municipales para no pedir cada vez
         if(savedInstanceState!=null){
             listaBasurasMunicipales = (ListaBasurasMunicipales) savedInstanceState.getSerializable("basuras-array");
@@ -88,6 +89,7 @@ public class BasuraMunicipalesMapsFragment extends Fragment
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         // ciclo de vida de las basuras municipales para no pedir cada vez
         if(savedInstanceState!=null){
@@ -150,7 +152,10 @@ public class BasuraMunicipalesMapsFragment extends Fragment
         mapa = googleMap;
         mapa.setMapStyle(MapStyleOptions.loadRawResourceStyle(getContext(), R.raw.map_style_json));
         mapa.setOnMarkerClickListener(this);
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ultimaLocalizacion.getLatitude(), ultimaLocalizacion.getLongitude()),15.0F));
+        if(ultimaLocalizacion!=null){
+            mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ultimaLocalizacion.getLatitude(), ultimaLocalizacion.getLongitude()),15.0F));
+
+        }
         if(listaBasurasMunicipales==null || listaBasurasMunicipales.getBasuraMunicipalList().isEmpty()){
 
             basuraMunicipalRepository.readBasurasMunicipales(new CallBack() {
