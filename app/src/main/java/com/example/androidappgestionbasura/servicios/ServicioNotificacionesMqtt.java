@@ -1,9 +1,12 @@
 package com.example.androidappgestionbasura.servicios;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
@@ -27,16 +30,20 @@ import java.util.Random;
 import java.util.UUID;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import static androidx.core.app.NotificationCompat.PRIORITY_MIN;
 import static com.example.rparcas.mqtt.Mqtt.topicRoot;
 
 public class ServicioNotificacionesMqtt extends Service implements MqttCallback {
 
     private static final String TAG = "NotificationMqttService";
-    private static final String CHANNEL_ID = "CHANNEL-1";
-
+    private static final String CHANNEL_ID1 = "CHANNEL-1";
+    private static final String CHANNEL_ID2 = "CHANNEL-2";
+    private static final int NOTIFICATION_ID = 1233;
+    private NotificationManager notificationManager;
     private MqttClient client = null;
 
     public IBinder onBind(Intent arg0) {
@@ -49,8 +56,39 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
         Log.i(TAG, "onCreate() , service started...");
         Toast.makeText(this, "Service created...", Toast.LENGTH_SHORT).show();
         conectarMQTT();
+
+        empezarServicioPrimerPlano();
+
         super.onCreate();
 
+    }
+
+    private void empezarServicioPrimerPlano() {
+
+
+        String channelid = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                ? createNotificationChannel("my_service", "My Background Service")
+                : "";
+
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelid);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setPriority(PRIORITY_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+
+
+        startForeground(101,notification);
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private String createNotificationChannel(String channelId , String channelName){
+        NotificationChannel chan = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+        NotificationManager service = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        service.createNotificationChannel(chan);
+        return channelId;
     }
 
     private void conectarMQTT(){
@@ -62,7 +100,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             connOpts.setKeepAliveInterval(60);
-            connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),Mqtt.qos, false);
+            //connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),Mqtt.qos, false);
             client.connect(connOpts);
 
         } catch (MqttException e) {
@@ -76,8 +114,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 //        listaIdDispositivos = intent.getCharSequenceArrayListExtra("idDispositivos");
 
         Toast.makeText(this, "Service started...", Toast.LENGTH_SHORT).show();
-
-
 
         // subscribirse a topic
         try {
@@ -99,12 +135,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
         return null;
     }
 
-    public void onStop() {
-        Log.i(TAG, "onStop()");
-    }
-    public void onPause() {
-        Log.i(TAG, "onPause()");
-    }
     @Override
     public void onDestroy() {
         Toast.makeText(this, "Service stopped...", Toast.LENGTH_SHORT).show();
@@ -119,26 +149,27 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     @Override
     public void connectionLost(Throwable cause) {
         Log.d(Mqtt.TAG,"conexion perdida");
+        conectarMQTT();
     }
 
     @Override
-    public void messageArrived(String topic, MqttMessage message) throws Exception {
+    public void messageArrived(String topic, MqttMessage message){
 
-        Log.d("MQTT","llega");
+        Log.d("MQTT","llega: "+message);
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID1)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Dispositivo desconectado")
                 .setContentText("xd")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        NotificationManager notificationManager = (NotificationManager)
+        notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "CHANNEL-1", importance);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID1, "CHANNEL-1", importance);
             channel.setDescription("description");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this

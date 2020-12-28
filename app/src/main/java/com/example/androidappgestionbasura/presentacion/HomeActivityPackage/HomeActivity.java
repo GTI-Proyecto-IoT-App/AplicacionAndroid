@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,14 +15,17 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.Manifest;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.androidappgestionbasura.R;
@@ -36,6 +40,8 @@ import java.util.List;
  */
 public class HomeActivity extends AppCompatActivity {
 
+    private static final int CODIGO_PERMISO_SERVICIO_PRIMER_PLANO = 1234;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +50,23 @@ public class HomeActivity extends AppCompatActivity {
 
         setUp();
         arrancarSerivicio();
+
     }
 
     private void arrancarSerivicio() {
-        if(!Utility.isMyServiceRunning(ServicioNotificacionesMqtt.class,this)){
-            startService(new Intent(this, ServicioNotificacionesMqtt.class));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED){
+
+            if(!Utility.isMyServiceRunning(ServicioNotificacionesMqtt.class,this)){
+
+                startService(new Intent(this, ServicioNotificacionesMqtt.class));
+            }
+        }else{
+            Utility.permissionAsk(Manifest.permission.FOREGROUND_SERVICE,this,CODIGO_PERMISO_SERVICIO_PRIMER_PLANO);
         }
+
+
     }
+
 
 
     @Override
@@ -104,6 +120,19 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == CODIGO_PERMISO_SERVICIO_PRIMER_PLANO){
+            if (grantResults.length== 1 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                arrancarSerivicio();
+
+            } else {
+                Toast.makeText(this, "Sin el permiso, no se podrá recibir notificaciones", Toast.LENGTH_SHORT).show();
+            }
+
+        }
         // reenviar los activity result a los fragments hijo
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment !=null) {
