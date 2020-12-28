@@ -18,6 +18,7 @@ import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorNotificacionesFirestoreUI;
+import com.example.androidappgestionbasura.utility.AppConf;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class NotifiacionesFragment extends Fragment {
@@ -30,7 +31,8 @@ public class NotifiacionesFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_mis_notificaciones, container, false);
 
-        casosUsoNotificacion = new CasosUsoNotificacion(getActivity());
+        String uid = ((AppConf) getActivity().getApplication()).getUsuario().getUid();
+        casosUsoNotificacion = new CasosUsoNotificacion(uid);
 
         setUpRecyclerView(root);
 

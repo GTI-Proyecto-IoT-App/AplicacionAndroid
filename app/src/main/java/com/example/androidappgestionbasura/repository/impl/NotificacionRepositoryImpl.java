@@ -7,10 +7,12 @@ import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.firebase.constants.FirebaseConstants;
+import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.repository.NotificacionRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -29,22 +31,37 @@ public class NotificacionRepositoryImpl extends FirebaseRepository implements No
                 .getDATABASE().collection(TABLA_USUARIOS)
                 .document(uid).collection(FirebaseConstants.TABLA_NOTIFICACION);
 
-        Log.d("NOTIFICACIONES",notificacionCollectionReferencia.getPath());
     }
 
 
     @Override
     public Query readNotifiacionesDispositivosVinculadosByUID() {
+
         return notificacionCollectionReferencia;
     }
 
     @Override
-    public void addNotificacion(String idDispostivio, Notification notification, CallBack callBack) {
+    public void addNotificacion(Notificacion notification) {
 
+        DocumentReference documentReference = notificacionCollectionReferencia.document();
+        String id = documentReference.getId();
+        notification.setId(id);
+
+        fireStoreCreate(documentReference, notification, new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
     }
 
     @Override
-    public void deleteNotificacion(Notification notification, CallBack callBack) {
+    public void deleteNotificacion(Notificacion notification, CallBack callBack) {
 
     }
 }

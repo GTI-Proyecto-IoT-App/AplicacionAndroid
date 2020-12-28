@@ -1,6 +1,7 @@
 package com.example.androidappgestionbasura.casos_uso;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorNotificacionesFirestoreUI;
@@ -15,9 +16,7 @@ public class CasosUsoNotificacion {
     private AdaptadorNotificacionesFirestoreUI adaptador;
     private final NotificacionRepositoryImpl notificacionRepository;// leer editar dispositivos
 
-    public CasosUsoNotificacion(Activity activity){
-        this.actividad = activity;
-        String uid = ((AppConf) activity.getApplication()).getUsuario().getUid();
+    public CasosUsoNotificacion(String uid){
         notificacionRepository = new NotificacionRepositoryImpl(uid);
     }
 
@@ -28,4 +27,13 @@ public class CasosUsoNotificacion {
         return new FirestoreRecyclerOptions
                 .Builder<Notificacion>().setQuery(query, Notificacion.class).build();
     }
+
+
+    public void enviarNotificacionFirestore(Notificacion notificacion){
+
+
+        notificacionRepository.addNotificacion(notificacion);
+
+    }
+
 }

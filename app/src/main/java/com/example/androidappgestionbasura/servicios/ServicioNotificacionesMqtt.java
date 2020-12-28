@@ -14,7 +14,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.casos_uso.CasosUsoNotificacion;
 import com.example.androidappgestionbasura.model.ListaDispositivos;
+import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
+import com.example.androidappgestionbasura.model.notificaciones.TipoNotificacion;
+import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.rparcas.mqtt.Mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -46,6 +50,10 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     private NotificationManager notificationManager;
     private MqttClient client = null;
 
+
+    private CasosUsoNotificacion casosUsoNotificacion;
+
+
     public IBinder onBind(Intent arg0) {
         Log.i(TAG, "onBind()" );
         return null;
@@ -54,7 +62,10 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate() , service started...");
-        Toast.makeText(this, "Service created...", Toast.LENGTH_SHORT).show();
+
+        String uid = ((AppConf) getApplication()).getUsuario().getUid();
+        casosUsoNotificacion = new CasosUsoNotificacion(uid);
+
         conectarMQTT();
 
         empezarServicioPrimerPlano();
@@ -113,8 +124,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
 //        listaIdDispositivos = intent.getCharSequenceArrayListExtra("idDispositivos");
 
-        Toast.makeText(this, "Service started...", Toast.LENGTH_SHORT).show();
-
         // subscribirse a topic
         try {
             Log.i(Mqtt.TAG, "Suscrito a " + topicRoot+"24:6F:28:A0:90:80%basura/WillTopic");
@@ -137,7 +146,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service stopped...", Toast.LENGTH_SHORT).show();
         Log.i(TAG, "onCreate() , service stopped...");
     }
 
@@ -158,10 +166,24 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
         Log.d("MQTT","llega: "+message);
 
 
+        enviarNotifiacacion(message);
+        enviarNotifiacacionFirestore(message);
+
+    }
+
+    private void enviarNotifiacacionFirestore(MqttMessage message) {
+        Notificacion notificacion = new Notificacion();
+        notificacion.setFecha(System.currentTimeMillis());
+        notificacion.setIdDispositivo("24:6F:28:A0:90:80%basura");
+        notificacion.setNombreDispositivo("Prueba");
+        notificacion.setTipo(TipoNotificacion.DESCONECTADO);
+        casosUsoNotificacion.enviarNotificacionFirestore(notificacion);
+    }
+
+    private void enviarNotifiacacion(MqttMessage message) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID1)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Dispositivo desconectado")
-                .setContentText("xd")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
@@ -179,8 +201,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
         Random random = new Random();
         notificationManager.notify(random.nextInt(Integer.MAX_VALUE), builder.build());
-
-
     }
 
     @Override
