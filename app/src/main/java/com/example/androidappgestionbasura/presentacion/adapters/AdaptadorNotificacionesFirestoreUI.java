@@ -88,7 +88,7 @@ public class AdaptadorNotificacionesFirestoreUI
 
 
             nombre.setText(notificacion.getNombreDispositivo());
-            fecha.setText(Utility.getDate(notificacion.getFecha(),"dd-mm-yyyy HH:MM:SS"));
+            fecha.setText(Utility.getDate(notificacion.getFecha(),"dd-mm-yyyy HH:mm"));
             int id = R.drawable.ic_smart_trash;
             switch(notificacion.getTipo()) {
                 case DESCONECTADO:

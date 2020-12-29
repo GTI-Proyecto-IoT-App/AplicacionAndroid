@@ -6,18 +6,16 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoNotificacion;
-import com.example.androidappgestionbasura.model.ListaDispositivos;
+import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.model.notificaciones.TipoNotificacion;
+import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.rparcas.mqtt.Mqtt;
 
@@ -29,14 +27,10 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_MIN;
 import static com.example.rparcas.mqtt.Mqtt.topicRoot;
@@ -165,25 +159,34 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
         Log.d("MQTT","llega: "+message);
 
+        // obtenemos que dispostivo se ha desconectado por su id que se envia en el mensaje del will topic
+        // TODO Cambiar el will topic a que envie su id de tal forma que se sepa que se ha desconectado, mqtt si ve que no esta conectado envia "disconnected"
+        // TODO enviar por ejemplo: "dispositivo$$desconectado$$<id>"
+        AdaptadorDispositivosFirestoreUI adaptador = ((AppConf) getApplication()).adaptador;
+        Dispositivo dispositivo = adaptador.getItem(adaptador.getPos("24:6F:28:A0:90:80%basura"));
 
-        enviarNotifiacacion(message);
-        enviarNotifiacacionFirestore(message);
+
+        enviarNotifiacacion(dispositivo);
+        guardarNotifiacacionFirestore(dispositivo);
 
     }
 
-    private void enviarNotifiacacionFirestore(MqttMessage message) {
+    private void guardarNotifiacacionFirestore(Dispositivo dispositivo) {
         Notificacion notificacion = new Notificacion();
         notificacion.setFecha(System.currentTimeMillis());
-        notificacion.setIdDispositivo("24:6F:28:A0:90:80%basura");
-        notificacion.setNombreDispositivo("Prueba");
+        notificacion.setIdDispositivo(dispositivo.getId());
+
+        notificacion.setNombreDispositivo(dispositivo.getNombre());
         notificacion.setTipo(TipoNotificacion.DESCONECTADO);
+
         casosUsoNotificacion.enviarNotificacionFirestore(notificacion);
     }
 
-    private void enviarNotifiacacion(MqttMessage message) {
+    private void enviarNotifiacacion(Dispositivo dispositivo) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID1)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Dispositivo desconectado")
+                .setContentText("El dispositivo: "+dispositivo.getNombre()+" no tiene conexión")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);

@@ -37,7 +37,7 @@ public class NotificacionRepositoryImpl extends FirebaseRepository implements No
     @Override
     public Query readNotifiacionesDispositivosVinculadosByUID() {
 
-        return notificacionCollectionReferencia;
+        return notificacionCollectionReferencia.orderBy("fecha", Query.Direction.DESCENDING);
     }
 
     @Override
