@@ -55,6 +55,7 @@ public class NotifiacionesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("NOTIFICACION","borrar: "+v.getTag());
+                casosUsoNotificacion.borrarNotificacion(v.getTag());
             }
         });
 

@@ -61,7 +61,9 @@ public class NotificacionRepositoryImpl extends FirebaseRepository implements No
     }
 
     @Override
-    public void deleteNotificacion(Notificacion notification, CallBack callBack) {
+    public void deleteNotificacion(Object idNotificacion) {
+
+        notificacionCollectionReferencia.document((String)idNotificacion).delete();
 
     }
 }
