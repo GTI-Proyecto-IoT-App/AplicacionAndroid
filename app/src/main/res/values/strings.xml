@@ -82,6 +82,7 @@
     <string name="arboles_plantados">arboles plantados</string>
     <string name="dispositivo_sin_conexion">Ha perdido la conexion a internet</string>
     <string name="eliminar_notificaciones">Eliminar todas</string>
+    <string name="no_tienes_notificaciones">No tienes Notificaciones</string>
 
 
 </resources>

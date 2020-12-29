@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoNotificacion;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
@@ -47,6 +48,8 @@ public class NotifiacionesFragment extends Fragment {
 
     private void setUpRecyclerView(View root) {
 
+        TextView tvVacio = root.findViewById(R.id.tvNotificacionesVacio);
+
         RecyclerView recyclerView = root.findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -55,15 +58,37 @@ public class NotifiacionesFragment extends Fragment {
         FirestoreRecyclerOptions<Notificacion> opciones =
                 casosUsoNotificacion.getQueryNotificaciones();
 
-        adapter =  new AdaptadorNotificacionesFirestoreUI(opciones, getActivity());
+        adapter =  new AdaptadorNotificacionesFirestoreUI(opciones, getActivity(), new CallBack() {
+            // cuando hay un cambio se envia cuantos items hay, asi sabemos cuando
+            // esta vacio y mostrar una imagen
+            @Override
+            public void onSuccess(Object object) {
+                int count = (int) object;
+                if(count == 0){
+//                    Log.d("NOTIFICACION","Se muestra imagen vacia");
+                    recyclerView.setVisibility(View.GONE);
+                    tvVacio.setVisibility(View.VISIBLE);
+                }else{
+//                    Log.d("NOTIFICACION","Se muestra el recycler");
+                    recyclerView.setVisibility(View.VISIBLE);
+                    tvVacio.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
 
         adapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("NOTIFICACION","borrar: "+v.getTag());
                 casosUsoNotificacion.borrarNotificacion(v.getTag());
             }
         });
+
 
         recyclerView.setAdapter(adapter);
 

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.utility.Utility;
@@ -23,11 +24,14 @@ public class AdaptadorNotificacionesFirestoreUI
 
     protected View.OnClickListener onClickListener;
     protected Context context;
+    private CallBack callBack;
 
     public AdaptadorNotificacionesFirestoreUI(
-            @NonNull FirestoreRecyclerOptions<Notificacion> options, Context context){
+            @NonNull FirestoreRecyclerOptions<Notificacion> options, Context context,
+            CallBack callBack){
         super(options);
         this.context = context;
+        this.callBack = callBack;
 
     }
     @Override public AdaptadorNotificacionesFirestoreUI.ViewHolder onCreateViewHolder(
@@ -37,7 +41,8 @@ public class AdaptadorNotificacionesFirestoreUI
 
         return new AdaptadorNotificacionesFirestoreUI.ViewHolder(view);
     }
-    @Override protected void onBindViewHolder(@NonNull AdaptadorNotificacionesFirestoreUI.ViewHolder holder, int position, @NonNull Notificacion notificacion) {
+    @Override protected void onBindViewHolder(@NonNull AdaptadorNotificacionesFirestoreUI.ViewHolder holder,
+                                              int position, @NonNull Notificacion notificacion) {
         holder.itemView.setTag(new Integer(position));//para obtener posición
         holder.personaliza(notificacion);
     }
@@ -59,6 +64,7 @@ public class AdaptadorNotificacionesFirestoreUI
 
     @Override
     public void onDataChanged() {
+        callBack.onSuccess(this.getItemCount());
         super.onDataChanged();
     }
 
