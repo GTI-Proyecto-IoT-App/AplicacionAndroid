@@ -58,7 +58,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
         Log.i(TAG, "onCreate() , service started...");
 
         String uid = ((AppConf) getApplication()).getUsuario().getUid();
-        casosUsoNotificacion = new CasosUsoNotificacion(uid);
+        casosUsoNotificacion = new CasosUsoNotificacion(uid,null);
 
         conectarMQTT();
 

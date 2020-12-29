@@ -8,5 +8,5 @@ public interface NotificacionRepository {
     Query readNotifiacionesDispositivosVinculadosByUID();
     void addNotificacion(Notificacion notification);
     void deleteNotificacion(Object idNotificacion);
-
+    void deleteTodasNotificaciones(CallBack callBack);
 }

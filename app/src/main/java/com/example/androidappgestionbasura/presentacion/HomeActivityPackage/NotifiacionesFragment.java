@@ -1,8 +1,12 @@
 package com.example.androidappgestionbasura.presentacion.HomeActivityPackage;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -31,8 +35,10 @@ public class NotifiacionesFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_mis_notificaciones, container, false);
 
+        setHasOptionsMenu(true);
+
         String uid = ((AppConf) getActivity().getApplication()).getUsuario().getUid();
-        casosUsoNotificacion = new CasosUsoNotificacion(uid);
+        casosUsoNotificacion = new CasosUsoNotificacion(uid,getActivity());
 
         setUpRecyclerView(root);
 
@@ -47,7 +53,7 @@ public class NotifiacionesFragment extends Fragment {
 
 
         FirestoreRecyclerOptions<Notificacion> opciones =
-                casosUsoNotificacion.getQueryNotificaciones(getActivity());
+                casosUsoNotificacion.getQueryNotificaciones();
 
         adapter =  new AdaptadorNotificacionesFirestoreUI(opciones, getActivity());
 
@@ -77,4 +83,24 @@ public class NotifiacionesFragment extends Fragment {
         adapter.stopListening();
         super.onStop();
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_notificaciones, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.accion_borrar_todas_notificaciones) {
+            casosUsoNotificacion.borrarTodasNotificaciones();
+            return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

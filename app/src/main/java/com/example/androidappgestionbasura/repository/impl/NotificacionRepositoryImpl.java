@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -64,6 +65,26 @@ public class NotificacionRepositoryImpl extends FirebaseRepository implements No
     public void deleteNotificacion(Object idNotificacion) {
 
         notificacionCollectionReferencia.document((String)idNotificacion).delete();
+
+    }
+
+    @Override
+    public void deleteTodasNotificaciones(CallBack callBack) {
+
+        notificacionCollectionReferencia.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(DocumentSnapshot documentSnapshot : task.getResult()){
+                        notificacionCollectionReferencia.document(documentSnapshot.getId()).delete();
+                    }
+                    callBack.onSuccess(null);
+                }else{
+                    callBack.onError(null);
+                }
+            }
+        });
+
 
     }
 }
