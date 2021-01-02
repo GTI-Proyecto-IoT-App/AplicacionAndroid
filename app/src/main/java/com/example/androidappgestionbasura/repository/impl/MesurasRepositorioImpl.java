@@ -1,5 +1,7 @@
 package com.example.androidappgestionbasura.repository.impl;
 
+import android.util.Log;
+
 import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
@@ -12,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,9 +34,11 @@ import static com.example.androidappgestionbasura.datos.firebase.constants.Fireb
 public class MesurasRepositorioImpl extends FirebaseRepository implements MesurasRepository  {
 
     private CollectionReference dispositivosCollectionReferencia;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public MesurasRepositorioImpl(){
         dispositivosCollectionReferencia = FirebaseReferences.getInstancia().getDATABASE().collection(TABLA_DISPOSITIVOS);
+
     }
 
     /**
@@ -173,7 +179,62 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
         final Query query = dispositivosCollectionReferencia.document(id).collection("mediciones")
                 .orderBy("unixTime", Query.Direction.ASCENDING);
 
+
         final ListaMesuras listaMesuras = new ListaMesuras();
+
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                readQueryDocuments(query, new CallBack() {
+                    @Override
+                    public void onSuccess(Object object) {// object = querySnapshot
+
+
+
+                        // sacamos las mediciones del dispositivo que coincide con nuestra id
+
+//                Log.d("tagS",((QuerySnapshot)object).getDocuments()) + "");
+
+                        for(DocumentSnapshot document : ((QuerySnapshot)object).getDocuments()){
+
+                            //Log.d("TAG", document.getId() + " => " + document.getData());
+
+
+                            Mesura nuevaMesura = document.toObject(Mesura.class);
+
+
+
+
+                            listaMesuras.getMesuras().add(nuevaMesura);
+//                    Log.d("tagS",listaMesuras.getMesuras() + "");
+
+
+                        }
+
+
+
+
+
+
+
+                        callBack.onSuccess(listaMesuras);
+
+                        //Log.d("tagS",query.toString());
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Object object) {
+                        callBack.onError(object);
+                    }
+                });
+                //Log.d("Algo","Algo cambia en la coleccion ");
+            }
+        });
+
+
 
         readQueryDocuments(query, new CallBack() {
             @Override
@@ -193,6 +254,8 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
                     Mesura nuevaMesura = document.toObject(Mesura.class);
 
 
+
+
                     listaMesuras.getMesuras().add(nuevaMesura);
 //                    Log.d("tagS",listaMesuras.getMesuras() + "");
 
@@ -201,9 +264,15 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
 
 
 
+
+
+
+
                 callBack.onSuccess(listaMesuras);
 
                 //Log.d("tagS",query.toString());
+
+
 
             }
 
