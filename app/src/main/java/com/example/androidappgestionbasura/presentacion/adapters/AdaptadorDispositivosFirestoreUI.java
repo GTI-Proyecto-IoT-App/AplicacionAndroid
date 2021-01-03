@@ -27,7 +27,7 @@ public class AdaptadorDispositivosFirestoreUI extends FirestoreRecyclerAdapter<D
     private boolean empty;
     private CallBack callBack;
 
-    private List<Dispositivo> dispositivoList;
+
 
     public AdaptadorDispositivosFirestoreUI(
             @NonNull FirestoreRecyclerOptions<Dispositivo> options, Context context){
@@ -68,76 +68,6 @@ public class AdaptadorDispositivosFirestoreUI extends FirestoreRecyclerAdapter<D
 
     @Override
     public void onDataChanged() {
-
-        // hay una lista guardada que contiene los dispositivos antiguos, cuando se llame a este
-        // metodo se comprobará si se ha añadido o eliminado un dispostivo para asi notificar al
-        // servicio de notificaciones si tiene que registrarlo o elimanrlo
-        // independientemente guardarlo en shared preferences en forma de json para que en caso de que se reincie la app
-        // y se arranque el servicio sin la app se tenga el json para convertirlo en objetos y que no de error
-        // this.getSnapshots se actualizará y este meteodo se llamará cada vez que el server se actualiza
-
-
-        if(dispositivoList == null){
-            // se llama por primera vez
-            dispositivoList = new ArrayList<Dispositivo>();
-            dispositivoList.addAll(this.getSnapshots());
-
-        }else{
-
-            if(dispositivoList.size() > this.getSnapshots().size()){
-                // se ha borrado un dispositivo
-                Dispositivo dispositivoBorrado;
-
-                for(Dispositivo d : dispositivoList){
-                    boolean isBorrado = true;
-                    for(Dispositivo dList : this.getSnapshots()){
-                        if (d.getId().equals(dList.getId())) {
-                            isBorrado = false;
-                            break;
-                        }
-                    }
-                    if(isBorrado){
-                        dispositivoBorrado = d;
-                        dispositivoList.remove(dispositivoBorrado);
-                        break;
-                    }
-                }
-
-
-            }else if(dispositivoList.size() < this.getSnapshots().size()){
-                // se ha añadido un dispositivo
-                Log.d("SNAPSHOTS","SE HA AÑADIDO UNO");
-                Dispositivo dispositivoNuevo;
-
-                for(Dispositivo d : this.getSnapshots()){
-                    boolean isNuevo = true;
-                    Log.d("SNAPSHOTS","VUELTA-----D: "+d.getId());
-                    for(Dispositivo dList : dispositivoList){
-                        Log.d("SNAPSHOTS","D: "+d.getId());
-                        Log.d("SNAPSHOTS","dList: "+dList.getId());
-                        if (d.getId().equals(dList.getId())) {
-                            isNuevo = false;
-                            Log.d("SNAPSHOTS","BREAK");
-                            break;
-                        }
-
-                    }
-                    Log.d("SNAPSHOTS","FIN VUELTA-----");
-                    Log.d("SNAPSHOTS","COMPROBAR: "+isNuevo);
-                    if(isNuevo){
-                        dispositivoNuevo = d;
-                        dispositivoList.add(dispositivoNuevo);
-                        Log.d("SNAPSHOTS-NUEVO",dispositivoNuevo.getNombre());
-                        break;
-                    }
-                }
-
-            }
-
-        }
-        // guardar en shared preferences la lista en formato json independientemente para asi guardar
-        // los posibles nuevos cambios en nombres
-
 
         callBack.onSuccess(getItemCount());
 

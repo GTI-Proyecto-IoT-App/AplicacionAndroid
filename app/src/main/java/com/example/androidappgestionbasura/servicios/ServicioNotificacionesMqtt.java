@@ -12,14 +12,23 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoNotificacion;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.model.notificaciones.TipoNotificacion;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
+import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.rparcas.mqtt.Mqtt;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -29,8 +38,12 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
@@ -48,6 +61,8 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
 
     private CasosUsoNotificacion casosUsoNotificacion;
+    private List<Dispositivo> dispositivoList;
+    private Query query;
 
 
     public IBinder onBind(Intent arg0) {
@@ -64,12 +79,121 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 //        String uid = ((AppConf) getApplication()).getUsuario().getUid();
         casosUsoNotificacion = new CasosUsoNotificacion(ui,null);
 
+
         conectarMQTT();
 
         empezarServicioPrimerPlano();
 
+
+
         super.onCreate();
 
+    }
+
+    private void addSnapshotListenerDispositivos(String ui) {
+
+        query = new DispositivosRepositoryImpl().getDispositvosVinculados(ui);
+
+        // obtener todos los dispositivos
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                if(value!=null){
+                    List<Dispositivo> dispositivosDelQuery = new ArrayList<>();
+                    for(DocumentSnapshot d : value.getDocuments()){
+                        Dispositivo disp = d.toObject(Dispositivo.class);
+                        dispositivosDelQuery.add(disp);
+                    }
+
+                    if(dispositivoList == null){
+                        // se llama por primera vez
+                        dispositivoList = new ArrayList<Dispositivo>();
+                        dispositivoList.addAll(dispositivosDelQuery);
+                        // conectar todos los dispositivos
+                        for(Dispositivo dispositivo : dispositivoList){
+                            conectarDispositivoMQTT(dispositivo);
+                        }
+
+                    }else{
+
+                        if(dispositivoList.size() > dispositivosDelQuery.size()){
+                            // se ha borrado un dispositivo
+                            Dispositivo dispositivoBorrado;
+
+                            for(Dispositivo d : dispositivoList){
+                                boolean isBorrado = true;
+                                for(Dispositivo dList : dispositivosDelQuery){
+                                    if (d.getId().equals(dList.getId())) {
+                                        isBorrado = false;
+                                        break;
+                                    }
+                                }
+                                if(isBorrado){
+                                    dispositivoBorrado = d;
+                                    dispositivoList.remove(dispositivoBorrado);
+                                    // desvincularlo
+                                    desconectarDispositivoMQTT(dispositivoBorrado);
+                                    break;
+                                }
+                            }
+
+
+                        }
+                        else if(dispositivoList.size() < dispositivosDelQuery.size()){
+                            // se ha añadido un dispositivo
+                            Dispositivo dispositivoNuevo;
+
+                            for(Dispositivo d : dispositivosDelQuery){
+                                boolean isNuevo = true;
+
+                                for(Dispositivo dList : dispositivoList){
+                                    if (d.getId().equals(dList.getId())) {
+                                        isNuevo = false;
+                                        break;
+                                    }
+
+                                }
+                                if(isNuevo){
+                                    dispositivoNuevo = d;
+                                    dispositivoList.add(dispositivoNuevo);
+                                    // vincularlo
+                                    conectarDispositivoMQTT(dispositivoNuevo);
+                                    break;
+                                }
+                            }
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+        });
+
+
+    }
+
+    private void desconectarDispositivoMQTT(Dispositivo dispositivoBorrado) {
+        try {
+            Log.i(Mqtt.TAG, "Desuscrito a " + topicRoot+ dispositivoBorrado.getId() + "/WillTopic");
+            client.unsubscribe( topicRoot+ dispositivoBorrado.getId() + "/WillTopic");
+            client.setCallback(this);
+        } catch (MqttException e) {
+            Log.e(Mqtt.TAG, "Error al suscribir.", e);
+        }
+    }
+
+    private void conectarDispositivoMQTT(Dispositivo dispositivoNuevo) {
+        try {
+            Log.i(Mqtt.TAG, "Suscrito a " + topicRoot+ dispositivoNuevo.getId() + "/WillTopic");
+            client.subscribe( topicRoot+ dispositivoNuevo.getId() + "/WillTopic", Mqtt.qos);
+            client.setCallback(this);
+        } catch (MqttException e) {
+            Log.e(Mqtt.TAG, "Error al suscribir.", e);
+        }
     }
 
     private void empezarServicioPrimerPlano() {
@@ -119,17 +243,10 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(getApplicationContext(),"Servicio",Toast.LENGTH_LONG).show();
-//        listaIdDispositivos = intent.getCharSequenceArrayListExtra("idDispositivos");
 
         // subscribirse a topic
-        try {
-            Log.i(Mqtt.TAG, "Suscrito a " + topicRoot+"24:6F:28:A0:90:80%basura/WillTopic");
-            client.subscribe(topicRoot+"24:6F:28:A0:90:80%basura/WillTopic", Mqtt.qos);
-            client.setCallback(this);
-        } catch (MqttException e) {
-            Log.e(Mqtt.TAG, "Error al suscribir.", e);
-        }
+        String ui = SharedPreferencesHelper.getInstance().getUID();
+        addSnapshotListenerDispositivos(ui);
 
         return Service.START_STICKY;
     }
@@ -156,6 +273,9 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     public void connectionLost(Throwable cause) {
         Log.d(Mqtt.TAG,"conexion perdida");
         conectarMQTT();
+        // volver a pedir los dispositivos para subscribirse a sus will topic
+        String ui = SharedPreferencesHelper.getInstance().getUID();
+        addSnapshotListenerDispositivos(ui);
     }
 
     @Override
@@ -166,12 +286,17 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
         // obtenemos que dispostivo se ha desconectado por su id que se envia en el mensaje del will topic
         // TODO Cambiar el will topic a que envie su id de tal forma que se sepa que se ha desconectado, mqtt si ve que no esta conectado envia "disconnected"
         // TODO enviar por ejemplo: "dispositivo$$desconectado$$<id>"
-        AdaptadorDispositivosFirestoreUI adaptador = ((AppConf) getApplication()).adaptador;
-        Dispositivo dispositivo = adaptador.getItem(adaptador.getPos("24:6F:28:A0:90:80%basura"));
 
 
-        enviarNotifiacacion(dispositivo);
-        guardarNotifiacacionFirestore(dispositivo);
+        for(Dispositivo d : dispositivoList){
+            if(d.getId().equals("24:6F:28:A0:90:80%basura")){
+                enviarNotifiacacion(d);
+                guardarNotifiacacionFirestore(d);
+                break;
+            }
+        }
+
+
 
     }
 
