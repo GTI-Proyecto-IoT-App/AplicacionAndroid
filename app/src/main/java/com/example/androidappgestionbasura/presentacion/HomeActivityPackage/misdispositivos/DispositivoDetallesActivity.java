@@ -430,9 +430,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
      *Recibe una lista de mesuras y la view de una grafica lineal y devuelve void
      */
     public void crearGraficaLineal(List<Mesura> listaMesuras , LineChart graficaLineal){
-
         //array de datasets
-
         ArrayList<ILineDataSet>dataSets = new ArrayList<>();
         List<Mesura> arrayTemp = new ArrayList<>();
 
@@ -453,7 +451,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         //filtramos las mesuras de la ultima semana
 
 
-//si el valor de la variable es 1 se mostraran las del ultimo mes
+        //si el valor de la variable es 1 se mostraran las del ultimo mes
         if (VALORSPINNER == 1){
 
             //modificamos listamesuras
@@ -485,12 +483,6 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                 }
             }
             //calibramos los axis
-            Date date = new Date(System.currentTimeMillis());
-            DateFormat dateFormat = new SimpleDateFormat("dd");
-            String strDate = dateFormat.format(date);
-            int dia = Integer.parseInt(strDate);
-            int diaSemanaAnterior = Integer.parseInt(dateFormat.format(new Date(Utility.getUnixTimeHaceUnaSemana()*1000)));
-
             graficaLineal.getXAxis().setAxisMinimum(1);
             graficaLineal.getXAxis().setAxisMaximum(7);
             graficaLineal.getXAxis().setValueFormatter(new IAxisValueFormatter() {
@@ -608,7 +600,11 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         ArrayList<Entry> entrys = new ArrayList<>();
         if(VALORSPINNER==0){//semana
             for (Mesura mesura:listaMesuras) {
-                entrys.add(new Entry(Utility.getIndexOfDayNumber(mesura.getUnixTime()),(float)mesura.getLlenado()));
+               int dia = Utility.getIndexOfDayNumber(mesura.getUnixTime());
+               if (!comprobarMesuraIntroducida(entrys, dia)){
+                   entrys.add(new Entry(dia,(float)mesura.getLlenado()));
+               }
+
             }
         }else{//mes
             for (Mesura mesura:listaMesuras) {
@@ -616,11 +612,30 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
                 DateFormat dateFormat = new SimpleDateFormat("dd");
                 String strDate = dateFormat.format(date);
                 int dia = Integer.parseInt(strDate);
+                if (!comprobarMesuraIntroducida(entrys, dia)){
+                    entrys.add(new Entry(dia,(float)mesura.getLlenado()));
+                }
 
-                entrys.add(new Entry(dia,(float)mesura.getLlenado()));
             }
         }
         return entrys;
+    }
+
+    /**
+     * Comprueba si en un determinado dia ya se ha introducido un medida
+     * @param entries
+     * @param dia
+     * @return
+     */
+    private boolean comprobarMesuraIntroducida(ArrayList<Entry> entries, int dia){
+        boolean res = false;
+        for (int i = 0; i<entries.size() && !res; i++){
+            if (entries.get(i).getX() == dia){
+                res = true;
+            }
+        }
+
+        return res;
     }
 
     /**

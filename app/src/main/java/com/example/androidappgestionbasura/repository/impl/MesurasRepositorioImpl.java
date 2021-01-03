@@ -104,8 +104,6 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
         // coger todas las colleciones "mediciones" de todos los dispositivos vinculados
 
         Query query = dispositivosCollectionReferencia.whereArrayContains("usuariosVinculados",uid);
-        final long unixTimeInicioMes = Utility.getUnixTimeInicioYear();// un mes en milisegundos
-
         final ListaBolsaBasura listaBolsaBasura = new ListaBolsaBasura();
         readQueryDocuments(query, new CallBack() {
             @Override
@@ -142,6 +140,7 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
                                             // solo tiene que llamarse una vez y es cuando todos los
                                             // on complete se termine
                                             callBack.onSuccess(listaBolsaBasura);
+
                                         }
 
 
@@ -194,7 +193,7 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
                         // sacamos las mediciones del dispositivo que coincide con nuestra id
 
 //                Log.d("tagS",((QuerySnapshot)object).getDocuments()) + "");
-
+                        listaMesuras.getMesuras().clear();
                         for(DocumentSnapshot document : ((QuerySnapshot)object).getDocuments()){
 
                             //Log.d("TAG", document.getId() + " => " + document.getData());
