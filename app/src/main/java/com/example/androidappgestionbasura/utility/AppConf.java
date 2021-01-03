@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.Nullable;
 
+import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
@@ -35,19 +36,8 @@ public class AppConf extends Application {
     }
     private void initAdaptador(){
         if(usuario != null){
-            Query query=dispositivos.getDispositvosVinculados(usuario.getUid());
-            //TODO XXX revisar una manera mejor de detacar si esta vacio o no... Esto solo te detecta la primera vez :/
-            //añadir listener para saber si esata vacio o no
-            query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                    if (value!=null && !value.isEmpty()){
-                        adaptador.setEmpty(false);
-                    }else{
-                        adaptador.setEmpty(true);
-                    }
-                }
-            });
+            String uid = SharedPreferencesHelper.getInstance().getUID();
+            Query query=dispositivos.getDispositvosVinculados(uid);
             FirestoreRecyclerOptions<Dispositivo> opciones = new FirestoreRecyclerOptions
                     .Builder<Dispositivo>().setQuery(query, Dispositivo.class).build();
             adaptador = new AdaptadorDispositivosFirestoreUI(opciones, this);

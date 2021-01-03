@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoNotificacion;
+import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.model.notificaciones.TipoNotificacion;
@@ -56,9 +58,11 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate() , service started...");
-
-        String uid = ((AppConf) getApplication()).getUsuario().getUid();
-        casosUsoNotificacion = new CasosUsoNotificacion(uid,null);
+        Toast.makeText(getApplicationContext(),"Servicio",Toast.LENGTH_LONG).show();
+        // TODO cambiar a por el de shared prefences
+        String ui = SharedPreferencesHelper.getInstance().getUID();
+//        String uid = ((AppConf) getApplication()).getUsuario().getUid();
+        casosUsoNotificacion = new CasosUsoNotificacion(ui,null);
 
         conectarMQTT();
 
@@ -115,7 +119,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-
+        Toast.makeText(getApplicationContext(),"Servicio",Toast.LENGTH_LONG).show();
 //        listaIdDispositivos = intent.getCharSequenceArrayListExtra("idDispositivos");
 
         // subscribirse a topic
