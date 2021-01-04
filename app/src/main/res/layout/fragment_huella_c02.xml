@@ -45,7 +45,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="176dp">
 
                 <TextView
                     android:id="@+id/textView16"
@@ -54,7 +54,7 @@
                     android:layout_marginTop="16dp"
                     android:gravity="center"
                     android:text="También te puede interesar"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorPrimaryDark"
                     app:layout_constraintBottom_toTopOf="@+id/imageView4"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -65,10 +65,12 @@
                     android:id="@+id/textView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:text="Mi Consumo Eléctrico:"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                    app:layout_constraintEnd_toStartOf="@+id/editTextKw"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
                     app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
@@ -76,10 +78,12 @@
                     android:id="@+id/textView18"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:text="Mi Consumo de Agua:"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                    app:layout_constraintEnd_toStartOf="@+id/editTextLitros"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
@@ -87,48 +91,91 @@
                     android:id="@+id/textView19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="250 kW/h"
+                    android:text="kW/h"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView17"
-                    app:layout_constraintEnd_toEndOf="@+id/textView20"
-                    app:layout_constraintStart_toStartOf="@+id/textView20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/editTextKw"
                     app:layout_constraintTop_toTopOf="@+id/textView17" />
 
                 <TextView
                     android:id="@+id/textView20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25 L/h"
+                    android:text=" L/h"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView18"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/editTextLitros"
                     app:layout_constraintTop_toTopOf="@+id/textView18" />
 
                 <ImageView
                     android:id="@+id/imageView4"
                     android:layout_width="30dp"
                     android:layout_height="16dp"
-                    android:layout_marginTop="24dp"
                     android:src="@drawable/bombilla"
                     app:layout_constraintBottom_toTopOf="@+id/imageView5"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView5"
-                    app:layout_constraintStart_toStartOf="@+id/imageView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView16"
+                    tools:layout_editor_absoluteX="16dp" />
 
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="30dp"
                     android:layout_height="16dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
                     android:src="@drawable/gota"
+                    app:layout_constraintBottom_toTopOf="@+id/botonGuardar"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                    tools:layout_editor_absoluteX="16dp" />
+
+                <EditText
+                    android:id="@+id/editTextKw"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Tus Kw/h"
+                    android:inputType="numberDecimal"
+                    android:text="0"
+                    android:textColorHint="@color/textoSecundario"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView19"
+                    app:layout_constraintEnd_toStartOf="@+id/textView19"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView17"
+                    app:layout_constraintTop_toTopOf="@+id/textView19" />
+
+                <EditText
+                    android:id="@+id/editTextLitros"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Tus L/h"
+                    android:inputType="numberDecimal"
+                    android:text="0"
+                    android:textColorHint="@color/textoSecundario"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView20"
+                    app:layout_constraintEnd_toStartOf="@+id/textView20"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView18"
+                    app:layout_constraintTop_toTopOf="@+id/textView20" />
+
+                <Button
+                    android:id="@+id/botonGuardar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@color/colorPrimary"
+                    android:shadowRadius="100"
+                    android:text="Guardar"
+                    android:textColor="@color/blanco"
+                    android:textSize="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView5" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
