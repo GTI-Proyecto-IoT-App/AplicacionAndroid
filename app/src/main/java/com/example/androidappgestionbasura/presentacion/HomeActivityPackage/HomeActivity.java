@@ -88,9 +88,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // get extras para ver si se abrio desde notificacion
         Bundle extras = getIntent().getExtras();
-        boolean abrirNotificaciones = false;
+        int abrirNotificaciones = -1;
         if(extras!=null){
-            abrirNotificaciones = extras.getBoolean(INTENT_KEY_ABRIR_NOTIFICACIONES);
+            abrirNotificaciones = extras.getInt(INTENT_KEY_ABRIR_NOTIFICACIONES,-1);
         }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        if(abrirNotificaciones){
+        if(abrirNotificaciones!=-1){
             navController.navigate(R.id.navigation_notificaciones);
         }
 

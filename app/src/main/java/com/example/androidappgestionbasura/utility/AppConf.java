@@ -1,6 +1,7 @@
 package com.example.androidappgestionbasura.utility;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -32,9 +33,9 @@ public class AppConf extends Application {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-        initAdaptador();
+
     }
-    private void initAdaptador(){
+    public void initAdaptador(){
         if(usuario != null){
             String uid = SharedPreferencesHelper.getInstance().getUID();
             Query query=dispositivos.getDispositvosVinculados(uid);

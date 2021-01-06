@@ -23,14 +23,18 @@ import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
+import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Constantes;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.Query;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,6 +45,7 @@ public class MisDispositivosFragment extends Fragment {
     private AdaptadorDispositivosFirestoreUI adaptador;
 
     private CasosUsoUsuario casosUsoUsuario;
+    private DispositivosRepositoryImpl dispositivos;
     private LinearLayout emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
@@ -76,8 +81,10 @@ public class MisDispositivosFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
+        ((AppConf) getActivity().getApplication()).initAdaptador();
 
         adaptador = ((AppConf) getActivity().getApplication()).adaptador;
+
 
         adaptador.setCallbackDataChange(new CallBack() {
             @Override

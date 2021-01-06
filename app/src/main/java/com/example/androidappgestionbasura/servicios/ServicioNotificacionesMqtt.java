@@ -19,9 +19,11 @@ import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoNotificacion;
 import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Dispositivo;
+import com.example.androidappgestionbasura.model.Usuario;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.model.notificaciones.TipoNotificacion;
 import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.HomeActivity;
+import com.example.androidappgestionbasura.presentacion.RatailerStartUpScreenActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
@@ -346,16 +348,23 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
             notificationManager.createNotificationChannel(channel);
 
         }
+        Random random = new Random();
+        int idNotificacion = random.nextInt(Integer.MAX_VALUE-1)+1;// entre 1 y MAX;
 
-        // crear intencion al pulsar la notificacion -> abrir la bandeja de notificaciones
-        Intent intentNotificaciones = new Intent(this, HomeActivity.class);
-        intentNotificaciones.putExtra(HomeActivity.INTENT_KEY_ABRIR_NOTIFICACIONES,true);
+        // ir siempre a la primera actividad asi podemos comprobar si hay acceso
+        Intent intentNotificaciones = new Intent(this, RatailerStartUpScreenActivity.class);
+
+
+        // ponemos la id de la notifiacion, asi al pulsarlo podemos coger el id y hacerle dismiss
+        intentNotificaciones.putExtra(HomeActivity.INTENT_KEY_ABRIR_NOTIFICACIONES,idNotificacion);
+
         PendingIntent intencionPendiente = PendingIntent.getActivity(
                 this, 0, intentNotificaciones, 0);
+
         builder.setContentIntent(intencionPendiente);
 
-        Random random = new Random();
-        notificationManager.notify(random.nextInt(Integer.MAX_VALUE), builder.build());
+
+        notificationManager.notify(idNotificacion, builder.build());
     }
 
     @Override
