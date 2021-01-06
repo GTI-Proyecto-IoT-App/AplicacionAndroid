@@ -265,7 +265,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "onCreate() , service stopped...");
+        Log.i(TAG, "onDestroy() , service stopped...");
     }
 
     @Override
