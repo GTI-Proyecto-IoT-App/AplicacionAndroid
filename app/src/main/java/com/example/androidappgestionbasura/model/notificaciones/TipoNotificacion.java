@@ -4,7 +4,8 @@ import com.example.androidappgestionbasura.R;
 
 public enum TipoNotificacion {
 
-    DESCONECTADO ("DESCONECTADO",R.drawable.ic_smart_trash);
+    DESCONECTADO ("DESCONECTADO",R.drawable.ic_smart_trash_no_conectado),
+    CONECTADO("CONECTADO",R.drawable.ic_smart_trash_conectado );
 
     private final String texto;
     private final int recurso;

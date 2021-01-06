@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -57,17 +59,12 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     private static final String TAG = "NotificationMqttService";
     private static final String CHANNEL_ID1 = "CHANNEL-1";
-    private static final String CHANNEL_ID2 = "CHANNEL-2";
-    private static final int NOTIFICATION_ID = 1233;
-    private NotificationManager notificationManager;
     private MqttClient client = null;
 
 
     private CasosUsoNotificacion casosUsoNotificacion;
     private List<Dispositivo> dispositivoList;
-    private Query query;
 
-    private HashMap<Dispositivo,Boolean> dispostivosConectados;
 
 
     public IBinder onBind(Intent arg0) {
@@ -78,8 +75,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate() , service started...");
-        Toast.makeText(getApplicationContext(),"Servicio",Toast.LENGTH_LONG).show();
-        // TODO cambiar a por el de shared prefences
         String ui = SharedPreferencesHelper.getInstance().getUID();
 //        String uid = ((AppConf) getApplication()).getUsuario().getUid();
         casosUsoNotificacion = new CasosUsoNotificacion(ui,null);
@@ -97,7 +92,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     private void addSnapshotListenerDispositivos(String ui) {
 
-        query = new DispositivosRepositoryImpl().getDispositvosVinculados(ui);
+        Query query = new DispositivosRepositoryImpl().getDispositvosVinculados(ui);
 
         // obtener todos los dispositivos
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -211,7 +206,11 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelid);
         Notification notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_smart_house_black_48)
+                .setColor(Color.RED)
+                .setContentTitle(getString(R.string.title_servicio_notificaciones))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.ic_launcher))
                 .setPriority(PRIORITY_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
@@ -289,16 +288,15 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
 
         String idDisp = topic.split("/")[2];//proyectoGTI2A/dispositivo/25:6F:28:A0:90:80%basura/WillTopic -> 25:6F:28:A0:90:80%basura
+        boolean isConectado = message.toString().equals("conectado"); // message -> conectado | disconected
         Log.d("MQTT","De: "+idDisp+" llega: "+message);
         // obtenemos que dispostivo se ha desconectado por su id que se envia en el mensaje del will topic
-        // TODO Cambiar el will topic a que envie su id de tal forma que se sepa que se ha desconectado, mqtt si ve que no esta conectado envia "disconnected"
-        // TODO enviar por ejemplo: "dispositivo$$desconectado$$<id>"
 
 
         for(Dispositivo d : dispositivoList){
             if(d.getId().equals(idDisp)){
-                enviarNotifiacacion(d);
-                guardarNotifiacacionFirestore(d);
+                enviarNotifiacacion(d,isConectado);
+                guardarNotifiacacionFirestore(d,isConectado);
                 break;
             }
         }
@@ -307,31 +305,42 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     }
 
-    private void guardarNotifiacacionFirestore(Dispositivo dispositivo) {
+    private void guardarNotifiacacionFirestore(Dispositivo dispositivo,boolean isConectado) {
         Notificacion notificacion = new Notificacion();
         notificacion.setFecha(System.currentTimeMillis());
         notificacion.setIdDispositivo(dispositivo.getId());
 
         notificacion.setNombreDispositivo(dispositivo.getNombre());
-        notificacion.setTipo(TipoNotificacion.DESCONECTADO);
+        notificacion.setTipo(isConectado ? TipoNotificacion.CONECTADO : TipoNotificacion.DESCONECTADO);
 
         casosUsoNotificacion.enviarNotificacionFirestore(notificacion);
     }
 
-    private void enviarNotifiacacion(Dispositivo dispositivo) {
+    private void enviarNotifiacacion(Dispositivo dispositivo,boolean isConectado) {
+
+        String titile = isConectado
+                ? getString(R.string.titulo_notif_dispositivo_con_conexion )
+                : getString(R.string.titulo_notif_dispositivo_sin_conexion );
+        String content = isConectado
+                ? getString(R.string.content_notif_dispositivo_con_conexion ).replace("$",dispositivo.getNombre())
+                : getString(R.string.content_notif_dispositivo_sin_conexion ).replace("$",dispositivo.getNombre());
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID1)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Dispositivo desconectado")
-                .setContentText("El dispositivo: "+dispositivo.getNombre()+" no tiene conexión")
+                .setSmallIcon(isConectado ? R.drawable.ic_smart_trash_conectado : R.drawable.ic_smart_trash_no_conectado)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.mipmap.ic_launcher))
+                .setColor(Color.RED)
+                .setContentTitle(titile)
+                .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        notificationManager = (NotificationManager)
+        NotificationManager notificationManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID1, "CHANNEL-1", importance);
-            channel.setDescription("description");
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID1, "Estado de conexión de los dispositivos", importance);
+            channel.setDescription("Notificaciones que avisan del estado de conexión de los dispositivos vinculados");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             notificationManager.createNotificationChannel(channel);

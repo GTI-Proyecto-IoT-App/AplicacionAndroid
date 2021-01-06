@@ -83,6 +83,12 @@
     <string name="dispositivo_sin_conexion">Ha perdido la conexion a internet</string>
     <string name="eliminar_notificaciones">Eliminar todas</string>
     <string name="no_tienes_notificaciones">No tienes Notificaciones</string>
+    <string name="titulo_notif_dispositivo_sin_conexion">Dispositivo sin conexion</string>
+    <string name="titulo_notif_dispositivo_con_conexion">Dispositivo con conexion</string>
+    <string name="content_notif_dispositivo_con_conexion">El dispositivo $ tiene acceso a internet</string>
+    <string name="content_notif_dispositivo_sin_conexion">El dispositivo $ no tiene acceso a internet</string>
+    <string name="dispositivo_con_conexion">Ha recuperado la conexión a internet</string>
+    <string name="title_servicio_notificaciones">Servicio de notificaciones</string>
 
 
 </resources>

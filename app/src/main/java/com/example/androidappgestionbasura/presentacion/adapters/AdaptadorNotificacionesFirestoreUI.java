@@ -95,11 +95,13 @@ public class AdaptadorNotificacionesFirestoreUI
 
             nombre.setText(notificacion.getNombreDispositivo());
             fecha.setText(Utility.getDate(notificacion.getFecha(),"dd-mm-yyyy HH:mm"));
-            int id = R.drawable.ic_smart_trash;
+            int id = notificacion.getTipo().getRecurso();
             switch(notificacion.getTipo()) {
                 case DESCONECTADO:
                     descripcion.setText(R.string.dispositivo_sin_conexion);
-                    id = R.drawable.ic_smart_trash; break;
+                    break;
+                case CONECTADO:
+                    descripcion.setText(R.string.dispositivo_con_conexion);
             }
             foto.setImageResource(id);
             foto.setScaleType(ImageView.ScaleType.FIT_END);
