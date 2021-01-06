@@ -3,6 +3,7 @@ package com.example.androidappgestionbasura.servicios;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHe
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.example.androidappgestionbasura.model.notificaciones.Notificacion;
 import com.example.androidappgestionbasura.model.notificaciones.TipoNotificacion;
+import com.example.androidappgestionbasura.presentacion.HomeActivityPackage.HomeActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
 import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
@@ -39,6 +41,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -63,6 +66,8 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     private CasosUsoNotificacion casosUsoNotificacion;
     private List<Dispositivo> dispositivoList;
     private Query query;
+
+    private HashMap<Dispositivo,Boolean> dispostivosConectados;
 
 
     public IBinder onBind(Intent arg0) {
@@ -182,7 +187,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
             client.unsubscribe( topicRoot+ dispositivoBorrado.getId() + "/WillTopic");
             client.setCallback(this);
         } catch (MqttException e) {
-            Log.e(Mqtt.TAG, "Error al suscribir.", e);
+            Log.e(Mqtt.TAG, "Error al desuscribir.", e);
         }
     }
 
@@ -281,15 +286,17 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     @Override
     public void messageArrived(String topic, MqttMessage message){
 
-        Log.d("MQTT","llega: "+message);
 
+
+        String idDisp = topic.split("/")[2];//proyectoGTI2A/dispositivo/25:6F:28:A0:90:80%basura/WillTopic -> 25:6F:28:A0:90:80%basura
+        Log.d("MQTT","De: "+idDisp+" llega: "+message);
         // obtenemos que dispostivo se ha desconectado por su id que se envia en el mensaje del will topic
         // TODO Cambiar el will topic a que envie su id de tal forma que se sepa que se ha desconectado, mqtt si ve que no esta conectado envia "disconnected"
         // TODO enviar por ejemplo: "dispositivo$$desconectado$$<id>"
 
 
         for(Dispositivo d : dispositivoList){
-            if(d.getId().equals("24:6F:28:A0:90:80%basura")){
+            if(d.getId().equals(idDisp)){
                 enviarNotifiacacion(d);
                 guardarNotifiacacionFirestore(d);
                 break;
@@ -330,6 +337,13 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
             notificationManager.createNotificationChannel(channel);
 
         }
+
+        // crear intencion al pulsar la notificacion -> abrir la bandeja de notificaciones
+        Intent intentNotificaciones = new Intent(this, HomeActivity.class);
+        intentNotificaciones.putExtra(HomeActivity.INTENT_KEY_ABRIR_NOTIFICACIONES,true);
+        PendingIntent intencionPendiente = PendingIntent.getActivity(
+                this, 0, intentNotificaciones, 0);
+        builder.setContentIntent(intencionPendiente);
 
         Random random = new Random();
         notificationManager.notify(random.nextInt(Integer.MAX_VALUE), builder.build());

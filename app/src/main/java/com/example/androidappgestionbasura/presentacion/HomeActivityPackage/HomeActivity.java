@@ -40,6 +40,7 @@ import java.util.List;
  */
 public class HomeActivity extends AppCompatActivity {
 
+    public static final String INTENT_KEY_ABRIR_NOTIFICACIONES = "abrir-notificaciones";
     private static final int CODIGO_PERMISO_SERVICIO_PRIMER_PLANO = 1234;
 
     @Override
@@ -85,6 +86,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setUp() {
 
+        // get extras para ver si se abrio desde notificacion
+        Bundle extras = getIntent().getExtras();
+        boolean abrirNotificaciones = false;
+        if(extras!=null){
+            abrirNotificaciones = extras.getBoolean(INTENT_KEY_ABRIR_NOTIFICACIONES);
+        }
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -111,6 +118,9 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        if(abrirNotificaciones){
+            navController.navigate(R.id.navigation_notificaciones);
+        }
 
         // TODO VER COMO HACER QUE SE PUEDA PONER EN TODA LA APP
         ActionBar actionBar = getSupportActionBar();
