@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
+import com.example.androidappgestionbasura.presentacion.SettingsActivity;
 import com.example.androidappgestionbasura.servicios.ServicioNotificacionesMqtt;
 import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -354,6 +355,10 @@ public class MiPerfilFragment extends Fragment {
         if (id == R.id.accion_editar_usuario) {
             Intent myIntent = new Intent(MiPerfilFragment.this.getActivity(), EditProfile.class);
             startActivityForResult(myIntent, REQUEST_EDIT_USER);
+            return false;
+        }else if(id == R.id.accion_preferencias){
+            Intent myIntent = new Intent(MiPerfilFragment.this.getActivity(), SettingsActivity.class);
+            startActivity(myIntent);
             return false;
         }
         return super.onOptionsItemSelected(item);

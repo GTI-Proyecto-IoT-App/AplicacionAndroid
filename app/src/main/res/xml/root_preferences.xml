@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/ajustes_cabezera_aplicación">
+
+        <Preference
+            app:key="ajustes_accion_autostart"
+            app:title="@string/autostart_app"
+            app:useSimpleSummaryProvider="true" />
+
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

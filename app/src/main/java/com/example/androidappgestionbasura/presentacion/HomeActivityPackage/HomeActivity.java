@@ -14,12 +14,18 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import me.dm7.barcodescanner.core.DisplayUtils;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.NotificationManager;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -29,6 +35,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.servicios.ServicioNotificacionesMqtt;
 import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -49,11 +56,61 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
 
+        addAutoStartup();
         setUp();
         arrancarSerivicio();
 
+
     }
 
+    /**
+     * Comprueba si el movil es uno de los que no permite que las aplicaciones se autoinicien al
+     * encenderse el movil. Si es el caso se pedirá el permiso de auto arranque
+     */
+    private void addAutoStartup() {
+
+        boolean primeraVez = SharedPreferencesHelper.getInstance().getPrimerVezPermisoAutoStart();
+
+        if(primeraVez){
+            String xiaomi = "Xiaomi";
+            final String CALC_PACKAGE_NAME = "com.miui.securitycenter";
+            final String CALC_PACKAGE_ACITIVITY = "com.miui.permcenter.autostart.AutoStartManagementActivity";
+
+            if (android.os.Build.MANUFACTURER.equalsIgnoreCase(xiaomi)) {
+                new AlertDialog.Builder(this)
+                        .setTitle("Permisos de auto arranque")
+                        .setMessage("Necesitamos que la aplicación este en la lista de auto arranque para el uso correcto de esta." +
+                                "\nSin él no podrá recibir notificaciones de sus dispositivos." +
+                                "\nPodrás activarlo o desactivarlo desde los ajustes de la aplicación")
+                        .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+
+                                    Intent intent = new Intent();
+                                    intent.setComponent(new ComponentName(CALC_PACKAGE_NAME, CALC_PACKAGE_ACITIVITY));
+                                    startActivity(intent);
+                                } catch (Exception e) {
+                                    Log.e("TAG", "Failed to launch AutoStart Screen ", e);
+                                }
+                            }
+                        })
+                        .setNegativeButton(getString(android.R.string.cancel), null)
+                        .show();
+                // solo preguntar una vez
+                SharedPreferencesHelper.getInstance().setPrimerVezPermisoAutoStart(false);
+
+            }
+        }
+
+
+    }
+
+
+    /**
+     * @author Ruben Pardo Casanova
+     * Arranca el servicio de notificaciones si no esta ya lanzado
+     */
     private void arrancarSerivicio() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.FOREGROUND_SERVICE) == PackageManager.PERMISSION_GRANTED){
 
@@ -73,6 +130,9 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("AUTOSTARTUP-requestcode",String.valueOf(requestCode));
+        Log.d("AUTOSTARTUP-requestcode",String.valueOf(resultCode));
         // reenviar los activity result a los fragments hijo
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment !=null) {

@@ -89,6 +89,15 @@
     <string name="content_notif_dispositivo_sin_conexion">El dispositivo $ no tiene acceso a internet</string>
     <string name="dispositivo_con_conexion">Ha recuperado la conexión a internet</string>
     <string name="title_servicio_notificaciones">Servicio de notificaciones</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="ajustes_cabezera_aplicación">Aplicación</string>
+
+    <!-- Messages Preferences -->
+    <string name="autostart_app">Pulsa para añadir o borrar la aplicación de la lista de auto arranque</string>
+
 
 
 </resources>

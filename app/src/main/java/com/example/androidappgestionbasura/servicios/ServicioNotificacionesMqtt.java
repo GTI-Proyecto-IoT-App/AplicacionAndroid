@@ -77,16 +77,11 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     @Override
     public void onCreate() {
         Log.i(TAG, "onCreate() , service started...");
-        String ui = SharedPreferencesHelper.getInstance().getUID();
-//        String uid = ((AppConf) getApplication()).getUsuario().getUid();
-        casosUsoNotificacion = new CasosUsoNotificacion(ui,null);
 
 
         conectarMQTT();
 
         empezarServicioPrimerPlano();
-
-
 
         super.onCreate();
 
@@ -239,7 +234,6 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
             connOpts.setKeepAliveInterval(60);
-            //connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),Mqtt.qos, false);
             client.connect(connOpts);
 
         } catch (MqttException e) {
@@ -250,8 +244,14 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        // subscribirse a topic
+
+
+        SharedPreferencesHelper.initializeInstance(getApplicationContext());
+
         String ui = SharedPreferencesHelper.getInstance().getUID();
+        casosUsoNotificacion = new CasosUsoNotificacion(ui,null);
+
+
         addSnapshotListenerDispositivos(ui);
 
         return Service.START_STICKY;

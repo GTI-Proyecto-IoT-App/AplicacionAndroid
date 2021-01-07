@@ -36,14 +36,13 @@ public class AppConf extends Application {
 
     }
     public void initAdaptador(){
-        if(usuario != null){
-            String uid = SharedPreferencesHelper.getInstance().getUID();
-            Query query=dispositivos.getDispositvosVinculados(uid);
 
-            FirestoreRecyclerOptions<Dispositivo> opciones = new FirestoreRecyclerOptions
-                    .Builder<Dispositivo>().setQuery(query, Dispositivo.class).build();
-            adaptador = new AdaptadorDispositivosFirestoreUI(opciones, this);
-        }
+        String uid = SharedPreferencesHelper.getInstance().getUID();
+        Query query=dispositivos.getDispositvosVinculados(uid);
+
+        FirestoreRecyclerOptions<Dispositivo> opciones = new FirestoreRecyclerOptions
+                .Builder<Dispositivo>().setQuery(query, Dispositivo.class).build();
+        adaptador = new AdaptadorDispositivosFirestoreUI(opciones, this);
 
 
     }
