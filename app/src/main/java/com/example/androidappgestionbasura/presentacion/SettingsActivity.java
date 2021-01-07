@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.androidappgestionbasura.R;
@@ -12,6 +13,7 @@ import com.example.androidappgestionbasura.R;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.SharedElementCallback;
@@ -40,6 +42,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+
+
+    }
+
+
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -48,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
             Preference myPref = (Preference) findPreference("ajustes_accion_autostart");
             myPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference preference) {
-                    
+
                     Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     intent.setData(Uri.parse("package:" + getActivity().getPackageName()));
                     startActivity(intent);
@@ -58,5 +76,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         }
+
+
+
+
     }
+
 }
