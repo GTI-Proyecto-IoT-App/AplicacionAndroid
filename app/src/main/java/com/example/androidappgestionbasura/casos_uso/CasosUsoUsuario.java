@@ -252,7 +252,7 @@ public class CasosUsoUsuario {
                 public void onSuccess(Object object) {
 
                     usuario.setEmailVerified(true);
-                    usuariosRepository.updateUsuario(usuario.getKey(),usuario.getMap(),callBack);
+                    usuariosRepository.updateUsuario(usuario.getUid(),usuario.getMap(),callBack);
                 }
 
                 @Override

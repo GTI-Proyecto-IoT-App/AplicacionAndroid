@@ -7,6 +7,14 @@
         android:id="@+id/accion_editar_usuario"
         android:icon="@drawable/ic_create_24px"
         android:orderInCategory="10"
-        android:title="Editar"
-        app:showAsAction="always" />
+        android:title="@string/editar"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/accion_preferencias"
+        android:icon="@drawable/ic_settings_24px"
+        android:orderInCategory="10"
+        android:title="@string/ajustes"
+        app:showAsAction="ifRoom" />
+
 </menu>

@@ -15,6 +15,7 @@ public class SharedPreferencesHelper {
     private static final String PREF_NAME = "com.example.app.PREFERNCIAS";
     // claves de las variables
     private static final String KEY_USER_UID = "com.example.app.USER_UID";
+    private static final String KEY_PRIMERA_VEZ_AUTO_START_PERMISOS = "com.example.app.AUTO_START_PERMISOS";
 
     private static SharedPreferencesHelper sInstance;
     private final SharedPreferences mPref;
@@ -46,6 +47,16 @@ public class SharedPreferencesHelper {
         return mPref.getString(KEY_USER_UID,"");
     }
 
+
+    // getters y setter
+    public void setPrimerVezPermisoAutoStart(Boolean value) {
+        mPref.edit()
+                .putBoolean(KEY_PRIMERA_VEZ_AUTO_START_PERMISOS, value)
+                .apply();
+    }
+    public Boolean getPrimerVezPermisoAutoStart() {
+        return mPref.getBoolean(KEY_PRIMERA_VEZ_AUTO_START_PERMISOS,true);
+    }
 
 
     public void remove(String key) {

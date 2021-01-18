@@ -35,6 +35,8 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
+import com.example.androidappgestionbasura.presentacion.SettingsActivity;
+import com.example.androidappgestionbasura.servicios.ServicioNotificacionesMqtt;
 import com.example.androidappgestionbasura.utility.Utility;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -306,6 +308,8 @@ public class MiPerfilFragment extends Fragment {
                 .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // antes de cerrar sesion apagar el servicio de notificaciones
+                        cerarServicioNotificaciones();
                         casosUsoUsuario.cerrarSesion();
                     }
                 })
@@ -321,11 +325,20 @@ public class MiPerfilFragment extends Fragment {
                 .setPositiveButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // antes de cerrar sesion apagar el servicio de notificaciones
+                        cerarServicioNotificaciones();
+
                         casosUsoUsuario.cerrarSesion();
                     }
                 })
                 .setNegativeButton(getString(android.R.string.cancel), null)
                 .show();
+    }
+
+    private void cerarServicioNotificaciones() {
+        if(Utility.isMyServiceRunning(ServicioNotificacionesMqtt.class,getContext())){
+            getActivity().stopService(new Intent(getActivity(), ServicioNotificacionesMqtt.class));
+        }
     }
 
     @Override
@@ -342,6 +355,10 @@ public class MiPerfilFragment extends Fragment {
         if (id == R.id.accion_editar_usuario) {
             Intent myIntent = new Intent(MiPerfilFragment.this.getActivity(), EditProfile.class);
             startActivityForResult(myIntent, REQUEST_EDIT_USER);
+            return false;
+        }else if(id == R.id.accion_preferencias){
+            Intent myIntent = new Intent(MiPerfilFragment.this.getActivity(), SettingsActivity.class);
+            startActivity(myIntent);
             return false;
         }
         return super.onOptionsItemSelected(item);
