@@ -159,4 +159,12 @@ public class Utility {
     }
 
 
+    public static int getIndexOfDayNumber(long time){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        //String days[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        int[] numberDays = {7,1,2,3,4,5,6};
+        return numberDays[calendar.get(Calendar.DAY_OF_WEEK)-1];
+    }
+
 }
