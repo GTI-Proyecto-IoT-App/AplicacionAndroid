@@ -89,6 +89,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     private void addSnapshotListenerDispositivos(String ui) {
 
+        Log.d(Mqtt.TAG,"query");
         Query query = new DispositivosRepositoryImpl().getDispositvosVinculados(ui);
 
         // obtener todos los dispositivos
@@ -185,9 +186,11 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
 
     private void conectarDispositivoMQTT(Dispositivo dispositivoNuevo) {
         try {
+
             Log.i(Mqtt.TAG, "Suscrito a " + topicRoot+ dispositivoNuevo.getId() + "/WillTopic");
             client.subscribe( topicRoot+ dispositivoNuevo.getId() + "/WillTopic", Mqtt.qos);
             client.setCallback(this);
+
         } catch (MqttException e) {
             Log.e(Mqtt.TAG, "Error al suscribir.", e);
         }
@@ -228,6 +231,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     private void conectarMQTT(){
         // enviar cuando se desconecta
         try {
+            Log.d(Mqtt.TAG, "CONECTAR.");
             client = new MqttClient(Mqtt.broker, Mqtt.clientId, new
                     MemoryPersistence());
 
@@ -237,6 +241,7 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
             client.connect(connOpts);
 
         } catch (MqttException e) {
+            Log.e(Mqtt.TAG, "ERROR CONECTAR.",e);
             e.printStackTrace();
         }
 
@@ -279,9 +284,12 @@ public class ServicioNotificacionesMqtt extends Service implements MqttCallback 
     public void connectionLost(Throwable cause) {
         Log.d(Mqtt.TAG,"conexion perdida");
         conectarMQTT();
-        // volver a pedir los dispositivos para subscribirse a sus will topic
-        String ui = SharedPreferencesHelper.getInstance().getUID();
-        addSnapshotListenerDispositivos(ui);
+
+        // volver a subscribirse
+        for(Dispositivo d : dispositivoList){
+            conectarDispositivoMQTT(d);
+        }
+
     }
 
     @Override
