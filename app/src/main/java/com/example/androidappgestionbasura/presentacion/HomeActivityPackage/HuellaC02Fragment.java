@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoMesuras;
@@ -30,6 +31,7 @@ import com.example.androidappgestionbasura.datos.firebase.FirebaseReferences;
 import com.example.androidappgestionbasura.datos.firebase.FirebaseRepository;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.model.Usuario;
+import com.example.androidappgestionbasura.model.bolsas_basura.ListaBolsaBasura;
 import com.example.androidappgestionbasura.utility.Utility;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,7 +59,7 @@ public class HuellaC02Fragment extends Fragment {
 
     //para la barra de progreso horizontal
 
-    private ProgressBar progressBarArboles;
+    //private ProgressBar progressBarArboles;
 
     // usuario
     private CasosUsoUsuario casosUsoUsuario;
@@ -87,8 +89,42 @@ public class HuellaC02Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         final View root = inflater.inflate(R.layout.fragment_huella_c02, container, false);
-        progressBarCargaCO2 = root.findViewById(R.id.pbCO2);
+        progressBarCargaCO2 = root.findViewById(R.id.progressBar);
 
+
+        //consultamos los datos del usuario de la base de datos
+
+
+        Log.d("hola","1");
+
+        Log.d("hola","2");
+
+       // casosUsoUsuario.getUsuario().setConsumoCO2(casosUsoMesuras.getListaMesuras().getKgC02Generados());
+
+        TextView tvKgRes = root.findViewById(R.id.tvKgC02);
+        tvKgRes.setText(String.valueOf(casosUsoUsuario.getUsuario().getConsumoCO2()));
+        casosUsoUsuario.updateUsuario(casosUsoUsuario.getUsuario(), new CallBack() {
+
+            @Override
+            public void onSuccess(Object object) {
+                Log.d("hola","Ha cargado el usuario al entrar");
+                setUpSucces(root);
+
+            }
+
+            @Override
+            public void onError(Object object) {
+                Log.d("hola","Error");
+            }
+        });
+        //le atribuimos los kg de co2 creados a la barra
+
+        progressBarCargaCO2.setProgress((int) casosUsoUsuario.getUsuario().getConsumoCO2());
+        progressBarCargaCO2.getLayoutParams().height = 10;
+
+        //le cambiamos el color a la progress bar
+        progressBarCargaCO2.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#b70000")));
+        progressBarCargaCO2.setSecondaryProgressTintList(ColorStateList.valueOf(Color.parseColor("#D3D3D3")));
 
         //le atribuimos los datos del layout a los edit text
         editTextKw = root.findViewById(R.id.editTextKw);
@@ -100,35 +136,44 @@ public class HuellaC02Fragment extends Fragment {
         editTextL.setText(String.valueOf(casosUsoUsuario.getUsuario().getConsumoDeAgua()));
 
 
+
+
+
         //boton guardar
         btnGuardar = root.findViewById(R.id.botonGuardar);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("hola","hola");
-               updateUsuario(v);
+                Log.d("hola","Click");
+               updateUsuario();
+                Toast toast1 =
+                        Toast.makeText(root.getContext(),
+                                getResources().getString(R.string.texto_boton_guardar), Toast.LENGTH_SHORT);
+
+                toast1.show();
             }
         });
 
+
         // si no hay mesuras pediras al servidor
-        if(casosUsoMesuras.getListaMesuras()==null){
-            progressBarCargaCO2.setVisibility(View.VISIBLE);// empieza la carga
+        if (casosUsoMesuras.getListaMesuras() == null){
+            Log.d("hola","entra al if del null");
             casosUsoMesuras.getMesurasMensuales(new CallBack() {
+
                 @Override
                 public void onSuccess(Object object) {
-                    // llamar a set up succes
-                    progressBarCargaCO2.setVisibility(View.GONE);
-                    setUpSucces(root);
+                    Log.d("hola","entra al if del null y al callback");
                 }
 
                 @Override
                 public void onError(Object object) {
-                    // llamar a set up error
-                    progressBarCargaCO2.setVisibility(View.GONE);
-                    setUpError(root);
+                    Log.d("hola","entra al if del null y al callback");
                 }
+
             });
         }
+
+
 
 
 
@@ -186,33 +231,14 @@ public class HuellaC02Fragment extends Fragment {
 
 
     private void setUpSucces(View root) {
+
         TextView tvKgRes = root.findViewById(R.id.tvKgC02);
         TextView tvGeneradoReducido = root.findViewById(R.id.tvGeneradoOReducido);
         TextView tvArboles = root.findViewById(R.id.tvArboles);
 
-        //buscamos e indicamos las propiedades que tendra la barra de llenado
-        progressBarArboles = root.findViewById(R.id.progressBar);
-        ImageView arbolSinHojas = root.findViewById(R.id.imageViewDeshojado);
-        ImageView arbolConHojas = root.findViewById(R.id.imageViewConHojas);
-        progressBarArboles.setSecondaryProgress(30);
-        progressBarArboles.setMax(30);
-
-
-
-
         root.findViewById(R.id.linearDatos).setVisibility(View.VISIBLE);
 
-
         float kgCo2Generados = (float)casosUsoMesuras.getBolsasBasura().getKgC02Generados();
-
-        //le atribuimos los kg de co2 creados a la barra
-        //progressBarArboles.setProgress((int)kgCo2Generados*-1);
-        progressBarArboles.setProgress(20);
-        progressBarArboles.getLayoutParams().height = 2;
-
-        //le cambiamos el color a la progress bar
-        progressBarArboles.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#b70000")));
-        progressBarArboles.setSecondaryProgressTintList(ColorStateList.valueOf(Color.parseColor("#D3D3D3")));
 
         int arboles = casosUsoMesuras.getBolsasBasura().getArbolesPlantados();
 
@@ -221,6 +247,7 @@ public class HuellaC02Fragment extends Fragment {
         tvArboles.setText(String.valueOf(arboles));
 
         Utility.animateTextValue(0,arboles,tvArboles);
+
         if(kgCo2Generados>=0){
             tvGeneradoReducido.setText(R.string.huella_co2_generado);
         }else{
@@ -233,19 +260,20 @@ public class HuellaC02Fragment extends Fragment {
     *Metodo para setear los valores de electricidad y agua del usuario en la base de datos
      */
 
-    public void updateUsuario(View v){
+    public void updateUsuario(){
         //v.setEnabled(false);
 
         double nuevoConsumoElectrico = Double.parseDouble(editTextKw.getText().toString());
         double nuevoConsumoAgua = Double.parseDouble(editTextL.getText().toString());
         casosUsoUsuario.getUsuario().setConsumoElectrico(nuevoConsumoElectrico);
         casosUsoUsuario.getUsuario().setConsumoDeAgua(nuevoConsumoAgua);
+        casosUsoUsuario.getUsuario().setConsumoCO2(casosUsoUsuario.getUsuario().getConsumoCO2());
 
         casosUsoUsuario.updateUsuario(casosUsoUsuario.getUsuario(), new CallBack() {
 
             @Override
             public void onSuccess(Object object) {
-                Log.d("hola","ha ido bien");
+                Log.d("hola","Se han modificado los datos con el boton guardar");
             }
 
             @Override

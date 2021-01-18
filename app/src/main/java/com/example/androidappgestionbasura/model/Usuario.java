@@ -136,6 +136,7 @@ public class Usuario implements Serializable {
         map.put("uid", getUid());
         map.put("consumoDeAgua",getConsumoDeAgua());
         map.put("consumoElectrico",getConsumoElectrico());
+        map.put("consumoCO2",getConsumoCO2());
         return map;
     }
 
