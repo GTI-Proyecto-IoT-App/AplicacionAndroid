@@ -17,6 +17,10 @@ public class Usuario implements Serializable {
     private String uid;
     private String key;
 
+    private double consumoElectrico;
+    private double consumoDeAgua;
+    private double consumoCO2;
+
 
     public Usuario(String email,String uid, boolean isEmailVerified){
         this.email = email;
@@ -30,6 +34,27 @@ public class Usuario implements Serializable {
         this.email = email;
         this.uid = uid;
         this.isEmailVerified = isEmailVerified;
+    }
+
+    public Usuario(String name, boolean isEmailVerified, String email, String uid, String key, double consumoElectrico, double consumoDeAgua) {
+        this.name = name;
+        this.isEmailVerified = isEmailVerified;
+        this.email = email;
+        this.uid = uid;
+        this.key = key;
+        this.consumoElectrico = consumoElectrico;
+        this.consumoDeAgua = consumoDeAgua;
+    }
+
+    public Usuario(String name, boolean isEmailVerified, String email, String uid, String key, double consumoElectrico, double consumoDeAgua, double consumoCO2) {
+        this.name = name;
+        this.isEmailVerified = isEmailVerified;
+        this.email = email;
+        this.uid = uid;
+        this.key = key;
+        this.consumoElectrico = consumoElectrico;
+        this.consumoDeAgua = consumoDeAgua;
+        this.consumoCO2 = consumoCO2;
     }
 
     public Usuario() { }
@@ -74,6 +99,29 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
+    public double getConsumoElectrico() {
+        return consumoElectrico;
+    }
+
+    public void setConsumoElectrico(double consumoElectrico) {
+        this.consumoElectrico = consumoElectrico;
+    }
+
+    public double getConsumoDeAgua() {
+        return consumoDeAgua;
+    }
+
+    public void setConsumoDeAgua(double consumoDeAgua) {
+        this.consumoDeAgua = consumoDeAgua;
+    }
+
+    public double getConsumoCO2() {
+        return consumoCO2;
+    }
+
+    public void setConsumoCO2(double consumoCO2) {
+        this.consumoCO2 = consumoCO2;
+    }
 
     /**
      * @author Ruben Pardo
@@ -86,6 +134,9 @@ public class Usuario implements Serializable {
         map.put("emailVerified", isEmailVerified());
         map.put("name", getName());
         map.put("uid", getUid());
+        map.put("consumoDeAgua",getConsumoDeAgua());
+        map.put("consumoElectrico",getConsumoElectrico());
+        map.put("consumoCO2",getConsumoCO2());
         return map;
     }
 

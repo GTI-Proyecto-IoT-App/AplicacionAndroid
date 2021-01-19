@@ -80,6 +80,7 @@
     <string name="huella_co2_reducido">Has reducido</string>
     <string name="equivale_a">Equivale a</string>
     <string name="arboles_plantados">arboles plantados</string>
+    <string name="texto_boton_guardar">Los datos se han guardado correctamente</string>
 
 
 </resources>

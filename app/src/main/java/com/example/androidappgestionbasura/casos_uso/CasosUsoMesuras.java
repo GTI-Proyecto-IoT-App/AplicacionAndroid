@@ -38,6 +38,7 @@ public class CasosUsoMesuras {
             @Override
             public void onSuccess(Object object) {
                 bolsaBasuras = (ListaBolsaBasura) object;
+                bolsaBasuras.getKgC02Generados();
                 callBack.onSuccess(object);
             }
 

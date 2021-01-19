@@ -7,7 +7,7 @@ public class ListaBolsaBasura {
 
     List<BolsaBasura> bolsasBasuraList;
     private double kgC02Generados;
-    private final int KG_REDUCIDOS_POR_UN_ARBOL_AL_ANO = 30;
+    public static final int KG_REDUCIDOS_POR_UN_ARBOL_AL_ANO = 30;
 
     public ListaBolsaBasura(List<BolsaBasura> basuraMunicipalList) {
         this.bolsasBasuraList = basuraMunicipalList;
