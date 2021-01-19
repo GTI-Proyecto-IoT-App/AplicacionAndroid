@@ -46,10 +46,10 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
     @Override
     public void createUsuario(Usuario user, final CallBack callback) {
         // cogemos el key del document
-        String pushKey = usuariosCollectionReference.document().getId();
-        if(user!=null && !Utility.isEmptyOrNull(pushKey)){
-            user.setKey(pushKey);
-            DocumentReference documentReference = usuariosCollectionReference.document(pushKey);
+
+        if(user!=null){
+
+            DocumentReference documentReference = usuariosCollectionReference.document(user.getUid());
 
             // intentara crear el usuario y al terminar llamará al callback de on succes o error
             fireStoreCreate(documentReference, user, new CallBack() {

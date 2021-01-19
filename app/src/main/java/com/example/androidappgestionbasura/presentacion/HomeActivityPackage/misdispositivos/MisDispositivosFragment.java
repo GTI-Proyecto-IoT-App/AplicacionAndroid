@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,15 +23,18 @@ import com.example.androidappgestionbasura.R;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoDispositivo;
 import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
+import com.example.androidappgestionbasura.datos.preferences.SharedPreferencesHelper;
 import com.example.androidappgestionbasura.model.Dispositivo;
-import com.example.androidappgestionbasura.model.InterfaceDispositivos;
 import com.example.androidappgestionbasura.model.TipoDispositivo;
 import com.example.androidappgestionbasura.presentacion.ScanCodeActivity;
 import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispositivosFirestoreUI;
+import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Constantes;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.Query;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -43,6 +45,7 @@ public class MisDispositivosFragment extends Fragment {
     private AdaptadorDispositivosFirestoreUI adaptador;
 
     private CasosUsoUsuario casosUsoUsuario;
+    private DispositivosRepositoryImpl dispositivos;
     private LinearLayout emptyView;
     private final int codigoRespuestaCreacionDispositivo = 1234;
     private final int codigoRespuestaEdicionDispositivo = 4321;
@@ -58,19 +61,8 @@ public class MisDispositivosFragment extends Fragment {
         activity = getActivity();
         usoDispositivo = new CasosUsoDispositivo(activity);
         casosUsoUsuario = new CasosUsoUsuario(getActivity());
-
-        recyclerView = root.findViewById(R.id.recyclerview_mis_dispositivos);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        adaptador = ((AppConf) activity.getApplication()).adaptador;
-        recyclerView.setAdapter(adaptador);
-        adaptador.setOnItemClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lanzarVistaDispositivos(v);
-            }
-        });
         emptyView = root.findViewById(R.id.textviewrecyclervacio);
+        setUpRecycler(root);
 
         FloatingActionButton fab = root.findViewById(R.id.buttonQR);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -79,10 +71,50 @@ public class MisDispositivosFragment extends Fragment {
                 addDipositvo(null);
             }
         });
-        comprobarVaciadoDispositivos();
-        adaptador.startListening();
+
 
         return root;
+    }
+
+    private void setUpRecycler(View root) {
+        recyclerView = root.findViewById(R.id.recyclerview_mis_dispositivos);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+        ((AppConf) getActivity().getApplication()).initAdaptador();
+
+        adaptador = ((AppConf) getActivity().getApplication()).adaptador;
+
+
+        adaptador.setCallbackDataChange(new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                int count = (int) object;
+                if (count == 0) {
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                } else {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
+        
+        recyclerView.setAdapter(adaptador);
+        adaptador.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lanzarVistaDispositivos(v);
+            }
+        });
+
+
+        adaptador.startListening();
     }
 
     @Override
@@ -91,11 +123,11 @@ public class MisDispositivosFragment extends Fragment {
         if(codigoRespuestaCreacionDispositivo == requestCode && resultCode == RESULT_OK){
             //int a = data.getIntExtra("Dispositivo creado",0);
             //adaptador.notifyItemInserted(a);
-            comprobarVaciadoDispositivos();
+//            comprobarVaciadoDispositivos();
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_BORRAR){
             int a = data.getIntExtra("Dispositivo a borrar",0);
             //adaptador.notifyItemRemoved(a);
-            comprobarVaciadoDispositivos();
+//            comprobarVaciadoDispositivos();
         }else if (codigoRespuestaEdicionDispositivo == requestCode && resultCode == Constantes.RESULT_RECYCLER_VIEW_EDITAR){
             int a = data.getIntExtra("Dispositivo a editar",0);
             //adaptador.notifyItemChanged(a);
@@ -104,18 +136,6 @@ public class MisDispositivosFragment extends Fragment {
             gestionarDispositivo(idDispositivo);
         }
     }
-
-    public void comprobarVaciadoDispositivos() {
-
-        if (adaptador.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
-    }
-
 
     public void lanzarVistaDispositivos(View view) {
         usoDispositivo.mostrar(view,recyclerView.getChildAdapterPosition(view),codigoRespuestaEdicionDispositivo);

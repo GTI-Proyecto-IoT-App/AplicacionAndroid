@@ -120,15 +120,30 @@ public class BasuraMunicipalesMapsFragment extends Fragment
         criterio.setAltitudeRequired(false);
         criterio.setAccuracy(Criteria.ACCURACY_FINE);
         proveedor = manejador.getBestProvider(criterio, true);
-        @SuppressLint("MissingPermission") Location localizacion = manejador.getLastKnownLocation(proveedor);
-        ultimaLocalizacion = localizacion;
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            manejador.requestLocationUpdates(proveedor, TIEMPO_MIN, DISTANCIA_MIN,
-                    this);
+
+        if(proveedor!=null){
+            @SuppressLint("MissingPermission") Location localizacion = manejador.getLastKnownLocation(proveedor);
+            ultimaLocalizacion = localizacion;
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                manejador.requestLocationUpdates(proveedor, TIEMPO_MIN, DISTANCIA_MIN,
+                        this);
+            }
         }
+
+
+
 
     }
 
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        initLocation();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -175,7 +190,7 @@ public class BasuraMunicipalesMapsFragment extends Fragment
             mostrarBasurasEnMapa();
         }
 
-        actualizarPosicion();
+        //actualizarPosicion();
 
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) ==
@@ -209,8 +224,11 @@ public class BasuraMunicipalesMapsFragment extends Fragment
     public void onResume() {
         super.onResume();
         if(manejador !=null){
-            manejador.requestLocationUpdates(proveedor, TIEMPO_MIN, DISTANCIA_MIN,
-                    this);
+            if(proveedor!=null){
+                manejador.requestLocationUpdates(proveedor, TIEMPO_MIN, DISTANCIA_MIN,
+                        this);
+            }
+
         }
     }
     @Override public void onPause() {
@@ -222,7 +240,7 @@ public class BasuraMunicipalesMapsFragment extends Fragment
     // Métodos de la interfaz LocationListener
     public void onLocationChanged(Location location) {
         ultimaLocalizacion = location;
-        actualizarPosicion();
+        //actualizarPosicion();
     }
 
 

@@ -12,20 +12,29 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidappgestionbasura.R;
+import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.model.Dispositivo;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.ObservableSnapshotArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdaptadorDispositivosFirestoreUI extends FirestoreRecyclerAdapter<Dispositivo, AdaptadorDispositivosFirestoreUI.ViewHolder> {
     protected View.OnClickListener onClickListener;
     protected Context context;
     private boolean empty;
+    private CallBack callBack;
+
+
 
     public AdaptadorDispositivosFirestoreUI(
             @NonNull FirestoreRecyclerOptions<Dispositivo> options, Context context){
         super(options);
         this.context = context;
         empty = true;
+
     }
     @Override public ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
@@ -59,12 +68,20 @@ public class AdaptadorDispositivosFirestoreUI extends FirestoreRecyclerAdapter<D
 
     @Override
     public void onDataChanged() {
+
+        callBack.onSuccess(getItemCount());
+
         super.onDataChanged();
     }
 
     public void setEmpty(boolean empty) {
         this.empty = empty;
     }
+
+    public void setCallbackDataChange(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
 
     //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
     public static class ViewHolder extends RecyclerView.ViewHolder  {
