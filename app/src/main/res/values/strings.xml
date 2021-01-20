@@ -98,7 +98,7 @@
 
     <!-- Messages Preferences -->
     <string name="autostart_app">Pulsa para añadir o borrar la aplicación de la lista de auto arranque</string>
-
+    <string name="crear_cuenta_con_google">Crear cuenta con Google</string>
 
 
 </resources>

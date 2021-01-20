@@ -56,7 +56,7 @@ public class MisDispositivosFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.mis_dispositivos, container, false);
-        setHasOptionsMenu(true);
+
 
         activity = getActivity();
         usoDispositivo = new CasosUsoDispositivo(activity);
@@ -156,12 +156,12 @@ public class MisDispositivosFragment extends Fragment {
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        inflater.inflate(R.menu.menu_dispositivos, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+//    {
+//        inflater.inflate(R.menu.menu_dispositivos, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
 
     private void gestionarDispositivo(final String idDispositivo){
         usoDispositivo.dipositivoYaVinculado(idDispositivo, casosUsoUsuario.getUsuario().getUid(), new CallBack() {

@@ -178,6 +178,20 @@
 
                 android:text="@string/registrarse" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@color/blanco"
+                android:drawableStart="@drawable/google"
+                android:gravity="center"
+                android:onClick="startGoogleLogin"
+                android:padding="8dp"
+                android:text="@string/crear_cuenta_con_google"
+                android:textAllCaps="false"
+                android:textColor="@color/negro" />
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
