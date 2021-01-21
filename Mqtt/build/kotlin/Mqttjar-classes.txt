@@ -1,1 +1,1 @@
-C:\Users\Sergi\AndroidStudioProjects\AplicacionAndroid\Mqtt\build\classes\java\main\com\example\rparcas\mqtt\Mqtt.class
+F:\Android\Proyectos\AplicacionAndroid\Mqtt\build\classes\java\main\com\example\rparcas\mqtt\Mqtt.class
