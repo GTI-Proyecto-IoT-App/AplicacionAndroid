@@ -33,6 +33,7 @@ import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Utility;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -43,7 +44,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -82,9 +86,6 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
     LineChart lineChartGeneral;
     Spinner spinnerLineal;
     private int VALORSPINNER = 0;
-
-
-
 
     //Colores para las graficas
 
@@ -429,34 +430,28 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
      *Recibe una lista de mesuras y la view de una grafica lineal y devuelve void
      */
     public void crearGraficaLineal(List<Mesura> listaMesuras , LineChart graficaLineal){
-
-
-
         //array de datasets
-
         ArrayList<ILineDataSet>dataSets = new ArrayList<>();
         List<Mesura> arrayTemp = new ArrayList<>();
 
-
         //List<Mesura> mesurasOrdenadasPorTiempo = new ArrayList<>();
 
-//        Collections.sort(listaMesuras, new Comparator<Mesura>() {
-//            @Override
-//            public int compare(Mesura o1, Mesura o2) {
-//
-//                return Long.compare(o1.getUnixTime(),o2.getUnixTime());
-//            }
-//        });
+        Collections.sort(listaMesuras, new Comparator<Mesura>() {
+            @Override
+            public int compare(Mesura o1, Mesura o2) {
 
+                return Long.compare(o1.getUnixTime(),o2.getUnixTime());
+            }
+        });
 
-
+        
         long tiempoHaceUnaSemana = Utility.getUnixTimeHaceUnaSemana();
         long timepoHaceUnMes = Utility.getUnixTimeHaceUnMes();
 
         //filtramos las mesuras de la ultima semana
 
 
-//si el valor de la variable es 1 se mostraran las del ultimo mes
+        //si el valor de la variable es 1 se mostraran las del ultimo mes
         if (VALORSPINNER == 1){
 
             //modificamos listamesuras
@@ -481,18 +476,26 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         }else if(VALORSPINNER == 0){//si el valor de la variable es 0 se mostraran las de la ultima semana
 
             //modificamos arrayTemp
-            for (Mesura mesura :listaMesuras
-            ) {
+            for (Mesura mesura :listaMesuras) {
                 Log.d("tagmseu",mesura.getLlenado()+""+mesura.getTipoMedida());
                 if(mesura.getUnixTime()<=System.currentTimeMillis() && mesura.getUnixTime()>= tiempoHaceUnaSemana){
                     arrayTemp.add(mesura);
                 }
             }
-
-
             //calibramos los axis
-            graficaLineal.getXAxis().setAxisMaximum(10);
             graficaLineal.getXAxis().setAxisMinimum(1);
+            graficaLineal.getXAxis().setAxisMaximum(7);
+            graficaLineal.getXAxis().setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    String res = String.valueOf(Math.round(value));
+                    String[] diasSemana = {"Lun.", "Mart.", "Miérc.", "Juev.", "Vier.", "Sáb.", "Dom."};
+                    if (VALORSPINNER==0){//semana
+                        res =diasSemana[Math.round(value)-1];
+                    }
+                    return res;
+                }
+            });
 
 
         }
@@ -505,7 +508,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
         if (!listaMesurasOrganico.isEmpty()){
             //inicializamos el dataset
-            LineDataSet dataSetOrganico = new LineDataSet(llenarDataSets(listaMesurasOrganico),"Organico");
+            LineDataSet dataSetOrganico = new LineDataSet(llenarDataSets(listaMesurasOrganico),"Orgánico");
             //llamamos a personalizar dataset
             personalizarDataset("organico",dataSetOrganico);
             //lo añadimos a la array de datasets
@@ -513,7 +516,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         }
         if (!listaMesurasPlastico.isEmpty()){
 
-            LineDataSet dataSetPlastico = new LineDataSet(llenarDataSets(listaMesurasPlastico),"Plastico");
+            LineDataSet dataSetPlastico = new LineDataSet(llenarDataSets(listaMesurasPlastico),"Plástico");
             personalizarDataset("plastico",dataSetPlastico);
             dataSets.add(dataSetPlastico);
         }
@@ -526,16 +529,12 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         if (!listaMesurasVidrio.isEmpty()){
 
             LineDataSet dataSetVidrio = new LineDataSet(llenarDataSets(listaMesurasVidrio),"Vidrio");
+
             personalizarDataset("vidrio",dataSetVidrio);
             dataSets.add(dataSetVidrio);
         }
 
-
-
-
-
         //si la grafica se queda sin datos aparecerá este texto
-
         graficaLineal.setNoDataText("No hay datos para representar");
         graficaLineal.setNoDataTextColor(Color.RED);
 
@@ -544,7 +543,6 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         description.setText("");
         graficaLineal.setDescription(description);
 
-
         //habilitamos  el touch en la grafica
 
         graficaLineal.setTouchEnabled(true);
@@ -552,9 +550,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
         //animamos la grafica
         graficaLineal.animateX(2000); // animar milisegundos horizaontales
-
         graficaLineal.animateY(2000); // animar milisegundos verticales
-
         graficaLineal.animateXY(2000, 2000); // animar milisegundos horizaontales y verticales
 
 
@@ -562,22 +558,16 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
         LineData data = new LineData(dataSets);
         graficaLineal.setData(data);
 
-
         //establecemos el valor maximo y minimo para el eje y
-        graficaLineal.getAxisLeft().setAxisMaximum(120);
+        graficaLineal.getAxisLeft().setAxisMaximum(100);
         graficaLineal.getAxisLeft().setAxisMinimum(0);
 
         graficaLineal.getAxisRight().setEnabled(false);
-
-
-
-
         //invalidamos la grafica
         graficaLineal.invalidate();
 
 
     }
-
     /**
      *
      * Metodo para separar por tipos las diferentes mesuras
@@ -589,8 +579,7 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
         List<Mesura> mesurasConcretas = new ArrayList<>();
 
-        for (Mesura mesura:listaMesuras
-             ) {
+        for (Mesura mesura:listaMesuras) {
             if (mesura.getTipoMedida().equals(tipoBasura)){
                 mesurasConcretas.add(mesura);
 //                Log.d("conc",""+mesura.getTipoMedida());
@@ -602,42 +591,64 @@ public class DispositivoDetallesActivity extends AppCompatActivity {
 
     /**
      *
-     * Metodo para llenar los diferentes datasets de la grafica lineal
+     * Metodo para llenar los diferentes datasets de la grafica lineal de semana
      * Autor : Sergi Sirvent Sempere
      *Recibe una lista de mesuras y devuelve un array de entrys
      */
 
     private ArrayList<Entry> llenarDataSets(List<Mesura> listaMesuras){
-
         ArrayList<Entry> entrys = new ArrayList<>();
-
-            int i = 1;
-
-            for (Mesura mesura:listaMesuras
-            ) {
-
-                // este codigo devuelve el dia en que la medida fue tomada
-
-                Date date = new Date(mesura.getUnixTime() * 1000);
-            DateFormat dateFormat = new SimpleDateFormat("dd");
-            String strDate = dateFormat.format(date);
-
-            int dia = Integer.parseInt(strDate);
-
-//            Log.d("dia",dia+"");
-//
-//            Log.d("Fecha","Milliseconds to Date: " + strDate);
-
-
-                    entrys.add(new Entry(dia,(float)mesura.getLlenado()));
-
-                i++;
+        if(VALORSPINNER==0){//semana
+            for (Mesura mesura:listaMesuras) {
+               int dia = Utility.getIndexOfDayNumber(mesura.getUnixTime());
+               if (!comprobarMesuraIntroducida(entrys, dia)){
+                   entrys.add(new Entry(dia,(float)mesura.getLlenado()));
+               }
 
             }
+        }else{//mes
+            for (Mesura mesura:listaMesuras) {
+                Date date = new Date(mesura.getUnixTime());
+                DateFormat dateFormat = new SimpleDateFormat("dd");
+                String strDate = dateFormat.format(date);
+                int dia = Integer.parseInt(strDate);
+                if (!comprobarMesuraIntroducida(entrys, dia)){
+                    entrys.add(new Entry(dia,(float)mesura.getLlenado()));
+                }
 
+            }
+        }
+        return entrys;
+    }
 
+    /**
+     * Comprueba si en un determinado dia ya se ha introducido un medida
+     * @param entries
+     * @param dia
+     * @return
+     */
+    private boolean comprobarMesuraIntroducida(ArrayList<Entry> entries, int dia){
+        boolean res = false;
+        for (int i = 0; i<entries.size() && !res; i++){
+            if (entries.get(i).getX() == dia){
+                res = true;
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     *
+     * Metodo para llenar los diferentes datasets de la grafica lineal de mes
+     * Autor : Sergi Sirvent Sempere
+     *Recibe una lista de mesuras y devuelve un array de entrys
+     */
+    private ArrayList<Entry> llenarDataSetsMes(List<Mesura> listaMesuras){
+        ArrayList<Entry> entrys = new ArrayList<>();
 
         return entrys;
+
 
     }
 

@@ -37,14 +37,9 @@ public class CasosUsoMesuras {
         mesurasRepository.readBolsasBasurasMensualesByUID(uid, new CallBack() {
             @Override
             public void onSuccess(Object object) {
+
                 bolsaBasuras = (ListaBolsaBasura) object;
-
-//                for(BolsaBasura bolsaBasura : bolsaBasuras.getBolsasBasuraList()){
-//                    Log.d("Dato----",bolsaBasura.getTipo());
-//                    Log.d("Dato",bolsaBasura.getLlenado()+"");
-//                    Log.d("Dato",bolsaBasura.getFecha()+"");
-//                }
-
+                bolsaBasuras.getKgC02Generados();
                 callBack.onSuccess(object);
             }
 
@@ -72,24 +67,7 @@ public class CasosUsoMesuras {
             @Override
             public void onSuccess(Object object) {
                 loadingDialogActivity.dismissDialog();
-               // bolsaBasuras = (ListaBolsaBasura) object;
-
                 listaMesuras = (ListaMesuras) object;
-
-                for(Mesura mesura : listaMesuras.getMesuras()){
-
-
-//                    Log.d("DatoMesura----","" + mesura.getLlenado());
-//                    Log.d("DatoMesura----","" + mesura.getTipoMedida());
-//                    Log.d("DatoMesura----","" + mesura.getPeso());
-//                    Log.d("DatoMesura----","" + mesura+ "");
-
-
-
-
-                }
-                //Log.d("Datoss","" + listaMesuras.getMesuras()+ "");
-
                 callBack.onSuccess(object);
             }
 

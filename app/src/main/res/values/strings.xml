@@ -80,6 +80,25 @@
     <string name="huella_co2_reducido">Has reducido</string>
     <string name="equivale_a">Equivale a</string>
     <string name="arboles_plantados">arboles plantados</string>
+    <string name="dispositivo_sin_conexion">Ha perdido la conexion a internet</string>
+    <string name="eliminar_notificaciones">Eliminar todas</string>
+    <string name="no_tienes_notificaciones">No tienes Notificaciones</string>
+    <string name="titulo_notif_dispositivo_sin_conexion">Dispositivo sin conexion</string>
+    <string name="titulo_notif_dispositivo_con_conexion">Dispositivo con conexion</string>
+    <string name="content_notif_dispositivo_con_conexion">El dispositivo $ tiene acceso a internet</string>
+    <string name="content_notif_dispositivo_sin_conexion">El dispositivo $ no tiene acceso a internet</string>
+    <string name="dispositivo_con_conexion">Ha recuperado la conexión a internet</string>
+    <string name="title_servicio_notificaciones">Servicio de notificaciones</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="texto_boton_guardar">Los datos se han guardado correctamente</string>
+
+    <!-- Preference Titles -->
+    <string name="ajustes_cabezera_aplicación">Aplicación</string>
+
+    <!-- Messages Preferences -->
+    <string name="autostart_app">Pulsa para añadir o borrar la aplicación de la lista de auto arranque</string>
+    <string name="crear_cuenta_con_google">Crear cuenta con Google</string>
 
 
 </resources>

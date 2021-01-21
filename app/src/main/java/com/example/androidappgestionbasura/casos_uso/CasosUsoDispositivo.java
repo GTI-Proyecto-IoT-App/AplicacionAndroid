@@ -16,6 +16,7 @@ import com.example.androidappgestionbasura.presentacion.adapters.AdaptadorDispos
 import com.example.androidappgestionbasura.repository.impl.DispositivosRepositoryImpl;
 import com.example.androidappgestionbasura.utility.AppConf;
 import com.example.androidappgestionbasura.utility.Utility;
+import com.google.firebase.firestore.Query;
 
 import static com.example.androidappgestionbasura.utility.Constantes.RESULT_RECYCLER_VIEW_BORRAR;
 
@@ -158,5 +159,9 @@ public class CasosUsoDispositivo {
                callBack.onError(null);
             }
         });
+    }
+
+    public Query getDispositvosVinculados(String uid) {
+        return dispositivosRepository.getDispositvosVinculados(uid);
     }
 }
