@@ -130,10 +130,13 @@ public class MesurasRepositorioImpl extends FirebaseRepository implements Mesura
                                         ListaMesuras listaMesuras = new ListaMesuras();
                                         QuerySnapshot q = task.getResult();
                                         for(DocumentSnapshot documentSnapshot : q.getDocuments()){
+
                                             listaMesuras.getMesuras().add(documentSnapshot.toObject(Mesura.class));
                                         }
 
                                         listaBolsaBasura.getBolsasBasuraList().addAll(listaMesuras.getBolsasBasura());
+
+
 
                                         contDispositivos[0]--;// on complete terminado
                                         if(contDispositivos[0] == 0){

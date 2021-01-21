@@ -53,16 +53,24 @@ public class ListaMesuras {
         // ver cuando el llenado baja a 0
         // al estar ordenado por tipo hay que hacer la comprobacion cada
         // vez que cambie de tipo o baje el llenado drasticamente
+        Log.d("hola","entra");
         if(!mesuras.isEmpty()){
             String lastTipo = mesuras.get(0).getTipoMedida();
             double lastLlenado = mesuras.get(0).getLlenado();
+            Log.d("hola","entra2: " +mesuras.size());
+
             for(Mesura mesura : mesuras){
+                Log.d("hola",mesura.getTipoMedida()+"");
+
                 if(lastTipo.equals(mesura.getTipoMedida())){
 
                     // mismo tipo
                     // si el llenado nuevo es 0 y la diferncia es negativa (mas de -10) es que se ha quitado la basura
                     double diferenciaLlenado = mesura.getLlenado() - lastLlenado;
                     if(mesura.getLlenado() == 0 && diferenciaLlenado<-10){
+
+                        Log.d("hola","añade bolsa de basura");
+
                         // se coge el ultimo llenado y la ultima fecha
                         bolsaBasuras.add(new BolsaBasura(lastLlenado,mesura.getUnixTime(),lastTipo));
                     }
@@ -71,6 +79,7 @@ public class ListaMesuras {
                 lastTipo = mesura.getTipoMedida();
                 lastLlenado = mesura.getLlenado();
             }
+
 
         }
 

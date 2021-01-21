@@ -158,7 +158,7 @@ public class HuellaC02Fragment extends Fragment {
         root.findViewById(R.id.linearDatos).setVisibility(View.VISIBLE);
 
         float kgCo2Generados = (float)casosUsoMesuras.getBolsasBasura().getKgC02Generados();
-
+        Log.d("hola",kgCo2Generados+" gen");
         int arboles = casosUsoMesuras.getBolsasBasura().getArbolesPlantados();
 
         tvKgRes.setText(String.valueOf(Math.abs(kgCo2Generados)));
@@ -205,7 +205,7 @@ public class HuellaC02Fragment extends Fragment {
 
                 Log.d("hola","Se han modificado los datos con el boton guardar");
                 Toast toast1 =
-                        Toast.makeText(getContext(),
+                        Toast.makeText(getActivity(),
                                 getResources().getString(R.string.texto_boton_guardar), Toast.LENGTH_SHORT);
 
                 toast1.show();

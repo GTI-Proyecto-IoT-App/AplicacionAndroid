@@ -1,5 +1,7 @@
 package com.example.androidappgestionbasura.model.bolsas_basura;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class ListaBolsaBasura {
     // el organico suma y los demas restan
     public double getKgC02Generados(){
         kgC02Generados = 0;
-
+        Log.d("hola","Bolsas size: "+bolsasBasuraList.size());
         for (BolsaBasura bolsaBasura : bolsasBasuraList){
             if(bolsaBasura.getTipo().equals("organico")){
                 kgC02Generados+= bolsaBasura.getKgCo2();

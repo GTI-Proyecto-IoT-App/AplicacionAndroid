@@ -37,6 +37,7 @@ public class CasosUsoMesuras {
         mesurasRepository.readBolsasBasurasMensualesByUID(uid, new CallBack() {
             @Override
             public void onSuccess(Object object) {
+
                 bolsaBasuras = (ListaBolsaBasura) object;
                 bolsaBasuras.getKgC02Generados();
                 callBack.onSuccess(object);
