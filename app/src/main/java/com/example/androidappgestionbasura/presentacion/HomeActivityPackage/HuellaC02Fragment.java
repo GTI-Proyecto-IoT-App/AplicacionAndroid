@@ -57,14 +57,11 @@ public class HuellaC02Fragment extends Fragment {
 
     private ProgressBar progressBarCargaCO2;
 
-    //para la barra de progreso horizontal
-
-    //private ProgressBar progressBarArboles;
-
     // usuario
     private CasosUsoUsuario casosUsoUsuario;
     private EditText editTextKw;
     private EditText editTextL;
+    private TextView tvKgRes;
     private Button btnGuardar;
     private FirebaseRepository firebaseRepository;
 
@@ -80,8 +77,6 @@ public class HuellaC02Fragment extends Fragment {
 
         usuariosCollectionReference = FirebaseReferences.getInstancia().getDATABASE().collection(TABLA_USUARIOS);
 
-
-
     }
 
     @Override
@@ -89,36 +84,28 @@ public class HuellaC02Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         final View root = inflater.inflate(R.layout.fragment_huella_c02, container, false);
+
+        //buscamos la barra
         progressBarCargaCO2 = root.findViewById(R.id.progressBar);
 
-        TextView tvKgRes = root.findViewById(R.id.tvKgC02);
+        //buscamos el tv de kg de co2 y le atribuimos el valor qeu tenga el usuario de consumo de co2
+        tvKgRes = root.findViewById(R.id.tvKgC02);
         tvKgRes.setText(String.valueOf(casosUsoUsuario.getUsuario().getConsumoCO2()));
-        //le atribuimos los kg de co2 creados a la barra
+
+        //le atribuimos los kg de co2 a la variable y llamamos al metodo de pintar en la barra
         int consumoCo2 = (int) casosUsoUsuario.getUsuario().getConsumoCO2();
-        if (consumoCo2<ListaBolsaBasura.KG_REDUCIDOS_POR_UN_ARBOL_AL_ANO){
-            progressBarCargaCO2.setProgress(consumoCo2);
-        }else{
-            consumoCo2 = consumoCo2%ListaBolsaBasura.KG_REDUCIDOS_POR_UN_ARBOL_AL_ANO;
-            progressBarCargaCO2.setProgress(consumoCo2);
-        }
-
-        progressBarCargaCO2.getLayoutParams().height = 10;
-
-        //le cambiamos el color a la progress bar
-        progressBarCargaCO2.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#b70000")));
-        progressBarCargaCO2.setSecondaryProgressTintList(ColorStateList.valueOf(Color.parseColor("#D3D3D3")));
+        Log.d("hola",consumoCo2+"");
+        updateBarra(consumoCo2);
 
         //le atribuimos los datos del layout a los edit text
         editTextKw = root.findViewById(R.id.editTextKw);
         editTextL = root.findViewById(R.id.editTextLitros);
 
+
         //le atribuimos a los edit text el valor que tiene de consumo este usuario en la base de datos
 
         editTextKw.setText(String.valueOf(casosUsoUsuario.getUsuario().getConsumoElectrico()));
         editTextL.setText(String.valueOf(casosUsoUsuario.getUsuario().getConsumoDeAgua()));
-
-
-
 
 
         //boton guardar
@@ -127,11 +114,7 @@ public class HuellaC02Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                updateUsuario();
-                Toast toast1 =
-                        Toast.makeText(root.getContext(),
-                                getResources().getString(R.string.texto_boton_guardar), Toast.LENGTH_SHORT);
 
-                toast1.show();
             }
         });
 
@@ -152,50 +135,6 @@ public class HuellaC02Fragment extends Fragment {
 
             });
         }
-
-
-
-
-
-
-
-        //añadimos los listeners por si el texto de los edit text cambian
-        editTextKw.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        editTextL.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
 
 
         // Inflate the layout for this fragment
@@ -235,12 +174,16 @@ public class HuellaC02Fragment extends Fragment {
         }
 
         casosUsoUsuario.getUsuario().setConsumoCO2(kgCo2Generados);
+        updateBarra((int)kgCo2Generados);
+        updateUsuario();
+
+
 
 
     }
 
     /*
-    *Metodo para setear los valores de electricidad y agua del usuario en la base de datos
+    *Metodo para setear los valores de electricidad , agua y consumo del usuario en la base de datos
      */
 
     public void updateUsuario(){
@@ -248,24 +191,59 @@ public class HuellaC02Fragment extends Fragment {
 
         double nuevoConsumoElectrico = Double.parseDouble(editTextKw.getText().toString());
         double nuevoConsumoAgua = Double.parseDouble(editTextL.getText().toString());
+        double nuevoConsumoCO2 = Double.parseDouble(tvKgRes.getText().toString());
+        Log.d("TagCO2",nuevoConsumoElectrico+" " + nuevoConsumoAgua + " "+nuevoConsumoCO2+" ");
+
         casosUsoUsuario.getUsuario().setConsumoElectrico(nuevoConsumoElectrico);
         casosUsoUsuario.getUsuario().setConsumoDeAgua(nuevoConsumoAgua);
-        casosUsoUsuario.getUsuario().setConsumoCO2(casosUsoUsuario.getUsuario().getConsumoCO2());
+        casosUsoUsuario.getUsuario().setConsumoCO2(nuevoConsumoCO2);
 
         casosUsoUsuario.updateUsuario(casosUsoUsuario.getUsuario(), new CallBack() {
 
             @Override
             public void onSuccess(Object object) {
+
                 Log.d("hola","Se han modificado los datos con el boton guardar");
+                Toast toast1 =
+                        Toast.makeText(getContext(),
+                                getResources().getString(R.string.texto_boton_guardar), Toast.LENGTH_SHORT);
+
+                toast1.show();
             }
 
             @Override
             public void onError(Object object) {
 
+                Log.d("hola", String.valueOf(object));
             }
         });
 
     };
 
 
+    /*
+    Metodo para actualizar la barra horizontal de kg de Co2
+     */
+
+    public void updateBarra(int consumoCo2){
+
+        if (consumoCo2<0){
+
+            consumoCo2 = Math.abs(consumoCo2);
+            if (consumoCo2<ListaBolsaBasura.KG_REDUCIDOS_POR_UN_ARBOL_AL_ANO){
+                progressBarCargaCO2.setProgress(Math.abs(consumoCo2));
+            }else{
+                consumoCo2 = consumoCo2%ListaBolsaBasura.KG_REDUCIDOS_POR_UN_ARBOL_AL_ANO;
+                progressBarCargaCO2.setProgress(Math.abs(consumoCo2));
+            }
+
+        }
+
+        progressBarCargaCO2.getLayoutParams().height = 10;
+
+        //le cambiamos el color a la progress bar
+        progressBarCargaCO2.setProgressTintList(ColorStateList.valueOf(Color.parseColor("#b70000")));
+        progressBarCargaCO2.setSecondaryProgressTintList(ColorStateList.valueOf(Color.parseColor("#D3D3D3")));
+
+    }
 }
