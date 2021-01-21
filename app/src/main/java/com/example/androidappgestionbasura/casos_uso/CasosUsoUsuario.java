@@ -380,7 +380,7 @@ public class CasosUsoUsuario {
     }
 
     public void updateUsuario(Usuario user, final CallBack callBack){
-        usuariosRepository.updateUsuario(user.getKey(), user.getMap(), callBack);
+        usuariosRepository.updateUsuario(user.getUid(), user.getMap(), callBack);
     }
 
 
