@@ -144,10 +144,14 @@ public class UsuariosRepositoryImpl extends FirebaseRepository implements Usuari
     public Usuario getDataFromQuerySnapshot(Object object) {
         List<Usuario> usuarios = new ArrayList<>();
         QuerySnapshot queryDocumentSnapshots = (QuerySnapshot) object;
-        for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+        Log.d("LOGIN-",String.valueOf(queryDocumentSnapshots.size()));
+        for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+            Log.d("LOGIN-",String.valueOf(snapshot));
+
             Usuario employee = snapshot.toObject(Usuario.class);
             usuarios.add(employee);
         }
+
         return usuarios.get(0);
     }
 
