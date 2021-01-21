@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidappgestionbasura.R;
@@ -22,8 +23,15 @@ import com.example.androidappgestionbasura.casos_uso.CasosUsoUsuario;
 import com.example.androidappgestionbasura.datos.firebase.callback.CallBack;
 import com.example.androidappgestionbasura.datos.firebase.constants.Constant;
 import com.example.androidappgestionbasura.utility.Utility;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.Task;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private static final int CODE_ACTIVITY_RESULT_GOOGLE = 1234;
 
     // controladors registro
     private EditText etRegisterNombre,etRegisterEmail,etRegisterContra,etRegisterRepetirContra;
@@ -100,9 +108,66 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CODE_ACTIVITY_RESULT_GOOGLE){
+            try{
+                Task<GoogleSignInAccount> googleSignInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
+                GoogleSignInAccount googleSignInAccount =  googleSignInAccountTask.getResult();
+                if(googleSignInAccount!=null){
+                    logInWithGoogle(googleSignInAccount);
+                }
+            }catch (Exception ignored){ }
+        }
+    }
+
+    /**
+     * Iniciar sesion con los credenciales de google
+     */
+    private void logInWithGoogle(GoogleSignInAccount account){
+        showCarga(true);
+        casosUsoUsuario.loginGoogle(account, new CallBack() {
+            @Override
+            public void onSuccess(Object object) {
+                showCarga(false);
+
+            }
+            @Override
+            public void onError(Object object) {
+                showCarga(false);
+                showRegisterError(object.toString());
+            }
+        });
+    }
+
     //===============================================================================
     // CALLBACKS
     //===============================================================================
+
+
+    /**
+     *
+     * Se lanzará un activity for result de google, el return
+     * es on activity result de tipo GoogleAcount
+     */
+    public void startGoogleLogin(View v){
+        hideErrors();// esconder por si estaba mostrado de antes
+        if(Utility.isConnected(this)){
+            GoogleSignInOptions googleCong = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this,googleCong);
+            googleSignInClient.signOut();
+            startActivityForResult(googleSignInClient.getSignInIntent(),CODE_ACTIVITY_RESULT_GOOGLE);
+        }
+        else{
+            showRegisterError(Constant.CONNECTION_ERROR);
+        }
+    }
 
     /**
      * @author Ruben Pardo
